@@ -65,7 +65,11 @@ export const supabase = isSupabaseConfigured
             if (studentsJson) {
               try {
                 const students = JSON.parse(studentsJson);
-                const found = students.find(s => s.email.toLowerCase() === email.toLowerCase() && s.password === password);
+                const found = students.find(s => 
+                  s.email && 
+                  s.email.trim().toLowerCase() === email.trim().toLowerCase() && 
+                  (s.password || 'demostudentpass').trim() === password.trim()
+                );
                 
                 if (found) {
                   const mockUser = {
