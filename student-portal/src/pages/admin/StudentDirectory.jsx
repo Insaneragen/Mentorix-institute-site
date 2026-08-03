@@ -17,13 +17,21 @@ import {
   getAttendance, 
   getFinancials, 
   addStudentAttendanceRecord, 
-  addFinancialPayment 
+  addFinancialPayment,
+  addNewStudent
 } from '../../lib/mockData';
 
 const StudentDirectory = () => {
   const [students, setStudents] = useState(getStudents());
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedStudentId, setSelectedStudentId] = useState(students[0]?.id || null);
+
+  // New Student Form States
+  const [addingNew, setAddingNew] = useState(false);
+  const [newStudentName, setNewStudentName] = useState('');
+  const [newStudentEmail, setNewStudentEmail] = useState('');
+  const [newStudentPhone, setNewStudentPhone] = useState('');
+  const [newStudentProgram, setNewStudentProgram] = useState('Logistics & Supply Chain Management');
 
   // Attendance Form States
   const [attDate, setAttDate] = useState(new Date().toISOString().split('T')[0]);
@@ -37,6 +45,29 @@ const StudentDirectory = () => {
   const [payAmount, setPayAmount] = useState('');
   const [payMethod, setPayMethod] = useState('Bank Transfer');
   const [paySuccess, setPaySuccess] = useState('');
+
+  const handleCreateStudent = (e) => {
+    e.preventDefault();
+    if (!newStudentName || !newStudentEmail) {
+      alert("Please fill in Name and Email.");
+      return;
+    }
+
+    const newStudent = addNewStudent({
+      name: newStudentName,
+      email: newStudentEmail,
+      phone: newStudentPhone || '+971 50 000 0000',
+      program: newStudentProgram
+    });
+
+    const updatedList = getStudents();
+    setStudents(updatedList);
+    setNewStudentName('');
+    setNewStudentEmail('');
+    setNewStudentPhone('');
+    setAddingNew(false);
+    setSelectedStudentId(newStudent.id);
+  };
 
   // Filter students based on search term
   const filteredStudents = students.filter(student => 
@@ -157,11 +188,103 @@ const StudentDirectory = () => {
             ))
           )}
         </div>
+        <div className="p-4 border-t border-slate-100 bg-slate-50/50">
+          <button
+            onClick={() => {
+              setSelectedStudentId(null);
+              setAddingNew(true);
+            }}
+            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl transition-all text-xs flex items-center justify-center gap-2 shadow-sm"
+          >
+            <PlusCircle size={14} />
+            <span>Add New Student</span>
+          </button>
+        </div>
       </div>
 
       {/* RIGHT COLUMN: Active Student profile overview and record inputs (2 Columns) */}
       <div className="lg:col-span-2 space-y-6">
-        {selectedStudent ? (
+        {addingNew ? (
+          <div className="bg-white rounded-2xl border border-slate-100 shadow-soft p-6 md:p-8 space-y-6">
+            <h3 className="font-extrabold text-slate-900 text-base border-b border-slate-100 pb-4 flex items-center gap-2">
+              <PlusCircle size={18} className="text-emerald-600" />
+              <span>Register New Student Account</span>
+            </h3>
+
+            <form onSubmit={handleCreateStudent} className="space-y-4 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Full Student Name</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. John Doe"
+                    value={newStudentName}
+                    onChange={(e) => setNewStudentName(e.target.value)}
+                    className="w-full bg-white border border-slate-200 px-3 py-2.5 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500 text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Email Address</label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="e.g. john.doe@mentorix.ae"
+                    value={newStudentEmail}
+                    onChange={(e) => setNewStudentEmail(e.target.value)}
+                    className="w-full bg-white border border-slate-200 px-3 py-2.5 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500 text-sm"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Phone Number</label>
+                  <input
+                    type="tel"
+                    placeholder="e.g. +971 50 111 2222"
+                    value={newStudentPhone}
+                    onChange={(e) => setNewStudentPhone(e.target.value)}
+                    className="w-full bg-white border border-slate-200 px-3 py-2.5 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500 text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Enrolled Program</label>
+                  <select
+                    value={newStudentProgram}
+                    onChange={(e) => setNewStudentProgram(e.target.value)}
+                    className="w-full bg-white border border-slate-200 px-3 py-2.5 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500 text-sm font-semibold"
+                  >
+                    <option>Logistics & Supply Chain Management</option>
+                    <option>AI & Automation in Logistics</option>
+                    <option>University Admissions Preparatory</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 pt-4 border-t border-slate-100 justify-end">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAddingNew(false);
+                    setSelectedStudentId(students[0]?.id || null);
+                  }}
+                  className="px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 font-bold text-slate-600 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition-all shadow-sm"
+                >
+                  Create Student Profile
+                </button>
+              </div>
+            </form>
+          </div>
+        ) : selectedStudent ? (
           <>
             {/* Student Admin Card Summary Header */}
             <div className="bg-white rounded-2xl border border-slate-100 shadow-soft p-6 flex flex-col sm:flex-row items-center gap-4 relative">

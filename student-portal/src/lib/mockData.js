@@ -364,6 +364,48 @@ export const addFinancialPayment = (studentId, amount, method) => {
   return financials;
 };
 
+export const addNewStudent = ({ name, email, phone, program }) => {
+  const students = getStudents();
+  
+  const id = `mock-student-${Date.now()}`;
+  const studentId = `MTX-2026-${Math.floor(1000 + Math.random() * 9000)}`;
+  const joinedDate = new Date().toLocaleString('en-US', { month: 'short' }) + ' ' + new Date().getFullYear();
+  
+  const newStudent = {
+    id,
+    name,
+    studentId,
+    program,
+    email,
+    phone,
+    joinedDate,
+    avatarUrl: null
+  };
+
+  students.push(newStudent);
+  localStorage.setItem(STORAGE_KEYS.STUDENTS, JSON.stringify(students));
+
+  // Initialize empty attendance
+  localStorage.setItem(`${STORAGE_KEYS.ATTENDANCE_PREFIX}${id}`, JSON.stringify({
+    overallPercentage: 100,
+    presentCount: 0,
+    lateCount: 0,
+    absentCount: 0,
+    records: []
+  }));
+
+  // Initialize empty financials
+  localStorage.setItem(`${STORAGE_KEYS.FINANCIALS_PREFIX}${id}`, JSON.stringify({
+    totalFee: 10000,
+    paidAmount: 0,
+    balanceAmount: 10000,
+    currency: "AED",
+    payments: []
+  }));
+
+  return newStudent;
+};
+
 // Legacy object mock mappings for backwards compatibility with student layout
 export const mockStudent = getStudent("mock-user-123");
 export const mockAnnouncements = getAnnouncements();
