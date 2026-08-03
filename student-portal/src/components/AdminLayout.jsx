@@ -22,7 +22,8 @@ const AdminLayout = () => {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    window.location.href = '/login';
+    navigate('/login');
+    window.location.reload();
   };
 
   const navItems = [
