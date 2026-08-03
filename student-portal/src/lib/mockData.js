@@ -485,3 +485,13 @@ export const getCurrentAttendance = () => {
   const student = getCurrentStudent();
   return getAttendance(student.id);
 };
+
+export const updateStudentPassword = (studentId, newPassword) => {
+  const students = getStudents();
+  const index = students.findIndex(s => s.id === studentId);
+  if (index === -1) return null;
+
+  students[index].password = newPassword;
+  localStorage.setItem(STORAGE_KEYS.STUDENTS, JSON.stringify(students));
+  return students[index];
+};

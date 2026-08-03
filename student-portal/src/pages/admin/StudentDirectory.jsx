@@ -19,7 +19,8 @@ import {
   addStudentAttendanceRecord, 
   addFinancialPayment,
   addNewStudent,
-  updateStudentReceipt
+  updateStudentReceipt,
+  updateStudentPassword
 } from '../../lib/mockData';
 
 const StudentDirectory = () => {
@@ -344,6 +345,41 @@ const StudentDirectory = () => {
                 <h3 className="font-extrabold text-slate-900 text-lg leading-snug">{selectedStudent.name}</h3>
                 <p className="text-xs text-slate-500 mt-0.5">{selectedStudent?.course_enrolled}</p>
                 <p className="text-[10px] text-slate-400 font-mono mt-0.5">ID Code: {selectedStudent.studentId} &middot; Contact: {selectedStudent.phone}</p>
+              </div>
+            </div>
+
+            {/* Student Credentials bar (Admin can view and update) */}
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-soft p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="text-xs space-y-1">
+                <p className="font-bold text-slate-700">Account Credentials Settings</p>
+                <p className="text-slate-500">
+                  Current Password: <span className="font-mono bg-slate-100 px-2.5 py-1 rounded border font-bold text-slate-800">{selectedStudent.password || 'demostudentpass'}</span>
+                </p>
+              </div>
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <input
+                  type="text"
+                  placeholder="Set new password..."
+                  id={`pwd-input-${selectedStudent.id}`}
+                  className="bg-white border border-slate-200 px-3 py-2 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500 w-full sm:w-44"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    const inp = document.getElementById(`pwd-input-${selectedStudent.id}`);
+                    if (inp && inp.value.trim()) {
+                      updateStudentPassword(selectedStudent.id, inp.value.trim());
+                      inp.value = '';
+                      setStudents(getStudents());
+                      alert("Student password has been updated in database!");
+                    } else {
+                      alert("Please enter a password value first.");
+                    }
+                  }}
+                  className="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 px-4 rounded-xl text-xs transition-colors shrink-0 shadow-sm"
+                >
+                  Change Password
+                </button>
               </div>
             </div>
 

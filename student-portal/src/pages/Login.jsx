@@ -7,10 +7,38 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+  const handleForgotPassword = (e) => {
+    e.preventDefault();
+    if (!email || !email.trim()) {
+      setError('Please type your registered email address first.');
+      setSuccessMessage('');
+      return;
+    }
+    setError('');
+    
+    // Look up password in mock student storage
+    const studentsJson = localStorage.getItem('mentorix_db_students');
+    let passFound = 'demostudentpass';
+    if (studentsJson) {
+      try {
+        const students = JSON.parse(studentsJson);
+        const found = students.find(s => s.email && s.email.trim().toLowerCase() === email.trim().toLowerCase());
+        if (found) {
+          passFound = found.password || 'demostudentpass';
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    
+    setSuccessMessage(`A password recovery email has been simulated and sent to ${email.trim()}! (Your account login password is: "${passFound}")`);
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -161,8 +189,14 @@ const Login = () => {
           {/* Main Form */}
           <form onSubmit={handleLogin} className="space-y-4">
             {error && (
-              <div className="p-3 text-xs font-semibold text-red-600 bg-red-50 border border-red-100 rounded-lg">
+              <div className="p-3 text-xs font-semibold text-red-600 bg-red-50 border border-red-100 rounded-lg animate-fadeIn">
                 {error}
+              </div>
+            )}
+
+            {successMessage && (
+              <div className="p-3 text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-100 rounded-lg animate-fadeIn">
+                {successMessage}
               </div>
             )}
 
@@ -191,6 +225,13 @@ const Login = () => {
                 <label htmlFor="password" className="block text-xs font-bold text-brand-slate uppercase tracking-wider">
                   Password
                 </label>
+                <button
+                  type="button"
+                  onClick={handleForgotPassword}
+                  className="text-xs font-bold text-brand-blue hover:text-brand-blue-dark hover:underline focus:outline-none"
+                >
+                  Forgot Password?
+                </button>
               </div>
               <div className="relative">
                 <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
