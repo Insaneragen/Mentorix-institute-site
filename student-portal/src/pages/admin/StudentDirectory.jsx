@@ -190,9 +190,13 @@ const StudentDirectory = () => {
                     : 'hover:bg-slate-50'
                 }`}
               >
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <p className="text-sm font-bold text-slate-800 truncate">{student.name}</p>
-                  <p className="text-[10px] text-slate-500 font-mono mt-0.5">{student.studentId}</p>
+                  <div className="flex items-center gap-1.5 mt-0.5 text-[10px] text-slate-500 font-mono">
+                    <span>{student.studentId}</span>
+                    <span>&middot;</span>
+                    <span className="truncate max-w-[120px] sm:max-w-none text-slate-400 font-sans">{student.email}</span>
+                  </div>
                 </div>
                 <ChevronRight size={14} className="text-slate-400 shrink-0" />
               </button>
@@ -344,7 +348,13 @@ const StudentDirectory = () => {
               <div className="flex-1 text-center sm:text-left">
                 <h3 className="font-extrabold text-slate-900 text-lg leading-snug">{selectedStudent.name}</h3>
                 <p className="text-xs text-slate-500 mt-0.5">{selectedStudent?.course_enrolled}</p>
-                <p className="text-[10px] text-slate-400 font-mono mt-0.5">ID Code: {selectedStudent.studentId} &middot; Contact: {selectedStudent.phone}</p>
+                <p className="text-[10px] text-slate-400 font-mono mt-1 flex flex-wrap justify-center sm:justify-start gap-x-2 gap-y-1">
+                  <span>ID Code: {selectedStudent.studentId}</span>
+                  <span>&middot;</span>
+                  <span>Contact: {selectedStudent.phone}</span>
+                  <span>&middot;</span>
+                  <span className="text-emerald-600 font-semibold font-sans">{selectedStudent.email}</span>
+                </p>
               </div>
             </div>
 
