@@ -7,11 +7,9 @@ import AdminLayout from './components/AdminLayout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
-import Courses from './pages/Courses';
-import Timetable from './pages/Timetable';
-import Attendance from './pages/Attendance';
+import Academics from './pages/Academics';
+import StudyHub from './pages/StudyHub';
 import Financials from './pages/Financials';
-import Announcements from './pages/Announcements';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -37,11 +35,9 @@ function App() {
         >
           <Route index element={<Dashboard />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="courses" element={<Courses />} />
-          <Route path="timetable" element={<Timetable />} />
-          <Route path="attendance" element={<Attendance />} />
+          <Route path="study-hub" element={<StudyHub />} />
+          <Route path="academics" element={<Academics />} />
           <Route path="financials" element={<Financials />} />
-          <Route path="announcements" element={<Announcements />} />
         </Route>
 
         {/* Protected Admin Portal Routes */}

@@ -1,8 +1,10 @@
 import React from 'react';
 import { User, Mail, Phone, Calendar, ShieldCheck, GraduationCap, Building2 } from 'lucide-react';
-import { mockStudent } from '../lib/mockData';
+import { getCurrentStudent } from '../lib/mockData';
 
 const Profile = () => {
+  const student = getCurrentStudent();
+  
   const getInitials = (name) => {
     return name
       .split(' ')
@@ -20,7 +22,7 @@ const Profile = () => {
 
         {/* Profile Avatar Initials */}
         <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-brand-navy flex items-center justify-center font-extrabold text-white text-3xl shadow-md border-4 border-brand-blue/20 shrink-0">
-          {getInitials(mockStudent.name)}
+          {getInitials(student.name)}
         </div>
 
         {/* Primary Details */}
@@ -29,10 +31,10 @@ const Profile = () => {
             Active Student Profile
           </div>
           <h2 className="text-2xl md:text-3xl font-extrabold text-brand-slate tracking-tight">
-            {mockStudent.name}
+            {student.name}
           </h2>
           <p className="text-sm font-semibold text-brand-gray">
-            ID Code: <span className="font-mono text-brand-slate">{mockStudent.id}</span>
+            ID Code: <span className="font-mono text-brand-slate">{student.studentId}</span>
           </p>
         </div>
       </div>
@@ -52,7 +54,7 @@ const Profile = () => {
               <span className="text-xs font-bold text-brand-gray uppercase tracking-wider block">Registered Program</span>
               <p className="text-sm font-bold text-brand-slate flex items-start gap-2">
                 <GraduationCap size={16} className="text-brand-blue mt-0.5 shrink-0" />
-                <span>{mockStudent.program}</span>
+                <span>{student.course_enrolled}</span>
               </p>
             </div>
 
@@ -60,7 +62,7 @@ const Profile = () => {
               <span className="text-xs font-bold text-brand-gray uppercase tracking-wider block">Enrolment Date</span>
               <p className="text-sm font-bold text-brand-slate flex items-center gap-2">
                 <Calendar size={16} className="text-brand-blue shrink-0" />
-                <span>{mockStudent.joinedDate}</span>
+                <span>{student.date_of_joining}</span>
               </p>
             </div>
 
@@ -68,7 +70,7 @@ const Profile = () => {
               <span className="text-xs font-bold text-brand-gray uppercase tracking-wider block">Institutional Email</span>
               <p className="text-sm font-bold text-brand-slate flex items-center gap-2">
                 <Mail size={16} className="text-brand-blue shrink-0" />
-                <a href={`mailto:${mockStudent.email}`} className="hover:underline text-brand-blue truncate">{mockStudent.email}</a>
+                <a href={`mailto:${student.email}`} className="hover:underline text-brand-blue truncate">{student.email}</a>
               </p>
             </div>
 
@@ -76,7 +78,7 @@ const Profile = () => {
               <span className="text-xs font-bold text-brand-gray uppercase tracking-wider block">Contact Number</span>
               <p className="text-sm font-bold text-brand-slate flex items-center gap-2">
                 <Phone size={16} className="text-brand-blue shrink-0" />
-                <span>{mockStudent.phone}</span>
+                <span>{student.phone}</span>
               </p>
             </div>
           </div>

@@ -18,7 +18,8 @@ import {
   getFinancials, 
   addStudentAttendanceRecord, 
   addFinancialPayment,
-  addNewStudent
+  addNewStudent,
+  updateStudentReceipt
 } from '../../lib/mockData';
 
 const StudentDirectory = () => {
@@ -32,6 +33,9 @@ const StudentDirectory = () => {
   const [newStudentEmail, setNewStudentEmail] = useState('');
   const [newStudentPhone, setNewStudentPhone] = useState('');
   const [newStudentProgram, setNewStudentProgram] = useState('Logistics & Supply Chain Management');
+  const [newStudentPassword, setNewStudentPassword] = useState('demostudentpass');
+  const [newStudentDate, setNewStudentDate] = useState(new Date().toISOString().split('T')[0]);
+  const [newStudentFee, setNewStudentFee] = useState(10000);
 
   // Attendance Form States
   const [attDate, setAttDate] = useState(new Date().toISOString().split('T')[0]);
@@ -57,7 +61,10 @@ const StudentDirectory = () => {
       name: newStudentName,
       email: newStudentEmail,
       phone: newStudentPhone || '+971 50 000 0000',
-      program: newStudentProgram
+      program: newStudentProgram,
+      password: newStudentPassword,
+      date_of_joining: newStudentDate,
+      fee_total: Number(newStudentFee)
     });
 
     const updatedList = getStudents();
@@ -65,6 +72,9 @@ const StudentDirectory = () => {
     setNewStudentName('');
     setNewStudentEmail('');
     setNewStudentPhone('');
+    setNewStudentPassword('demostudentpass');
+    setNewStudentDate(new Date().toISOString().split('T')[0]);
+    setNewStudentFee(10000);
     setAddingNew(false);
     setSelectedStudentId(newStudent.id);
   };
@@ -264,6 +274,45 @@ const StudentDirectory = () => {
                 </div>
               </div>
 
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Login Password</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. demostudentpass"
+                    value={newStudentPassword}
+                    onChange={(e) => setNewStudentPassword(e.target.value)}
+                    className="w-full bg-white border border-slate-200 px-3 py-2.5 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500 text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Date of Joining</label>
+                  <input
+                    type="date"
+                    required
+                    value={newStudentDate}
+                    onChange={(e) => setNewStudentDate(e.target.value)}
+                    className="w-full bg-white border border-slate-200 px-3 py-2.5 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500 text-sm"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block font-bold text-slate-700 mb-1">Total Tuition Fee (AED)</label>
+                  <input
+                    type="number"
+                    required
+                    placeholder="e.g. 10000"
+                    value={newStudentFee}
+                    onChange={(e) => setNewStudentFee(e.target.value)}
+                    className="w-full bg-white border border-slate-200 px-3 py-2.5 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500 text-sm"
+                  />
+                </div>
+              </div>
+
               <div className="flex items-center gap-3 pt-4 border-t border-slate-100 justify-end">
                 <button
                   type="button"
@@ -293,7 +342,7 @@ const StudentDirectory = () => {
               </div>
               <div className="flex-1 text-center sm:text-left">
                 <h3 className="font-extrabold text-slate-900 text-lg leading-snug">{selectedStudent.name}</h3>
-                <p className="text-xs text-slate-500 mt-0.5">{selectedStudent.program}</p>
+                <p className="text-xs text-slate-500 mt-0.5">{selectedStudent?.course_enrolled}</p>
                 <p className="text-[10px] text-slate-400 font-mono mt-0.5">ID Code: {selectedStudent.studentId} &middot; Contact: {selectedStudent.phone}</p>
               </div>
             </div>
@@ -459,6 +508,43 @@ const StudentDirectory = () => {
                     <p className="text-[10px] text-emerald-600 mt-0.5">This student has zero outstanding fee balance.</p>
                   </div>
                 )}
+
+                {/* File Upload Widget for Receipt */}
+                <div className="border-t border-slate-100 pt-4 mt-2">
+                  <label className="block font-bold text-slate-700 mb-1 text-[11px]">Upload/Update Student Receipt</label>
+                  {selectedStudent?.receipt_file ? (
+                    <div className="flex items-center justify-between p-2.5 bg-emerald-50 border border-emerald-100 rounded-lg text-xs text-emerald-800">
+                      <span className="truncate font-semibold flex items-center gap-1.5">
+                        <i className="fa-solid fa-file-pdf"></i> {selectedStudent.receipt_file}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          updateStudentReceipt(selectedStudent.id, null);
+                          setStudents(getStudents());
+                        }}
+                        className="text-red-500 hover:text-red-700 font-bold ml-2 text-[10px] uppercase"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="space-y-1.5">
+                      <input
+                        type="file"
+                        onChange={(e) => {
+                          const file = e.target.files[0];
+                          if (file) {
+                            updateStudentReceipt(selectedStudent.id, file.name);
+                            setStudents(getStudents());
+                          }
+                        }}
+                        className="w-full bg-white border border-slate-200 px-3 py-1.5 rounded-lg text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer"
+                      />
+                      <p className="text-[10px] text-slate-400">Supported formats: PDF, PNG, JPG (Max 5MB)</p>
+                    </div>
+                  )}
+                </div>
               </div>
 
             </div>

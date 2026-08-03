@@ -1,10 +1,12 @@
 import React from 'react';
 import { CreditCard, Download, CheckCircle, Info, Landmark, Receipt } from 'lucide-react';
-import { mockFinancials } from '../lib/mockData';
+import { getCurrentFinancials } from '../lib/mockData';
 
 const Financials = () => {
-  const handleDownloadReceipt = (receiptId) => {
-    alert(`Downloading receipt file "${receiptId}.pdf" to your system...`);
+  const financials = getCurrentFinancials();
+  
+  const handleDownloadReceipt = (fileName) => {
+    alert(`Downloading receipt file "${fileName}" to your system...`);
   };
 
   return (
@@ -22,7 +24,7 @@ const Financials = () => {
           </div>
           <div className="mt-4">
             <h3 className="text-xl font-extrabold text-brand-slate">
-              {mockFinancials.totalFee.toLocaleString()} {mockFinancials.currency}
+              {financials.totalFee.toLocaleString()} {financials.currency}
             </h3>
             <p className="text-[10px] text-brand-gray mt-1">
               Reflects approved KHDA activity pricing.
@@ -40,10 +42,10 @@ const Financials = () => {
           </div>
           <div className="mt-4">
             <h3 className="text-xl font-extrabold text-brand-slate">
-              {mockFinancials.paidAmount.toLocaleString()} {mockFinancials.currency}
+              {financials.paidAmount.toLocaleString()} {financials.currency}
             </h3>
             <p className="text-[10px] text-emerald-600 font-semibold mt-1">
-              75% of total tuition settled.
+              {financials.totalFee > 0 ? Math.round((financials.paidAmount / financials.totalFee) * 100) : 0}% of total tuition settled.
             </p>
           </div>
         </div>
@@ -56,13 +58,26 @@ const Financials = () => {
               <CreditCard size={16} />
             </div>
           </div>
-          <div className="mt-4">
-            <h3 className="text-xl font-extrabold text-brand-navy">
-              {mockFinancials.balanceAmount.toLocaleString()} {mockFinancials.currency}
-            </h3>
-            <p className="text-[10px] text-brand-gray mt-1">
-              Settlements processed via invoice milestones.
-            </p>
+          <div className="mt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 className="text-xl font-extrabold text-brand-navy">
+                {financials.balanceAmount.toLocaleString()} {financials.currency}
+              </h3>
+              <p className="text-[10px] text-brand-gray mt-1">
+                Settlements processed via invoice milestones.
+              </p>
+            </div>
+            
+            {/* Dynamic Download Receipt Button Widget */}
+            {financials.receipt_file && (
+              <button
+                onClick={() => handleDownloadReceipt(financials.receipt_file)}
+                className="bg-brand-blue hover:bg-brand-blue-dark text-white font-bold py-2.5 px-4 rounded-xl transition-all shadow-md text-xs flex items-center justify-center gap-1.5 shrink-0 hover:-translate-y-0.5"
+              >
+                <Download size={13} />
+                <span>Download Receipt</span>
+              </button>
+            )}
           </div>
         </div>
 
@@ -96,7 +111,7 @@ const Financials = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 text-sm text-brand-slate">
-              {mockFinancials.payments.map((payment) => (
+              {financials.payments.map((payment) => (
                 <tr key={payment.id} className="hover:bg-brand-light/30 transition-colors">
                   <td className="py-4.5 px-6 font-bold text-brand-blue flex items-center gap-2">
                     <Receipt size={14} className="text-brand-gray shrink-0" />
@@ -109,7 +124,7 @@ const Financials = () => {
                     {payment.method}
                   </td>
                   <td className="py-4.5 px-6 font-extrabold">
-                    {payment.amount.toLocaleString()} {mockFinancials.currency}
+                    {payment.amount.toLocaleString()} {financials.currency}
                   </td>
                   <td className="py-4.5 px-6">
                     <button

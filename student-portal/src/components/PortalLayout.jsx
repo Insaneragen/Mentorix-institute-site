@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
-import { Menu, Bell, ChevronRight } from 'lucide-react';
+import { Outlet, useLocation, Link } from 'react-router-dom';
+import { Menu, Bell, ChevronRight, User } from 'lucide-react';
 import Sidebar from './Sidebar';
-import { mockStudent } from '../lib/mockData';
+import { getCurrentStudent } from '../lib/mockData';
 
 const PortalLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -10,22 +10,20 @@ const PortalLayout = () => {
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
+  const student = getCurrentStudent();
+
   const getPageTitle = () => {
     switch (location.pathname) {
       case '/':
         return 'Dashboard Overview';
       case '/profile':
         return 'My Profile';
-      case '/courses':
-        return 'Enrolled Courses & Materials';
-      case '/timetable':
-        return 'Academic Timetable';
-      case '/attendance':
-        return 'Attendance Tracker';
+      case '/study-hub':
+        return 'Study Hub & Materials';
+      case '/academics':
+        return 'Academic Schedule & Notices';
       case '/financials':
         return 'Financial Statement';
-      case '/announcements':
-        return 'Institute Announcements';
       default:
         return 'Mentorix Portal';
     }
@@ -54,7 +52,7 @@ const PortalLayout = () => {
               <p className="text-[10px] md:text-xs text-brand-gray font-medium flex items-center gap-1.5">
                 <span>Student Hub</span>
                 <ChevronRight size={10} />
-                <span className="text-brand-blue truncate max-w-[200px] md:max-w-none">{mockStudent.program}</span>
+                <span className="text-brand-blue truncate max-w-[200px] md:max-w-none">{student.course_enrolled}</span>
               </p>
             </div>
           </div>
@@ -66,11 +64,16 @@ const PortalLayout = () => {
               <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white"></span>
             </div>
 
-            {/* Quick Profile Name Display (Hidden on Small Screens) */}
-            <div className="hidden md:flex flex-col text-right">
-              <span className="text-sm font-bold text-brand-slate">{mockStudent.name}</span>
-              <span className="text-[10px] font-semibold text-brand-gray">{mockStudent.id}</span>
-            </div>
+            {/* Quick Profile Avatar Display Linking to Profile */}
+            <Link to="/profile" className="flex items-center gap-3 hover:opacity-85 transition-opacity">
+              <div className="hidden md:flex flex-col text-right">
+                <span className="text-sm font-bold text-brand-slate leading-none mb-1">{student.name}</span>
+                <span className="text-[10px] font-semibold text-brand-gray leading-none">{student.studentId}</span>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-brand-blue flex items-center justify-center font-extrabold text-white text-xs shadow-sm border border-brand-blue/30">
+                {student.name.split(' ').map(p => p[0]).join('').toUpperCase()}
+              </div>
+            </Link>
           </div>
         </header>
 

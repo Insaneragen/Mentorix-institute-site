@@ -36,39 +36,66 @@ export const supabase = isSupabaseConfigured
           console.warn("Supabase is not configured. Running in Mock Mode.");
           
           if (email && password) {
-            let role = 'student';
-            let name = 'Ahmed Al Mansoori';
-            let id = 'mock-user-123'; // Ahmed's ID
-
             if (email.toLowerCase().includes('admin')) {
-              role = 'admin';
-              name = 'Director Saneesh';
-              id = 'mock-admin-999';
+              const mockUser = {
+                id: 'mock-admin-999',
+                email,
+                user_metadata: { 
+                  full_name: 'Director Saneesh',
+                  role: 'admin'
+                }
+              };
+              const mockSession = {
+                access_token: 'mock-token-admin',
+                user: mockUser
+              };
+              localStorage.setItem('mock_session', JSON.stringify(mockSession));
+              triggerMockAuthChange('SIGNED_IN');
+              return {
+                data: {
+                  user: mockUser,
+                  session: mockSession
+                },
+                error: null
+              };
             }
 
-            const mockUser = {
-              id,
-              email,
-              user_metadata: { 
-                full_name: name,
-                role: role
+            // Look up student from storage
+            const studentsJson = localStorage.getItem('mentorix_db_students');
+            if (studentsJson) {
+              try {
+                const students = JSON.parse(studentsJson);
+                const found = students.find(s => s.email.toLowerCase() === email.toLowerCase() && s.password === password);
+                
+                if (found) {
+                  const mockUser = {
+                    id: found.id,
+                    email: found.email,
+                    user_metadata: { 
+                      full_name: found.name,
+                      role: 'student'
+                    }
+                  };
+                  const mockSession = {
+                    access_token: `mock-token-${found.id}`,
+                    user: mockUser
+                  };
+                  localStorage.setItem('mock_session', JSON.stringify(mockSession));
+                  triggerMockAuthChange('SIGNED_IN');
+                  return {
+                    data: {
+                      user: mockUser,
+                      session: mockSession
+                    },
+                    error: null
+                  };
+                }
+              } catch (e) {
+                console.error("Auth search failure:", e);
               }
-            };
-            const mockSession = {
-              access_token: 'mock-token-123',
-              user: mockUser
-            };
-            localStorage.setItem('mock_session', JSON.stringify(mockSession));
-            triggerMockAuthChange('SIGNED_IN');
-            return {
-              data: {
-                user: mockUser,
-                session: mockSession
-              },
-              error: null
-            };
+            }
           }
-          return { data: { user: null, session: null }, error: new Error("Invalid credentials") };
+          return { data: { user: null, session: null }, error: new Error("Invalid email or password.") };
         },
         signOut: async () => {
           console.warn("Supabase is not configured. Logging out of Mock Mode.");

@@ -13,19 +13,25 @@ import {
   GraduationCap
 } from 'lucide-react';
 import { 
-  mockStudent, 
-  mockTimetable, 
-  mockAnnouncements, 
-  mockFinancials, 
-  mockAttendance 
+  getCurrentStudent, 
+  getCurrentFinancials, 
+  getCurrentAttendance, 
+  getTimetable, 
+  getAnnouncements 
 } from '../lib/mockData';
 
 const Dashboard = () => {
+  const student = getCurrentStudent();
+  const financials = getCurrentFinancials();
+  const attendance = getCurrentAttendance();
+  const timetable = getTimetable();
+  const announcements = getAnnouncements();
+
   // Get upcoming active class
-  const upcomingClass = mockTimetable.find(item => item.active) || mockTimetable[0];
+  const upcomingClass = timetable.find(item => item.active) || timetable[0];
   
   // Get top 3 recent announcements
-  const recentAnnouncements = mockAnnouncements.slice(0, 3);
+  const recentAnnouncements = announcements.slice(0, 3);
 
   // Compute greetings based on time
   const getGreeting = () => {
@@ -46,7 +52,7 @@ const Dashboard = () => {
               Mentorix Student Portal
             </span>
             <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">
-              {getGreeting()}, {mockStudent.name}
+              {getGreeting()}, {student.name}
             </h2>
             <p className="text-gray-300 text-sm max-w-md">
               Here is your academic overview for today. Stay updated with your timetable and class notifications.
@@ -76,7 +82,7 @@ const Dashboard = () => {
           </div>
           <div>
             <h3 className="text-2xl font-extrabold text-brand-slate mt-2">
-              {mockFinancials.balanceAmount.toLocaleString()} {mockFinancials.currency}
+              {financials.balanceAmount.toLocaleString()} {financials.currency}
             </h3>
             <p className="text-xs text-brand-gray mt-1">
               Next installment due on program milestones.
@@ -100,15 +106,15 @@ const Dashboard = () => {
           </div>
           <div>
             <h3 className="text-2xl font-extrabold text-brand-slate mt-2">
-              {mockAttendance.overallPercentage}%
+              {attendance.overallPercentage}%
             </h3>
             <p className="text-xs text-brand-gray mt-1">
               Requirement: Keep overall attendance above 80%.
             </p>
           </div>
           <div className="border-t border-gray-100 pt-3 mt-3 flex items-center justify-between">
-            <Link to="/attendance" className="text-xs font-bold text-brand-blue hover:text-brand-blue-dark flex items-center gap-1">
-              <span>Detailed attendance log</span>
+            <Link to="/academics" className="text-xs font-bold text-brand-blue hover:text-brand-blue-dark flex items-center gap-1">
+              <span>Detailed academics calendar</span>
               <ArrowRight size={12} />
             </Link>
           </div>
@@ -127,12 +133,12 @@ const Dashboard = () => {
               2 Courses
             </h3>
             <p className="text-xs text-brand-gray mt-1 truncate">
-              {mockStudent.program}
+              {student.course_enrolled}
             </p>
           </div>
           <div className="border-t border-gray-100 pt-3 mt-3 flex items-center justify-between">
-            <Link to="/courses" className="text-xs font-bold text-brand-blue hover:text-brand-blue-dark flex items-center gap-1">
-              <span>View course materials</span>
+            <Link to="/study-hub" className="text-xs font-bold text-brand-blue hover:text-brand-blue-dark flex items-center gap-1">
+              <span>View study hub materials</span>
               <ArrowRight size={12} />
             </Link>
           </div>
@@ -245,7 +251,7 @@ const Dashboard = () => {
 
           <div className="border-t border-gray-100 pt-4 mt-6">
             <Link 
-              to="/announcements" 
+              to="/academics" 
               className="w-full bg-brand-light hover:bg-gray-100 border border-gray-200 text-brand-slate font-bold text-xs py-3 px-4 rounded-xl transition-colors flex items-center justify-center gap-2"
             >
               <span>View All Announcements</span>

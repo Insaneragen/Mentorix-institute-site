@@ -14,31 +14,60 @@ const INITIAL_STUDENTS = [
     id: "mock-user-123", // Ahmed's ID mapping his auth session
     name: "Ahmed Al Mansoori",
     studentId: "MTX-2026-9842",
-    program: "Supply Chain & Logistics Management (Executive Pathway)",
+    course_enrolled: "Supply Chain & Logistics Management (Executive Pathway)",
     email: "ahmed.mansoori@mentorix.ae",
     phone: "+971 50 123 4567",
-    joinedDate: "Jan 2026",
-    avatarUrl: null
+    date_of_joining: "2026-01-15",
+    avatarUrl: null,
+    password: "demostudentpass",
+    role: "student",
+    fee_total: 10000,
+    fee_paid: 7500,
+    fee_balance: 2500,
+    receipt_file: null,
+    payments: [
+      { id: "RCPT-9821", date: "2026-06-15", amount: 2500, method: "Credit Card (Online)", status: "Completed" },
+      { id: "RCPT-8419", date: "2026-04-10", amount: 2500, method: "Bank Transfer", status: "Completed" },
+      { id: "RCPT-7301", date: "2026-01-08", amount: 2500, method: "Cash at Centre", status: "Completed" }
+    ]
   },
   {
     id: "mock-student-2",
     name: "Sarah Connor",
     studentId: "MTX-2026-1049",
-    program: "AI & Automation in Logistics",
+    course_enrolled: "AI & Automation in Logistics",
     email: "sarah.connor@mentorix.ae",
     phone: "+971 50 987 6543",
-    joinedDate: "Feb 2026",
-    avatarUrl: null
+    date_of_joining: "2026-02-10",
+    avatarUrl: null,
+    password: "demostudentpass",
+    role: "student",
+    fee_total: 12000,
+    fee_paid: 12000,
+    fee_balance: 0,
+    receipt_file: "receipt_sarah_1049.pdf",
+    payments: [
+      { id: "RCPT-2001", date: "2026-02-10", amount: 12000, method: "Bank Transfer", status: "Completed" }
+    ]
   },
   {
     id: "mock-student-3",
     name: "Liam Neeson",
     studentId: "MTX-2026-5832",
-    program: "Logistics & Supply Chain Management",
-    email: "liam.neeson@mentorix.ae",
+    course_enrolled: "Logistics & Supply Chain Management",
+    email: "liam.neeeson@mentorix.ae",
     phone: "+971 50 555 4321",
-    joinedDate: "Mar 2026",
-    avatarUrl: null
+    date_of_joining: "2026-03-20",
+    avatarUrl: null,
+    password: "demostudentpass",
+    role: "student",
+    fee_total: 10000,
+    fee_paid: 5000,
+    fee_balance: 5000,
+    receipt_file: null,
+    payments: [
+      { id: "RCPT-3001", date: "2026-03-20", amount: 5000, method: "Cheque Payment", status: "Completed" }
+    ]
   }
 ];
 
@@ -337,17 +366,23 @@ export const addStudentAttendanceRecord = (studentId, date, course, topic, statu
 };
 
 export const getFinancials = (studentId) => {
-  const key = `${STORAGE_KEYS.FINANCIALS_PREFIX}${studentId}`;
-  if (!localStorage.getItem(key)) {
-    localStorage.setItem(key, JSON.stringify({ totalFee: 10000, paidAmount: 0, balanceAmount: 10000, currency: "AED", payments: [] }));
-  }
-  return JSON.parse(localStorage.getItem(key));
+  const student = getStudent(studentId);
+  return {
+    totalFee: student?.fee_total || 10000,
+    paidAmount: student?.fee_paid || 0,
+    balanceAmount: student?.fee_balance || 10000,
+    currency: "AED",
+    payments: student?.payments || [],
+    receipt_file: student?.receipt_file || null
+  };
 };
 
 export const addFinancialPayment = (studentId, amount, method) => {
-  const key = `${STORAGE_KEYS.FINANCIALS_PREFIX}${studentId}`;
-  const financials = getFinancials(studentId);
+  const students = getStudents();
+  const index = students.findIndex(s => s.id === studentId);
+  if (index === -1) return getFinancials(studentId);
 
+  const student = students[index];
   const payment = {
     id: `RCPT-MANUAL-${Math.floor(1000 + Math.random() * 9000)}`,
     date: new Date().toISOString().split('T')[0],
@@ -356,30 +391,48 @@ export const addFinancialPayment = (studentId, amount, method) => {
     status: "Completed"
   };
 
-  financials.payments.unshift(payment);
-  financials.paidAmount += Number(amount);
-  financials.balanceAmount = Math.max(0, financials.totalFee - financials.paidAmount);
+  if (!student.payments) student.payments = [];
+  student.payments.unshift(payment);
+  student.fee_paid += Number(amount);
+  student.fee_balance = Math.max(0, student.fee_total - student.fee_paid);
 
-  localStorage.setItem(key, JSON.stringify(financials));
-  return financials;
+  students[index] = student;
+  localStorage.setItem(STORAGE_KEYS.STUDENTS, JSON.stringify(students));
+  return getFinancials(studentId);
 };
 
-export const addNewStudent = ({ name, email, phone, program }) => {
+export const updateStudentReceipt = (studentId, filename) => {
+  const students = getStudents();
+  const index = students.findIndex(s => s.id === studentId);
+  if (index === -1) return null;
+
+  students[index].receipt_file = filename;
+  localStorage.setItem(STORAGE_KEYS.STUDENTS, JSON.stringify(students));
+  return students[index];
+};
+
+export const addNewStudent = ({ name, email, phone, program, password, date_of_joining, fee_total }) => {
   const students = getStudents();
   
   const id = `mock-student-${Date.now()}`;
   const studentId = `MTX-2026-${Math.floor(1000 + Math.random() * 9000)}`;
-  const joinedDate = new Date().toLocaleString('en-US', { month: 'short' }) + ' ' + new Date().getFullYear();
   
   const newStudent = {
     id,
     name,
     studentId,
-    program,
+    course_enrolled: program,
     email,
     phone,
-    joinedDate,
-    avatarUrl: null
+    date_of_joining: date_of_joining || new Date().toISOString().split('T')[0],
+    avatarUrl: null,
+    password: password || 'demostudentpass',
+    role: 'student',
+    fee_total: Number(fee_total) || 10000,
+    fee_paid: 0,
+    fee_balance: Number(fee_total) || 10000,
+    receipt_file: null,
+    payments: []
   };
 
   students.push(newStudent);
@@ -394,15 +447,6 @@ export const addNewStudent = ({ name, email, phone, program }) => {
     records: []
   }));
 
-  // Initialize empty financials
-  localStorage.setItem(`${STORAGE_KEYS.FINANCIALS_PREFIX}${id}`, JSON.stringify({
-    totalFee: 10000,
-    paidAmount: 0,
-    balanceAmount: 10000,
-    currency: "AED",
-    payments: []
-  }));
-
   return newStudent;
 };
 
@@ -413,3 +457,31 @@ export const mockTimetable = getTimetable();
 export const mockCourses = getCourses();
 export const mockAttendance = getAttendance("mock-user-123");
 export const mockFinancials = getFinancials("mock-user-123");
+
+export const getCurrentStudent = () => {
+  const sessionJson = localStorage.getItem('mock_session');
+  if (sessionJson) {
+    try {
+      const session = JSON.parse(sessionJson);
+      if (session && session.user) {
+        const students = getStudents();
+        const found = students.find(s => s.id === session.user.id || s.email.toLowerCase() === session.user.email.toLowerCase());
+        if (found) return found;
+      }
+    } catch (e) {
+      console.error("Error reading session:", e);
+    }
+  }
+  const students = getStudents();
+  return students.find(s => s.id === "mock-user-123") || students[0];
+};
+
+export const getCurrentFinancials = () => {
+  const student = getCurrentStudent();
+  return getFinancials(student.id);
+};
+
+export const getCurrentAttendance = () => {
+  const student = getCurrentStudent();
+  return getAttendance(student.id);
+};

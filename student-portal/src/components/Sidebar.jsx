@@ -12,7 +12,7 @@ import {
   X
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { mockStudent } from '../lib/mockData';
+import { getCurrentStudent } from '../lib/mockData';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
@@ -22,14 +22,13 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     navigate('/login');
   };
 
+  const student = getCurrentStudent();
+
   const navItems = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
-    { name: 'My Profile', path: '/profile', icon: User },
-    { name: 'Courses & Materials', path: '/courses', icon: BookOpen },
-    { name: 'Timetable & Live Classes', path: '/timetable', icon: Calendar },
-    { name: 'Attendance', path: '/attendance', icon: CheckSquare },
+    { name: 'Academics', path: '/academics', icon: Calendar },
+    { name: 'Study Hub', path: '/study-hub', icon: BookOpen },
     { name: 'Financials', path: '/financials', icon: CircleDollarSign },
-    { name: 'Announcements', path: '/announcements', icon: Bell },
   ];
 
   const getInitials = (name) => {
@@ -78,11 +77,11 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         {/* Student Mini Profile Info */}
         <div className="p-6 border-b border-brand-navy-light flex items-center gap-4 bg-brand-navy-dark/40">
           <div className="w-12 h-12 rounded-full bg-brand-blue flex items-center justify-center font-extrabold text-white text-base shadow-sm border border-brand-blue/30">
-            {getInitials(mockStudent.name)}
+            {getInitials(student.name)}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold text-white truncate">{mockStudent.name}</p>
-            <p className="text-xs text-gray-400 truncate">{mockStudent.id}</p>
+            <p className="text-sm font-bold text-white truncate">{student.name}</p>
+            <p className="text-xs text-gray-400 truncate">{student.studentId}</p>
           </div>
         </div>
 
