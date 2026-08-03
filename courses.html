@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Catalog | Mentorix Academy</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: { blue: '#0066FF', bluedark: '#0052cc', slate: '#1E293B', gray: '#64748B', light: '#F8F9FA' }
+                    },
+                    boxShadow: { 'soft': '0 10px 40px -10px rgba(0,0,0,0.08)' }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white text-brand-slate antialiased overflow-x-hidden selection:bg-brand-blue selection:text-white flex flex-col min-h-screen">
+
+    <!-- Announcement Bar -->
+    <div class="bg-brand-slate text-center py-2 px-4 text-xs md:text-sm text-gray-300">
+        🎓 <strong class="text-white">KHDA-Licensed Training Institute</strong> in Dubai &nbsp;·&nbsp; 115+ Professional Courses &nbsp;·&nbsp; In-Centre &amp; Online
+    </div>
+
+    <!-- Header -->
+    <header class="w-full bg-white border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 cursor-pointer group">
+                <div class="w-10 h-10 bg-brand-blue text-white flex items-center justify-center font-bold text-xl rounded transition-transform group-hover:scale-105">M</div>
+                <div class="flex flex-col">
+                    <span class="font-bold text-xl tracking-tight text-brand-slate leading-none mb-1">MENTORIX</span>
+                    <span class="text-[9px] font-bold text-brand-blue tracking-[0.2em] uppercase leading-none">Where Potential Meets Purpose</span>
+                </div>
+            </a>
+            <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-brand-slate">
+                <a href="index.html#about" class="hover:text-brand-blue transition-colors">About Us</a>
+                <a href="index.html#divisions" class="hover:text-brand-blue transition-colors">Divisions</a>
+                <a href="courses.html" class="text-brand-blue font-semibold transition-colors">Course Catalog</a>
+                <a href="index.html#testimonials" class="hover:text-brand-blue transition-colors">Testimonials</a>
+                <a href="index.html#faq" class="hover:text-brand-blue transition-colors">FAQ</a>
+            </nav>
+            <div class="hidden lg:block">
+                <a href="#enquiry" class="bg-brand-blue hover:bg-brand-bluedark text-white text-sm font-semibold py-2.5 px-6 rounded transition-colors shadow-soft">Enquire Now</a>
+            </div>
+            <button class="lg:hidden text-brand-slate text-2xl"><i class="fa-solid fa-bars"></i></button>
+        </div>
+    </header>
+
+    <!-- Page Hero -->
+    <section class="bg-brand-light py-16 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center" data-aos="fade-up">
+            <div class="text-xs font-semibold tracking-wide text-brand-gray uppercase mb-4">
+                <a href="index.html" class="hover:text-brand-blue transition-colors">Home</a> <span class="mx-2">/</span> <span class="text-brand-blue">Course Catalog</span>
+            </div>
+            <h1 class="text-4xl lg:text-5xl font-extrabold text-brand-slate tracking-tight mb-4">Explore <span class="text-brand-blue" id="courseCount">115</span>+ Courses</h1>
+            <p class="text-brand-gray text-lg max-w-2xl mx-auto">Search, filter by category, and find the duration and fee for every programme at Mentorix Academy.</p>
+        </div>
+    </section>
+
+    <!-- Catalog Main -->
+    <main class="flex-grow py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            
+            <!-- KHDA Banner -->
+            <div class="flex items-start md:items-center gap-4 bg-brand-light border border-gray-200 border-l-4 border-l-brand-blue p-5 rounded-r-lg mb-12 max-w-4xl mx-auto" data-aos="fade-up">
+                <div class="text-3xl"><i class="fa-solid fa-building-columns text-brand-blue"></i></div>
+                <p class="text-sm text-brand-gray leading-relaxed">
+                    <strong class="text-brand-slate">KHDA Regulatory Status:</strong> All courses are delivered under Mentorix Academy's KHDA-licensed Training Institute permit. Fees are in AED and indicative — please confirm current schedules and pricing when you enquire.
+                </p>
+            </div>
+
+            <!-- Search -->
+            <div class="max-w-2xl mx-auto mb-10 relative" data-aos="fade-up">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
+                </div>
+                <input type="text" id="courseSearch" class="block w-full pl-11 pr-4 py-4 bg-white border border-gray-300 rounded-xl text-brand-slate placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent shadow-sm transition-all" placeholder="Search courses... e.g. VAT, IELTS, AutoCAD, CIPS">
+            </div>
+
+            <!-- Pills -->
+            <div class="flex flex-wrap justify-center gap-3 mb-12" id="pills" data-aos="fade-up"></div>
+            
+            <div class="text-center text-sm font-semibold text-brand-gray mb-10" data-aos="fade-up">
+                Showing <span id="resultCount" class="text-brand-blue">0</span> courses
+            </div>
+
+            <!-- Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="courseGrid"></div>
+            
+        </div>
+    </main>
+
+    <!-- Enquiry Form Section -->
+    <section class="py-24 bg-brand-light border-t border-gray-200" id="enquiry">
+        <div class="max-w-3xl mx-auto px-6 lg:px-8">
+            <div class="text-center mb-10" data-aos="fade-up">
+                <h2 class="text-sm font-bold tracking-widest text-brand-blue uppercase mb-3">Enquire</h2>
+                <h3 class="text-3xl font-extrabold text-brand-slate tracking-tight mb-4">Found your course?</h3>
+                <p class="text-brand-gray">Send us an enquiry and our team will get back to you with schedules, fees, and registration details.</p>
+            </div>
+            
+            <div class="bg-white p-8 rounded-2xl shadow-soft border border-gray-100" data-aos="fade-up">
+                <form onsubmit="event.preventDefault(); alert('Thank you! Our team will contact you shortly.');" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="text" placeholder="Full Name" required class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:border-brand-blue text-sm">
+                        <input type="email" placeholder="Email Address" required class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:border-brand-blue text-sm">
+                    </div>
+                    <input type="tel" placeholder="Phone Number" class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:border-brand-blue text-sm">
+                    <textarea id="msg" rows="4" placeholder="Tell us which course you're interested in and your goals" class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:border-brand-blue text-sm"></textarea>
+                    <button type="submit" class="w-full bg-brand-blue hover:bg-brand-bluedark text-white font-semibold py-3.5 rounded-lg transition-colors">
+                        Send Enquiry
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-slate text-white pt-20 pb-10 mt-auto">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center border-b border-gray-800 pb-8 mb-8 gap-6">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-brand-blue text-white flex items-center justify-center font-bold text-lg rounded">M</div>
+                    <span class="font-bold text-xl tracking-tight">MENTORIX</span>
+                </div>
+                <div class="flex flex-wrap justify-center gap-6 text-sm text-brand-gray font-medium">
+                    <a href="index.html" class="hover:text-white transition-colors">Home</a>
+                    <a href="index.html#about" class="hover:text-white transition-colors">About</a>
+                    <a href="index.html#divisions" class="hover:text-white transition-colors">Divisions</a>
+                    <a href="courses.html" class="text-white">Courses</a>
+                    <a href="index.html#faq" class="hover:text-white transition-colors">FAQ</a>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-brand-gray">
+                <p>&copy; 2026 Mentorix Academy, Dubai, UAE. All rights reserved.</p>
+                <div class="text-right text-[10px] max-w-xl text-gray-500 leading-tight">
+                    All courses are delivered under Mentorix Academy's KHDA-licensed Training Institute permit (Dubai private training regulations); course content is subject to KHDA activity-permit approval. Fees are indicative and in AED.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 600, easing: 'ease-out', once: true, offset: 50 });
+
+        const CATS = {
+            af: { label: "Accounting & Finance", icon: "💰" },
+            ai: { label: "Artificial Intelligence", icon: "🤖" },
+            bm: { label: "Business & HR", icon: "💼" },
+            it: { label: "IT, Design & Tech", icon: "💻" },
+            lang: { label: "Language & Communication", icon: "🗣️" },
+            school: { label: "School Tuition & Exam Prep", icon: "📚" },
+            soft: { label: "Soft Skills & Development", icon: "🌟" },
+            scm: { label: "Supply Chain & Logistics", icon: "🚚" }
+        };
+
+        const COURSES = [
+            ["af","2-Day UAE Corporate Tax Crash Course for SMEs & Business Owners","3 days","AED 1,800"],
+            ["af","2-Day UAE VAT Crash Course for Businesses & Finance Teams","2 days","AED 600"],
+            ["af","3-Day UAE Corporate Tax Crash Course for Multinationals","1 day","AED 800"],
+            ["af","Accounting Software Training (TallyPrime, QuickBooks, Zoho Books, Sage)","6 weeks","AED 4,400"],
+            ["af","Advanced Excel with Financial Modeling Course","5 weeks","AED 2,300"],
+            ["af","Banking and Financial Services Training Course in UAE","5 weeks","AED 3,000"],
+            ["af","CAP (Certified Accounting Professional) / Financial Accounting for Beginners","3 weeks","AED 4,100"],
+            ["af","FMAA (Financial and Managerial Accounting Associate) Certification Training","4 weeks","AED 1,900"],
+            ["af","Finance for Non-Finance Managers Course","5 weeks","AED 3,400"],
+            ["af","Microsoft Advanced Excel Course","6 weeks","AED 2,200"],
+            ["af","QuickBooks Online Training + UAE VAT Course","5 weeks","AED 4,000"],
+            ["af","SAP Training Courses","3 weeks","AED 4,900"],
+            ["af","Sage Business Cloud Accounting Training + UAE VAT Course","5 weeks","AED 5,300"],
+            ["af","TallyPrime Training + UAE VAT & Automation","6 weeks","AED 2,900"],
+            ["af","UAE Corporate Tax Training Course","5 weeks","AED 4,400"],
+            ["af","UAE e-Invoicing Compliance Training Course","4 weeks","AED 2,800"],
+            ["af","VAT (Value Added Tax) Training Course","4 weeks","AED 3,100"],
+            ["af","Zoho Books Training + UAE VAT Course","5 weeks","AED 3,600"],
+
+            ["ai","AI For Accounting and Finance Professionals Course","4 weeks","AED 2,500"],
+            ["ai","AI For Digital Marketing Professionals Training Course","3 weeks","AED 3,100"],
+            ["ai","AI For Logistics and Supply Chain Professionals Training Course","2 weeks","AED 2,600"],
+            ["ai","AI For Management and Leadership Professionals Course","3 weeks","AED 1,600"],
+            ["ai","Artificial Intelligence (AI) Course","4 weeks","AED 4,300"],
+            ["ai","Artificial Intelligence Training Course – Entry Level","3 weeks","AED 4,200"],
+            ["ai","ChatGPT Training Course","4 weeks","AED 3,600"],
+            ["ai","Mastering ChatGPT Course (Corporate Customised)","Based on scope","Custom Quote"],
+
+            ["bm","Business Management Training Course","3 weeks","AED 4,100"],
+            ["bm","CPCM/CCCM Contract Management Training Course","10 weeks","AED 9,250"],
+            ["bm","Certified Executive Secretary (Admin) Training Course","6 weeks","AED 4,400"],
+            ["bm","Corporate Training Programme","3 weeks","AED 3,500"],
+            ["bm","Digital Marketing Training Course","4 weeks","AED 2,500"],
+            ["bm","Document Controller (DMS) Course","4 weeks","AED 5,700"],
+            ["bm","Human Resource Management","8 weeks","AED 10,250"],
+            ["bm","PRO (Public Relations Officer) Training Certification Course","5 weeks","AED 2,400"],
+            ["bm","Sales Training","6 weeks","AED 4,400"],
+            ["bm","Sales and Marketing Training Course","4 weeks","AED 2,400"],
+            ["bm","UAE Corporate Law, Compliance & HR Legal Practices Course","6 weeks","AED 3,400"],
+            ["bm","UAE Labor Law Training Course","4 weeks","AED 2,400"],
+            ["bm","Women Entrepreneur Business Success Course","5 weeks","AED 4,500"],
+
+            ["it","Adobe Software / Web / Graphic / Multimedia Certification Training","3 weeks","AED 3,600"],
+            ["it","AutoCAD 2D & 3D Training Course Certification","6 weeks","AED 6,500"],
+            ["it","AutoCAD Automation and Control Training","3 weeks","AED 5,000"],
+            ["it","Database Administration Track Course","12 weeks","AED 12,500"],
+            ["it","Database Management Courses","3 weeks","AED 3,200"],
+            ["it","Graphic Design Training Course","3 weeks","AED 5,900"],
+            ["it","Programming Courses","4 weeks","AED 4,500"],
+            ["it","Web Development Course","6 weeks","AED 5,100"],
+
+            ["lang","Advanced English Conversation Course","8 weeks","AED 3,000"],
+            ["lang","Business English Course","8 weeks","AED 2,500"],
+            ["lang","Business Grammar Course","4 weeks","AED 1,900"],
+            ["lang","Business Writing Course","6 weeks","AED 1,700"],
+            ["lang","Clarity English Course","6 weeks","AED 3,800"],
+            ["lang","Debate and Public Speaking Course","6 weeks","AED 3,400"],
+            ["lang","Excellent Business Communicator Course","6 weeks","AED 5,600"],
+            ["lang","French Language Course","6 weeks","AED 1,800"],
+            ["lang","IELTS Mock Exam – Experience Real Exam","3 days","AED 1,250"],
+            ["lang","IELTS One-Day Workshop Training","1 day","AED 650"],
+            ["lang","IELTS Preparation & Training Course","8 weeks","AED 2,300"],
+            ["lang","Report Writing Skills","8 weeks","AED 3,500"],
+            ["lang","SAT Training Course","8 weeks","AED 3,400"],
+            ["lang","Short Courses in Creative Writing","6 weeks","AED 2,800"],
+            ["lang","Spoken Arabic Course","6 weeks","AED 3,200"],
+            ["lang","Spoken English Training Course","4 weeks","AED 1,700"],
+
+            ["school","A-Level / IB Subject Support (Grades 11–12)","Ongoing","AED 950/mo"],
+            ["school","CBSE/ICSE Board Exam Preparation (Grades 9–10 & 11–12)","Ongoing","AED 1,150/mo"],
+            ["school","Computer Science / ICT Tuition (Grades 9–12)","Ongoing","AED 1,325/mo"],
+            ["school","Daily Homework Guidance & Supervised Study Programme","3x/week","AED 750/mo"],
+            ["school","English & Creative Writing Support (Grades 7–12)","Ongoing","AED 1,025/mo"],
+            ["school","Grade 11 & 12 All-Subjects Tuition (Non-Science Stream)","Ongoing","AED 1,250/mo"],
+            ["school","Grade 11 & 12 Mathematics Tuition (incl. Advanced/Further Maths)","Ongoing","AED 1,300/mo"],
+            ["school","Grade 11 & 12 Science Stream Tuition (Physics, Chemistry, Biology)","Ongoing","AED 950/mo"],
+            ["school","Grade 7 & 8 All-Subjects Tuition (Foundation Level)","Ongoing","AED 1,150/mo"],
+            ["school","Grade 9 & 10 All-Subjects Tuition (IGCSE/CBSE/ICSE)","Ongoing","AED 800/mo"],
+            ["school","IGCSE Board Exam Preparation (Grades 9–10)","Ongoing","AED 1,125/mo"],
+            ["school","Mathematics Concept Building & Problem Solving (Grades 7–12)","Ongoing","AED 1,400/mo"],
+            ["school","One-to-One Personal Tutoring (All Subjects, Grades 7–12)","Ongoing","AED 2,600/mo"],
+            ["school","Science Lab Concepts & Exam Support (Grades 7–10)","Ongoing","AED 825/mo"],
+            ["school","Summer Bridge Course – Grade Transition Support","3 weeks","AED 2,000"],
+            ["school","Weekend Revision & Exam Crash Batches (Grades 7–12)","4 weekends","AED 1,050"],
+
+            ["soft","Business Presentation Skills Training","4 weeks","AED 2,600"],
+            ["soft","Business Skills Workshop","3 days","AED 1,600"],
+            ["soft","Communication Skills Training","5 weeks","AED 3,600"],
+            ["soft","Conflict Management","5 weeks","AED 3,200"],
+            ["soft","Customer Service Excellence Course (Corporate Customised)","Based on scope","Custom Quote"],
+            ["soft","Customer Service Skills","6 weeks","AED 3,100"],
+            ["soft","Decision Making Skills","6 weeks","AED 3,100"],
+            ["soft","Emotional Intelligence","4 weeks","AED 4,400"],
+            ["soft","Free Job Workshop – Job Search and Interview Techniques","2 days","AED 1,050"],
+            ["soft","Goal Setting Skills Training","6 weeks","AED 2,400"],
+            ["soft","Interpersonal & Communication Skills","4 weeks","AED 3,900"],
+            ["soft","Leadership & Management Skills","5 weeks","AED 4,300"],
+            ["soft","Management Skills for Managers Training","5 weeks","AED 2,800"],
+            ["soft","Marketing Skills","6 weeks","AED 3,200"],
+            ["soft","Negotiation Skills","4 weeks","AED 2,000"],
+            ["soft","Office Management Skills","4 weeks","AED 3,900"],
+            ["soft","Office Productivity & Task Management Tool Course","4 weeks","AED 5,800"],
+            ["soft","Performance Management","6 weeks","AED 4,400"],
+            ["soft","Planning & Organising Skill Training Course","5 weeks","AED 3,300"],
+            ["soft","Presentation Skills Training Course","3 weeks","AED 2,700"],
+            ["soft","Problem Solving & Decision Making Skills","5 weeks","AED 3,100"],
+            ["soft","Strategic Planning Skills Training Course","3 weeks","AED 4,300"],
+
+            ["scm","Advanced Letter of Credit Training Course","5 weeks","AED 3,800"],
+            ["scm","Best Procurement Qualifications in the Middle East","3 weeks","AED 4,100"],
+            ["scm","CDCS (Certified Documentary Credit Specialist) Training Course","8 weeks","AED 11,250"],
+            ["scm","CIPS (Chartered Institute of Procurement & Supply) Certification","6 weeks","AED 9,500"],
+            ["scm","CITF (Certificate in International Trade and Finance) Training Course","6 weeks","AED 12,000"],
+            ["scm","CLSCMP (Certified Logistics & Supply Chain Management Professional)","10 weeks","AED 10,000"],
+            ["scm","CLTD (Certified in Logistics, Transportation & Distribution) Prep","10 weeks","AED 10,250"],
+            ["scm","CPIM (Certified in Planning and Inventory Management) Prep","8 weeks","AED 13,500"],
+            ["scm","CPP/CPPM (Certified Purchasing Professional/Manager) Training","12 weeks","AED 8,750"],
+            ["scm","CSCP (Certified Supply Chain Professional) Preparatory Training","10 weeks","AED 10,000"],
+            ["scm","Contracting – One Day Course","3 days","AED 1,050"],
+            ["scm","Export Import Management Course","5 weeks","AED 3,900"],
+            ["scm","Freight Forwarding Course Certification","6 weeks","AED 4,200"],
+            ["scm","Inventory and Materials Management – One Day Course","2 days","AED 1,400"],
+            ["scm","Procurement & Purchasing Training Course – One Day Course","3 days","AED 700"],
+            ["scm","Supply Chain Management – One Day Course","1 day","AED 1,800"]
+        ];
+
+        function esc(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+        let activeCat = 'all';
+        const grid = document.getElementById('courseGrid');
+        const searchEl = document.getElementById('courseSearch');
+        const countEl = document.getElementById('resultCount');
+        const pillWrap = document.getElementById('pills');
+        document.getElementById('courseCount').textContent = COURSES.length;
+
+        const keys = ['all'].concat(Object.keys(CATS));
+        pillWrap.innerHTML = keys.map(function(k){
+            var label = k==='all' ? 'All Courses' : CATS[k].label;
+            var n = k==='all' ? COURSES.length : COURSES.filter(function(c){return c[0]===k;}).length;
+            var activeClass = k==='all' ? 'bg-brand-blue text-white shadow-md border-brand-blue' : 'bg-white text-brand-gray border-gray-200 hover:border-brand-gray hover:text-brand-slate';
+            return `<button class="pill px-5 py-2.5 rounded-full border font-semibold text-xs transition-all flex items-center gap-2 ${activeClass}" data-cat="${k}">${label} <span class="bg-black/10 px-2 py-0.5 rounded-full text-[10px]">${n}</span></button>`;
+        }).join('');
+
+        pillWrap.querySelectorAll('.pill').forEach(function(p){
+            p.addEventListener('click',function(){
+                var cur = pillWrap.querySelector('.pill.bg-brand-blue');
+                if(cur){
+                    cur.classList.remove('bg-brand-blue','text-white','shadow-md','border-brand-blue');
+                    cur.classList.add('bg-white','text-brand-gray','border-gray-200');
+                }
+                p.classList.remove('bg-white','text-brand-gray','border-gray-200');
+                p.classList.add('bg-brand-blue','text-white','shadow-md','border-brand-blue');
+                activeCat = p.dataset.cat;
+                render();
+            });
+        });
+
+        function render(){
+            var q = searchEl.value.trim().toLowerCase();
+            var items = COURSES.filter(function(c){
+                var okCat = (activeCat==='all' || c[0]===activeCat);
+                var okQ = (!q || c[1].toLowerCase().indexOf(q) !== -1);
+                return okCat && okQ;
+            });
+            countEl.textContent = items.length;
+            
+            if(items.length===0){
+                grid.innerHTML = '<div class="col-span-full py-12 text-center text-brand-gray"><i class="fa-solid fa-folder-open text-4xl mb-4 opacity-50"></i><p>No courses match your search.</p></div>';
+                return;
+            }
+            
+            grid.innerHTML = items.map(function(c){
+                var cat = CATS[c[0]];
+                var isQuote = /custom|quote/i.test(c[3]);
+                return `
+                <article class="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-soft transition-all duration-300 hover:-translate-y-1 p-6 flex flex-col h-full animate-fadeIn">
+                    <span class="inline-flex self-start items-center gap-1.5 px-3 py-1 bg-blue-50 border border-blue-100 rounded-full text-[11px] font-bold text-brand-blue mb-4 uppercase tracking-wide">
+                        ${cat.icon} ${esc(cat.label)}
+                    </span>
+                    <h3 class="text-[17px] font-bold text-brand-slate mb-4 leading-snug flex-grow">${esc(c[1])}</h3>
+                    <div class="flex items-center gap-2 text-xs font-semibold text-brand-gray bg-gray-50 px-3 py-2 rounded-lg mb-6 w-fit border border-gray-100">
+                        <i class="fa-regular fa-clock"></i> ${esc(c[2])}
+                    </div>
+                    <div class="flex items-center justify-between border-t border-gray-100 pt-5 mt-auto">
+                        <span class="font-extrabold text-brand-slate ${isQuote ? 'text-sm text-brand-gray' : 'text-lg'}">${esc(c[3])}</span>
+                        <button class="cc-btn text-brand-blue font-bold hover:text-brand-bluedark transition-colors flex items-center gap-2 text-sm bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-lg" data-course="${esc(c[1])}">
+                            Enquire <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+                </article>`;
+            }).join('');
+        }
+
+        grid.addEventListener('click',function(e){
+            var b = e.target.closest('.cc-btn');
+            if(!b) return;
+            var t = document.getElementById('msg');
+            if(t){ t.value = "I'm interested in: " + b.getAttribute('data-course'); }
+            document.getElementById('enquiry').scrollIntoView({behavior:'smooth'});
+        });
+
+        searchEl.addEventListener('input', render);
+        render();
+    </script>
+    <style>
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fadeIn { animation: fadeIn 0.4s ease-out forwards; }
+    </style>
+</body>
+</html>

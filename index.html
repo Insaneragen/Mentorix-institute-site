@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentorix Academy | Your Global Education Partner</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            blue: '#0066FF', bluedark: '#0052cc', slate: '#1E293B', gray: '#64748B', light: '#F8F9FA'
+                        }
+                    },
+                    boxShadow: { 'soft': '0 10px 40px -10px rgba(0,0,0,0.08)' },
+                    animation: { 'float': 'float 6s ease-in-out infinite' },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white text-brand-slate antialiased overflow-x-hidden selection:bg-brand-blue selection:text-white">
+
+    <!-- Announcement Bar -->
+    <div class="bg-brand-slate text-center py-2 px-4 text-xs md:text-sm text-gray-300">
+        🎓 <strong class="text-white">KHDA-Licensed Training Institute</strong> in Dubai &nbsp;·&nbsp; 115+ Professional Courses &nbsp;·&nbsp; In-Centre &amp; Online
+    </div>
+
+    <!-- Header -->
+    <header class="w-full bg-white border-b border-gray-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2 cursor-pointer group">
+                <div class="w-10 h-10 bg-brand-blue text-white flex items-center justify-center font-bold text-xl rounded transition-transform group-hover:scale-105">
+                    M
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-bold text-xl tracking-tight text-brand-slate leading-none mb-1">MENTORIX</span>
+                    <span class="text-[9px] font-bold text-brand-blue tracking-[0.2em] uppercase leading-none">Where Potential Meets Purpose</span>
+                </div>
+            </a>
+
+            <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-brand-slate">
+                <a href="#about" class="hover:text-brand-blue transition-colors">About Us</a>
+                <a href="#divisions" class="hover:text-brand-blue transition-colors">Divisions</a>
+                <a href="courses.html" class="hover:text-brand-blue transition-colors">Course Catalog</a>
+                <a href="#testimonials" class="hover:text-brand-blue transition-colors">Testimonials</a>
+                <a href="#faq" class="hover:text-brand-blue transition-colors">FAQ</a>
+            </nav>
+
+            <div class="hidden lg:block">
+                <a href="#contact" class="bg-brand-blue hover:bg-brand-bluedark text-white text-sm font-semibold py-2.5 px-6 rounded transition-colors shadow-soft">
+                    Enquire Now
+                </a>
+            </div>
+            <button class="lg:hidden text-brand-slate text-2xl"><i class="fa-solid fa-bars"></i></button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-brand-light pt-20 pb-24 lg:pt-32 lg:pb-32 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+            <div data-aos="fade-right">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-white border border-gray-200 rounded-full text-xs font-semibold text-brand-blue mb-6 tracking-wide uppercase shadow-sm">
+                    <span class="w-2 h-2 rounded-full bg-brand-blue animate-pulse"></span>
+                    Est. 2026 · Dubai, UAE
+                </div>
+                <h1 class="text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-6 text-brand-slate">
+                    Your Global <br>
+                    <span class="text-brand-blue">Education Partner</span>
+                </h1>
+                <p class="text-lg text-brand-gray mb-10 max-w-lg leading-relaxed">
+                    From school tuition to international careers — 115+ professional, KHDA-regulated courses across 8 divisions, delivered by expert mentors in-centre and online.
+                </p>
+                <div class="flex flex-wrap items-center gap-4 mb-12">
+                    <a href="courses.html" class="bg-brand-blue hover:bg-brand-bluedark text-white font-semibold py-3.5 px-8 rounded transition-all shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5">
+                        Browse All Courses
+                    </a>
+                    <a href="#contact" class="bg-white hover:bg-gray-50 text-brand-slate border border-gray-300 font-semibold py-3.5 px-8 rounded transition-all hover:border-brand-gray">
+                        Book Free Consultation
+                    </a>
+                </div>
+                
+                <!-- Stats -->
+                <div class="grid grid-cols-4 gap-4 border-t border-gray-200 pt-8" data-aos="fade-up" data-aos-delay="200">
+                    <div>
+                        <p class="text-3xl font-extrabold text-brand-blue mb-1">115+</p>
+                        <p class="text-xs font-bold text-brand-gray uppercase tracking-wider">Courses</p>
+                    </div>
+                    <div>
+                        <p class="text-3xl font-extrabold text-brand-blue mb-1">8</p>
+                        <p class="text-xs font-bold text-brand-gray uppercase tracking-wider">Divisions</p>
+                    </div>
+                    <div>
+                        <p class="text-3xl font-extrabold text-brand-blue mb-1">1000+</p>
+                        <p class="text-xs font-bold text-brand-gray uppercase tracking-wider">Learners</p>
+                    </div>
+                    <div>
+                        <p class="text-3xl font-extrabold text-brand-blue mb-1">2026</p>
+                        <p class="text-xs font-bold text-brand-gray uppercase tracking-wider">Est.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="relative animate-float" data-aos="fade-left" data-aos-delay="200">
+                <div class="aspect-square lg:aspect-[4/5] bg-gray-200 rounded-2xl overflow-hidden relative shadow-soft border border-gray-100">
+                    <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=1000&auto=format&fit=crop" alt="Students in modern classroom" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                </div>
+                <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-soft border border-gray-100 flex items-center gap-4 animate-bounce" style="animation-duration: 3s;">
+                    <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-brand-blue text-xl">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-brand-gray font-medium">Regulatory Status</p>
+                        <p class="text-lg font-bold text-brand-slate">KHDA Approved</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee Banner -->
+    <div class="bg-brand-slate py-4 overflow-hidden whitespace-nowrap border-b border-gray-800">
+        <div class="inline-block animate-[scroll_30s_linear_infinite]">
+            <span class="text-gray-400 font-semibold tracking-widest text-sm mx-6 uppercase">Accounting & Finance</span> <i class="fa-solid fa-star-of-life text-brand-blue text-xs"></i>
+            <span class="text-gray-400 font-semibold tracking-widest text-sm mx-6 uppercase">Artificial Intelligence</span> <i class="fa-solid fa-star-of-life text-brand-blue text-xs"></i>
+            <span class="text-gray-400 font-semibold tracking-widest text-sm mx-6 uppercase">Business & HR</span> <i class="fa-solid fa-star-of-life text-brand-blue text-xs"></i>
+            <span class="text-gray-400 font-semibold tracking-widest text-sm mx-6 uppercase">IT & Design</span> <i class="fa-solid fa-star-of-life text-brand-blue text-xs"></i>
+            <span class="text-gray-400 font-semibold tracking-widest text-sm mx-6 uppercase">Languages</span> <i class="fa-solid fa-star-of-life text-brand-blue text-xs"></i>
+            <span class="text-gray-400 font-semibold tracking-widest text-sm mx-6 uppercase">School Tuition</span> <i class="fa-solid fa-star-of-life text-brand-blue text-xs"></i>
+            <span class="text-gray-400 font-semibold tracking-widest text-sm mx-6 uppercase">Soft Skills</span> <i class="fa-solid fa-star-of-life text-brand-blue text-xs"></i>
+            <span class="text-gray-400 font-semibold tracking-widest text-sm mx-6 uppercase">Supply Chain</span> <i class="fa-solid fa-star-of-life text-brand-blue text-xs"></i>
+            <!-- Duplicate for seamless scroll -->
+            <span class="text-gray-400 font-semibold tracking-widest text-sm mx-6 uppercase">Accounting & Finance</span> <i class="fa-solid fa-star-of-life text-brand-blue text-xs"></i>
+            <span class="text-gray-400 font-semibold tracking-widest text-sm mx-6 uppercase">Artificial Intelligence</span> <i class="fa-solid fa-star-of-life text-brand-blue text-xs"></i>
+            <span class="text-gray-400 font-semibold tracking-widest text-sm mx-6 uppercase">Business & HR</span> <i class="fa-solid fa-star-of-life text-brand-blue text-xs"></i>
+            <span class="text-gray-400 font-semibold tracking-widest text-sm mx-6 uppercase">IT & Design</span>
+        </div>
+        <style>@keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }</style>
+    </div>
+
+    <!-- The Mentorix Advantage (Trust Grid) -->
+    <section class="py-24 bg-white border-b border-gray-100" id="about">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
+                <h2 class="text-sm font-bold tracking-widest text-brand-blue uppercase mb-3">The Mentorix Advantage</h2>
+                <h3 class="text-3xl lg:text-4xl font-extrabold text-brand-slate tracking-tight">Why learners & organisations choose us</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div data-aos="fade-up" data-aos-delay="0" class="p-8 rounded-2xl bg-brand-light border border-gray-100 hover:shadow-soft transition-shadow">
+                    <div class="w-12 h-12 bg-white text-brand-blue flex items-center justify-center rounded-xl shadow-sm text-xl mb-6"><i class="fa-solid fa-route"></i></div>
+                    <h3 class="text-lg font-bold text-brand-slate mb-3">Complete Journey</h3>
+                    <p class="text-sm text-brand-gray leading-relaxed">Move from Grade 10 tuition all the way to international university admission and corporate training — all in one place.</p>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="100" class="p-8 rounded-2xl bg-brand-light border border-gray-100 hover:shadow-soft transition-shadow">
+                    <div class="w-12 h-12 bg-white text-brand-blue flex items-center justify-center rounded-xl shadow-sm text-xl mb-6"><i class="fa-solid fa-map-location-dot"></i></div>
+                    <h3 class="text-lg font-bold text-brand-slate mb-3">Personalised Roadmaps</h3>
+                    <p class="text-sm text-brand-gray leading-relaxed">Every plan is built around your goals, background, budget, and timeline — never a generic template.</p>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="200" class="p-8 rounded-2xl bg-brand-light border border-gray-100 hover:shadow-soft transition-shadow">
+                    <div class="w-12 h-12 bg-white text-brand-blue flex items-center justify-center rounded-xl shadow-sm text-xl mb-6"><i class="fa-solid fa-user-tie"></i></div>
+                    <h3 class="text-lg font-bold text-brand-slate mb-3">Insider Expertise</h3>
+                    <p class="text-sm text-brand-gray leading-relaxed">Advisors and trainers who still work in their fields providing practical knowledge, not just theory.</p>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="300" class="p-8 rounded-2xl bg-brand-light border border-gray-100 hover:shadow-soft transition-shadow">
+                    <div class="w-12 h-12 bg-white text-brand-blue flex items-center justify-center rounded-xl shadow-sm text-xl mb-6"><i class="fa-solid fa-bullseye"></i></div>
+                    <h3 class="text-lg font-bold text-brand-slate mb-3">Outcomes over Transactions</h3>
+                    <p class="text-sm text-brand-gray leading-relaxed">We're not done until you reach your goal — a place, a certificate, a score, or a promotion.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision & About (Split Layout) -->
+    <section class="py-24 bg-brand-slate text-white">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div class="relative group cursor-pointer" data-aos="zoom-in-right">
+                <div class="aspect-video bg-gray-800 rounded-2xl overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1000&auto=format&fit=crop" alt="Mentoring" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-brand-blue/20 group-hover:bg-brand-blue/10 transition-colors"></div>
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white rounded-full flex items-center justify-center text-brand-blue text-xl shadow-lg transition-transform group-hover:scale-110">
+                        <i class="fa-solid fa-play ml-1"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div data-aos="fade-left">
+                <h2 class="text-sm font-bold tracking-widest text-brand-blue uppercase mb-3">Who We Are</h2>
+                <h3 class="text-3xl lg:text-4xl font-extrabold mb-6 tracking-tight">More than a training centre.</h3>
+                <p class="text-gray-300 text-lg leading-relaxed mb-6">
+                    Mentorix Academy was founded on a simple belief: the right education, at the right time, with the right guidance is one of the best investments a person can make. We bring together a full range of education services under one roof.
+                </p>
+                <p class="text-gray-400 leading-relaxed mb-8">
+                    To be a trusted education partner where every learner — whatever their background, nationality, or stage of life — can find a clear and realistic path to success, known for honest guidance, professional quality, and long-term support.
+                </p>
+                
+                <ul class="grid grid-cols-2 gap-4 text-sm font-semibold text-gray-200">
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-blue"></i> Personal mentorship</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-blue"></i> Accredited pathways</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-blue"></i> Honest, expert advice</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-brand-blue"></i> Real, lasting results</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6 Pillars of Excellence -->
+    <section class="py-24 bg-brand-light" id="divisions">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
+                <h2 class="text-sm font-bold tracking-widest text-brand-blue uppercase mb-3">Our 6 Pillars of Excellence</h2>
+                <h3 class="text-3xl lg:text-4xl font-extrabold text-brand-slate tracking-tight">Complete education services</h3>
+                <p class="text-brand-gray mt-4">Beyond our open course catalog, these are the flagship advisory divisions that guide learners end-to-end.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Pillar 1 -->
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-soft transition-all" data-aos="fade-up" data-aos-delay="0">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-14 h-14 bg-blue-50 text-brand-blue flex items-center justify-center rounded-xl text-2xl"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <span class="text-4xl font-bold text-gray-100">01</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-slate mb-3">University Admissions</h3>
+                    <p class="text-sm text-brand-gray leading-relaxed">Full application support — shortlisting, SOPs, scholarships and enrolment for the UAE, UK, USA, Canada, Australia & Europe.</p>
+                </div>
+                <!-- Pillar 2 -->
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-soft transition-all" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-14 h-14 bg-blue-50 text-brand-blue flex items-center justify-center rounded-xl text-2xl"><i class="fa-solid fa-file-contract"></i></div>
+                        <span class="text-4xl font-bold text-gray-100">02</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-slate mb-3">Attestation & Equivalency</h3>
+                    <p class="text-sm text-brand-gray leading-relaxed">Document verification, Ministry & MOFA attestation, and degree equivalency for jobs, visas and further study.</p>
+                </div>
+                <!-- Pillar 3 -->
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-soft transition-all" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-14 h-14 bg-blue-50 text-brand-blue flex items-center justify-center rounded-xl text-2xl"><i class="fa-solid fa-language"></i></div>
+                        <span class="text-4xl font-bold text-gray-100">03</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-slate mb-3">Language Training</h3>
+                    <p class="text-sm text-brand-gray leading-relaxed">IELTS, TOEFL, Arabic, French, German & Spanish, plus complete study-abroad guidance and visa support.</p>
+                </div>
+                <!-- Pillar 4 -->
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-soft transition-all" data-aos="fade-up" data-aos-delay="0">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-14 h-14 bg-blue-50 text-brand-blue flex items-center justify-center rounded-xl text-2xl"><i class="fa-solid fa-user-tie"></i></div>
+                        <span class="text-4xl font-bold text-gray-100">04</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-slate mb-3">Professional & Corporate</h3>
+                    <p class="text-sm text-brand-gray leading-relaxed">Practical, job-ready training in business, administration, technology, leadership and digital tools.</p>
+                </div>
+                <!-- Pillar 5 -->
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-soft transition-all" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-14 h-14 bg-blue-50 text-brand-blue flex items-center justify-center rounded-xl text-2xl"><i class="fa-solid fa-truck-fast"></i></div>
+                        <span class="text-4xl font-bold text-gray-100">05</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-slate mb-3">Logistics & Supply Chain</h3>
+                    <p class="text-sm text-brand-gray leading-relaxed">From freight and customs to CILT, APICS & CSCMP-aligned certifications with real UAE & GCC examples.</p>
+                </div>
+                <!-- Pillar 6 -->
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-soft transition-all" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="w-14 h-14 bg-blue-50 text-brand-blue flex items-center justify-center rounded-xl text-2xl"><i class="fa-solid fa-book-open"></i></div>
+                        <span class="text-4xl font-bold text-gray-100">06</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-brand-slate mb-3">School Tuition Support</h3>
+                    <p class="text-sm text-brand-gray leading-relaxed">Personal tutoring across British, American, CBSE, ICSE & IB curricula — building grades and confidence.</p>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center" data-aos="fade-up">
+                <a href="courses.html" class="inline-flex items-center gap-2 bg-brand-blue hover:bg-brand-bluedark text-white font-semibold py-3.5 px-8 rounded transition-all shadow-md">
+                    Explore the 115+ Course Catalog <i class="fa-solid fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-24 bg-white" id="testimonials">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16" data-aos="fade-up">
+                <h2 class="text-sm font-bold tracking-widest text-brand-blue uppercase mb-3">Testimonials</h2>
+                <h3 class="text-3xl lg:text-4xl font-extrabold text-brand-slate tracking-tight">What our learners say</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-8 rounded-2xl border border-gray-100 shadow-sm bg-brand-light" data-aos="fade-up" data-aos-delay="0">
+                    <div class="text-[#fbbf24] text-sm mb-4"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-brand-slate font-medium leading-relaxed mb-6">"Their team guided my entire UK university application — from the SOP to the visa. I got into my first-choice university with a scholarship."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold">A</div>
+                        <div><p class="font-bold text-brand-slate text-sm">Aisha N.</p><p class="text-xs text-brand-gray">Study Abroad — UK</p></div>
+                    </div>
+                </div>
+                <div class="p-8 rounded-2xl border border-gray-100 shadow-sm bg-brand-light" data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-[#fbbf24] text-sm mb-4"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-brand-slate font-medium leading-relaxed mb-6">"The IELTS intensive course was excellent. Weekly mock tests and personal feedback helped me score Band 8 on my first attempt."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold">M</div>
+                        <div><p class="font-bold text-brand-slate text-sm">Mohammed S.</p><p class="text-xs text-brand-gray">IELTS Preparation</p></div>
+                    </div>
+                </div>
+                <div class="p-8 rounded-2xl border border-gray-100 shadow-sm bg-brand-light" data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-[#fbbf24] text-sm mb-4"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                    <p class="text-brand-slate font-medium leading-relaxed mb-6">"They handled my degree attestation and equivalency smoothly and quickly — something I struggled with for months on my own."</p>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold">P</div>
+                        <div><p class="font-bold text-brand-slate text-sm">Priya R.</p><p class="text-xs text-brand-gray">Attestation & Equivalency</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ & Contact Section -->
+    <section class="py-24 bg-brand-light border-t border-gray-100" id="faq">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16">
+            
+            <!-- FAQ -->
+            <div data-aos="fade-right">
+                <h2 class="text-sm font-bold tracking-widest text-brand-blue uppercase mb-3">FAQ</h2>
+                <h3 class="text-3xl font-extrabold text-brand-slate tracking-tight mb-8">Frequently asked questions</h3>
+                
+                <div class="space-y-4">
+                    <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
+                        <h4 class="font-bold text-brand-slate mb-2">Are your courses KHDA approved?</h4>
+                        <p class="text-sm text-brand-gray">All courses are delivered under Mentorix Academy's KHDA-licensed Training Institute permit. Course content is subject to KHDA activity-permit approval.</p>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
+                        <h4 class="font-bold text-brand-slate mb-2">Where can I see fees and durations?</h4>
+                        <p class="text-sm text-brand-gray">Our full course catalog page lists every course with its duration and indicative fee in AED. Click "Course Catalog" in the menu to browse.</p>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
+                        <h4 class="font-bold text-brand-slate mb-2">Do you offer online classes?</h4>
+                        <p class="text-sm text-brand-gray">Yes. Most courses are available both in-centre and online, so you can learn anytime, anywhere at your own pace.</p>
+                    </div>
+                    <div class="bg-white border border-gray-200 rounded-lg p-5 shadow-sm">
+                        <h4 class="font-bold text-brand-slate mb-2">Can you train our company's team?</h4>
+                        <p class="text-sm text-brand-gray">Absolutely. Corporate training can be arranged on-site, online, or blended, and customised to your team's goals.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div data-aos="fade-left" id="contact">
+                <div class="bg-white p-8 rounded-2xl shadow-soft border border-gray-100">
+                    <h3 class="text-2xl font-bold text-brand-slate mb-2">Start your learning journey</h3>
+                    <p class="text-sm text-brand-gray mb-6">Reach out and our team will get back to you shortly.</p>
+                    
+                    <form onsubmit="event.preventDefault();" class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" placeholder="Full Name" required class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:border-brand-blue text-sm">
+                            <input type="tel" placeholder="Phone Number" class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:border-brand-blue text-sm">
+                        </div>
+                        <input type="email" placeholder="Email Address" required class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:border-brand-blue text-sm">
+                        <select required class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:border-brand-blue text-sm text-brand-gray">
+                            <option value="">Select a Category of Interest</option>
+                            <option>Accounting & Finance</option>
+                            <option>Artificial Intelligence (AI)</option>
+                            <option>Business Management & HR</option>
+                            <option>IT, Design & Technology</option>
+                            <option>Language & Communication</option>
+                            <option>School Tuition & Exam Prep</option>
+                            <option>Supply Chain, Logistics & Trade</option>
+                        </select>
+                        <textarea rows="4" placeholder="Tell us which course you're interested in and your goals" class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:border-brand-blue text-sm"></textarea>
+                        <button type="submit" class="w-full bg-brand-blue hover:bg-brand-bluedark text-white font-semibold py-3.5 rounded-lg transition-colors">
+                            Send Enquiry
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-slate text-white pt-20 pb-10">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                
+                <!-- Brand -->
+                <div class="lg:col-span-1">
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="w-8 h-8 bg-brand-blue text-white flex items-center justify-center font-bold text-lg rounded">M</div>
+                        <span class="font-bold text-xl tracking-tight">MENTORIX</span>
+                    </div>
+                    <p class="text-brand-gray text-sm leading-relaxed mb-6">
+                        Your global education partner in Dubai — guiding students, professionals, and organisations from where they are today to where they want to be.
+                    </p>
+                    <div class="flex items-center gap-4 text-brand-gray">
+                        <a href="#" class="hover:text-white transition-colors text-lg"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="#" class="hover:text-white transition-colors text-lg"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="hover:text-white transition-colors text-lg"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <!-- Links 1 -->
+                <div>
+                    <h4 class="font-bold text-lg mb-6">Explore</h4>
+                    <ul class="space-y-4 text-sm text-brand-gray">
+                        <li><a href="#about" class="hover:text-brand-blue transition-colors">About Us</a></li>
+                        <li><a href="#divisions" class="hover:text-brand-blue transition-colors">Our Divisions</a></li>
+                        <li><a href="courses.html" class="hover:text-brand-blue transition-colors">Course Catalog</a></li>
+                        <li><a href="#faq" class="hover:text-brand-blue transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-bold text-lg mb-6">Contact Us</h4>
+                    <ul class="space-y-4 text-sm text-brand-gray">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-location-dot mt-1 text-brand-blue"></i>
+                            <span>Dubai, UAE <br><em>(KHDA Licensed)</em></span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-phone text-brand-blue"></i>
+                            <span>+971 00 000 0000</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-envelope text-brand-blue"></i>
+                            <span>info@mentorixacademy.com</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="font-bold text-lg mb-6">Get Updates</h4>
+                    <p class="text-sm text-brand-gray mb-4">Subscribe for new batches, offers and exam workshops.</p>
+                    <form class="flex flex-col gap-3" onsubmit="event.preventDefault();">
+                        <input type="email" placeholder="Email address" class="w-full bg-[#27364B] border border-gray-700 text-white px-4 py-3 rounded focus:outline-none focus:border-brand-blue text-sm" required>
+                        <button type="submit" class="w-full bg-brand-blue hover:bg-brand-bluedark text-white font-semibold py-3 rounded transition-colors text-sm">
+                            Subscribe
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-brand-gray">
+                <p>&copy; 2026 Mentorix Academy, Dubai, UAE. All rights reserved.</p>
+                <div class="text-right text-[10px] max-w-xl text-gray-500 leading-tight">
+                    All courses are delivered under Mentorix Academy's KHDA-licensed Training Institute permit (Dubai private training regulations); course content is subject to KHDA activity-permit approval. Fees are indicative and in AED.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true, offset: 80 });
+    </script>
+</body>
+</html>
