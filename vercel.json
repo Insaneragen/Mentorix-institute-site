@@ -1,6 +1,6 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/((?!assets/|team.jpg|courses.html).*)$", "destination": "/index.html" }
+    { "source": "/student-portal/((?!assets/).*)$", "destination": "/student-portal/index.html" }
   ]
 }
