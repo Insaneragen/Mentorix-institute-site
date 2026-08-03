@@ -19,7 +19,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    navigate('/login');
+    window.location.href = '/login';
   };
 
   const student = getCurrentStudent();

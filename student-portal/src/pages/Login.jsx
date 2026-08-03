@@ -56,9 +56,9 @@ const Login = () => {
       } else {
         const role = data?.user?.user_metadata?.role || 'student';
         if (role === 'admin') {
-          navigate('/admin');
+          window.location.href = '/admin';
         } else {
-          navigate('/');
+          window.location.href = '/';
         }
       }
     } catch {
@@ -81,9 +81,9 @@ const Login = () => {
 
       if (!bypassError) {
         if (roleType === 'admin') {
-          navigate('/admin');
+          window.location.href = '/admin';
         } else {
-          navigate('/');
+          window.location.href = '/';
         }
       } else {
         setError(bypassError.message);
