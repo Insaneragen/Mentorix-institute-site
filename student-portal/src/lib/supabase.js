@@ -36,7 +36,9 @@ export const supabase = isSupabaseConfigured
           console.warn("Supabase is not configured. Running in Mock Mode.");
           
           if (email && password) {
-            if (email.toLowerCase().includes('admin')) {
+            if (email.toLowerCase().includes('admin') || 
+                email.toLowerCase().includes('saneesh') || 
+                email.toLowerCase().includes('director')) {
               const mockUser = {
                 id: 'mock-admin-999',
                 email,
