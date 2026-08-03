@@ -5,7 +5,6 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
 export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey);
 
-// Simple trigger for local auth state changes in mock mode
 const triggerMockAuthChange = (event) => {
   const customEvent = new CustomEvent('mock-auth-change', { detail: { event } });
   window.dispatchEvent(customEvent);
@@ -21,7 +20,8 @@ export const supabase = isSupabaseConfigured
             id: 'mock-user-123',
             email,
             user_metadata: {
-              full_name: options?.data?.full_name || 'John Doe'
+              full_name: options?.data?.full_name || 'Ahmed Al Mansoori',
+              role: options?.data?.role || 'student'
             }
           };
           const mockSession = {
@@ -34,11 +34,25 @@ export const supabase = isSupabaseConfigured
         },
         signInWithPassword: async ({ email, password }) => {
           console.warn("Supabase is not configured. Running in Mock Mode.");
+          
           if (email && password) {
+            let role = 'student';
+            let name = 'Ahmed Al Mansoori';
+            let id = 'mock-user-123'; // Ahmed's ID
+
+            if (email.toLowerCase().includes('admin')) {
+              role = 'admin';
+              name = 'Director Saneesh';
+              id = 'mock-admin-999';
+            }
+
             const mockUser = {
-              id: 'mock-user-123',
+              id,
               email,
-              user_metadata: { full_name: 'Ahmed Al Mansoori' }
+              user_metadata: { 
+                full_name: name,
+                role: role
+              }
             };
             const mockSession = {
               access_token: 'mock-token-123',
@@ -67,7 +81,7 @@ export const supabase = isSupabaseConfigured
           if (sessionJson) {
             try {
               return { data: { session: JSON.parse(sessionJson) }, error: null };
-            } catch (e) {
+            } catch {
               return { data: { session: null }, error: null };
             }
           }
@@ -79,7 +93,7 @@ export const supabase = isSupabaseConfigured
             try {
               const session = JSON.parse(sessionJson);
               return { data: { user: session.user }, error: null };
-            } catch (e) {
+            } catch {
               return { data: { user: null }, error: null };
             }
           }
@@ -93,7 +107,6 @@ export const supabase = isSupabaseConfigured
           };
           window.addEventListener('mock-auth-change', handler);
           
-          // Trigger initial callback with current session
           const sessionJson = localStorage.getItem('mock_session');
           const session = sessionJson ? JSON.parse(sessionJson) : null;
           setTimeout(() => callback(session ? 'INITIAL_SESSION' : 'SIGNED_OUT', session), 0);

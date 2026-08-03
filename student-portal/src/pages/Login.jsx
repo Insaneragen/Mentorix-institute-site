@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Lock, ShieldAlert, CheckCircle, GraduationCap } from 'lucide-react';
+import { Mail, Lock, ShieldAlert, CheckCircle, GraduationCap, ShieldAlert as AdminIcon } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 const Login = () => {
@@ -24,29 +24,41 @@ const Login = () => {
       if (authError) {
         setError(authError.message);
       } else {
-        navigate('/');
+        const role = data?.user?.user_metadata?.role || 'student';
+        if (role === 'admin') {
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDemoBypass = async () => {
+  const handleDemoBypass = async (roleType) => {
     setLoading(true);
-    // Sign in using our mock bypass credentials
     try {
-      const { error: bypassError } = await supabase.auth.signInWithPassword({
-        email: 'demo.student@mentorix.ae',
-        password: 'demostudentpass'
+      const bypassEmail = roleType === 'admin' ? 'admin@mentorix.ae' : 'demo.student@mentorix.ae';
+      const bypassPass = roleType === 'admin' ? 'demoadminpass' : 'demostudentpass';
+      
+      const { data, error: bypassError } = await supabase.auth.signInWithPassword({
+        email: bypassEmail,
+        password: bypassPass
       });
+
       if (!bypassError) {
-        navigate('/');
+        if (roleType === 'admin') {
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
       } else {
         setError(bypassError.message);
       }
-    } catch (err) {
+    } catch {
       setError('Failed to log in to demo mode.');
     } finally {
       setLoading(false);
@@ -127,7 +139,7 @@ const Login = () => {
               Sign In
             </h2>
             <p className="text-sm text-brand-gray">
-              Enter your credentials to access your student workspace portal.
+              Enter your credentials to access your portal workspace.
             </p>
           </div>
 
@@ -138,7 +150,7 @@ const Login = () => {
               <div>
                 <p className="font-semibold text-brand-navy">Supabase Connection Notice</p>
                 <p className="text-xs text-brand-gray mt-1 leading-relaxed">
-                  Supabase environment variables are not configured yet. The portal has loaded in <strong>Sandbox Demo Mode</strong>. You can bypass this login screen using the quick demo button below.
+                  Supabase environment variables are not configured. The portal has loaded in **Sandbox Demo Mode**. Use the quick bypass buttons below to preview the workspaces.
                 </p>
               </div>
             </div>
@@ -207,18 +219,28 @@ const Login = () => {
             </button>
           </form>
 
-          {/* Quick Demo Login Option */}
-          <div className="mt-6 border-t border-gray-200 pt-6">
+          {/* Quick Demo Bypass Options */}
+          <div className="mt-6 border-t border-gray-200 pt-6 space-y-3">
             <button
-              onClick={handleDemoBypass}
+              onClick={() => handleDemoBypass('student')}
               disabled={loading}
               className="w-full bg-brand-blue hover:bg-brand-blue-dark text-white font-bold py-3 px-4 rounded-lg transition-colors text-sm shadow-md hover:shadow-lg flex items-center justify-center gap-2"
             >
               <GraduationCap size={18} />
-              <span>Bypass & Enter Demo Portal</span>
+              <span>Bypass & Enter Student Portal</span>
             </button>
+
+            <button
+              onClick={() => handleDemoBypass('admin')}
+              disabled={loading}
+              className="w-full bg-brand-slate hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-lg transition-colors text-sm shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+            >
+              <AdminIcon size={16} />
+              <span>Bypass & Enter Admin Portal</span>
+            </button>
+            
             <p className="text-center text-[10px] text-brand-gray mt-2.5 leading-relaxed">
-              * Click this button to preview the interface using the pre-loaded student dashboard, enrolled courses, and mock financials data instantly.
+              * Click the buttons above to instantly preview either workspace layout with fully pre-loaded mock records.
             </p>
           </div>
         </div>
