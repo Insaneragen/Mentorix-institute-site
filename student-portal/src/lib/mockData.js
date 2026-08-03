@@ -15,7 +15,7 @@ const INITIAL_STUDENTS = [
     name: "Ahmed Al Mansoori",
     studentId: "MTX-2026-9842",
     course_enrolled: "Supply Chain & Logistics Management (Executive Pathway)",
-    email: "ahmed.mansoori@mentorix.ae",
+    email: "demo.student@mentorix.ae",
     phone: "+971 50 123 4567",
     date_of_joining: "2026-01-15",
     avatarUrl: null,
@@ -262,6 +262,53 @@ const INITIAL_FINANCIALS = {
 const initItem = (key, fallbackData) => {
   if (!localStorage.getItem(key)) {
     localStorage.setItem(key, JSON.stringify(fallbackData));
+  } else {
+    // Cache upgrade logic for existing student rosters
+    if (key === STORAGE_KEYS.STUDENTS) {
+      try {
+        const current = JSON.parse(localStorage.getItem(key));
+        let updated = false;
+
+        // Force reset/update Ahmed's profile to align with mock bypass expectations
+        const ahmedIndex = current.findIndex(s => s.id === "mock-user-123");
+        if (ahmedIndex !== -1) {
+          const ahmed = current[ahmedIndex];
+          if (ahmed.email !== "demo.student@mentorix.ae" || !ahmed.password) {
+            ahmed.email = "demo.student@mentorix.ae";
+            ahmed.password = "demostudentpass";
+            ahmed.fee_total = 10000;
+            ahmed.fee_paid = 7500;
+            ahmed.fee_balance = 2500;
+            ahmed.course_enrolled = "Supply Chain & Logistics Management (Executive Pathway)";
+            ahmed.date_of_joining = "2026-01-15";
+            current[ahmedIndex] = ahmed;
+            updated = true;
+          }
+        }
+
+        // Fill missing passwords & upgrade property keys for all records
+        current.forEach(s => {
+          if (!s.password) {
+            s.password = "demostudentpass";
+            updated = true;
+          }
+          if (s.program && !s.course_enrolled) {
+            s.course_enrolled = s.program;
+            updated = true;
+          }
+          if (s.joinedDate && !s.date_of_joining) {
+            s.date_of_joining = s.joinedDate;
+            updated = true;
+          }
+        });
+
+        if (updated) {
+          localStorage.setItem(key, JSON.stringify(current));
+        }
+      } catch (err) {
+        console.error("Cache upgrade failed:", err);
+      }
+    }
   }
 };
 
@@ -273,10 +320,6 @@ initItem(STORAGE_KEYS.COURSES, INITIAL_COURSES);
 
 Object.keys(INITIAL_ATTENDANCE).forEach(studentId => {
   initItem(`${STORAGE_KEYS.ATTENDANCE_PREFIX}${studentId}`, INITIAL_ATTENDANCE[studentId]);
-});
-
-Object.keys(INITIAL_FINANCIALS).forEach(studentId => {
-  initItem(`${STORAGE_KEYS.FINANCIALS_PREFIX}${studentId}`, INITIAL_FINANCIALS[studentId]);
 });
 
 // Database API Queries
