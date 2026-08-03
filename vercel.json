@@ -1,0 +1,6 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/((?!assets/|team.jpg|courses.html).*)$", "destination": "/index.html" }
+  ]
+}

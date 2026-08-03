@@ -1,0 +1,7 @@
+{
+  "name": "mentorix-root",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd student-portal && npm install && npm run build && cp -r dist/* .."
+  }
+}
