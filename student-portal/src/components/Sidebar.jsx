@@ -9,13 +9,12 @@ import {
   CircleDollarSign, 
   Bell, 
   LogOut,
-  X,
-  GraduationCap
+  X
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { mockStudent } from '../lib/mockData';
 
-const Sidebar = ({ isOpen, toggleSidebar, userEmail }) => {
+const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
   
   const handleLogout = async () => {

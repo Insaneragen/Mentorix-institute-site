@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import { Menu, Bell, LogOut, ChevronRight } from 'lucide-react';
+import { Menu, Bell, ChevronRight } from 'lucide-react';
 import Sidebar from './Sidebar';
-import { supabase } from '../lib/supabase';
 import { mockStudent } from '../lib/mockData';
 
 const PortalLayout = () => {

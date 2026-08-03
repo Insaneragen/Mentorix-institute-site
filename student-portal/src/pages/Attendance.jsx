@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckSquare, AlertCircle, XCircle, Clock } from 'lucide-react';
+import { CheckSquare, XCircle, Clock } from 'lucide-react';
 import { mockAttendance } from '../lib/mockData';
 
 const Attendance = () => {

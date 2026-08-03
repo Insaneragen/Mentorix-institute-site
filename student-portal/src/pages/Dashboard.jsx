@@ -9,7 +9,8 @@ import {
   MapPin, 
   User, 
   ChevronRight,
-  BellRing
+  BellRing,
+  GraduationCap
 } from 'lucide-react';
 import { 
   mockStudent, 

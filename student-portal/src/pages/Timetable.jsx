@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, Video, MapPin, User, AlertCircle, Clock, Sparkles } from 'lucide-react';
+import { Video, MapPin, User, Clock, Sparkles } from 'lucide-react';
 import { mockTimetable } from '../lib/mockData';
 
 const Timetable = () => {

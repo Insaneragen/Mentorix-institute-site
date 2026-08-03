@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BellRing, Calendar, Search, Sparkles, Filter } from 'lucide-react';
+import { BellRing, Calendar, Search, Filter } from 'lucide-react';
 import { mockAnnouncements } from '../lib/mockData';
 
 const Announcements = () => {

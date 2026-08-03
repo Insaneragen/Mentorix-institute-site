@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Mail, Phone, Calendar, ShieldCheck, Award, GraduationCap, Building2 } from 'lucide-react';
+import { User, Mail, Phone, Calendar, ShieldCheck, GraduationCap, Building2 } from 'lucide-react';
 import { mockStudent } from '../lib/mockData';
 
 const Profile = () => {
