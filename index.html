@@ -68,9 +68,36 @@
                     <i class="fa-solid fa-user-lock"></i> Student Login
                 </a>
             </div>
-            <button class="lg:hidden text-brand-slate text-2xl"><i class="fa-solid fa-bars"></i></button>
+            <button id="mobile-menu-btn" class="lg:hidden text-brand-slate text-2xl"><i class="fa-solid fa-bars"></i></button>
         </div>
     </header>
+
+    <!-- Mobile Menu Drawer Overlay (Hidden by default) -->
+    <div id="mobile-menu-drawer" class="fixed inset-0 z-50 bg-brand-slate/60 backdrop-blur-sm hidden lg:hidden">
+        <div class="absolute right-0 top-0 bottom-0 w-80 bg-white shadow-xl flex flex-col p-6 transition-transform duration-300 translate-x-full" id="mobile-menu-content">
+            <div class="flex items-center justify-between pb-6 border-b border-gray-100">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-brand-blue text-white flex items-center justify-center font-bold text-lg rounded">M</div>
+                    <span class="font-bold text-xl tracking-tight text-brand-slate">MENTORIX</span>
+                </div>
+                <button id="mobile-menu-close" class="text-brand-slate text-2xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <nav class="flex flex-col gap-6 py-8 font-semibold text-lg text-brand-slate">
+                <a href="#about" class="hover:text-brand-blue transition-colors mobile-link">About Us</a>
+                <a href="#divisions" class="hover:text-brand-blue transition-colors mobile-link">Divisions</a>
+                <a href="courses.html" class="hover:text-brand-blue transition-colors mobile-link">Course Catalog</a>
+                <a href="#testimonials" class="hover:text-brand-blue transition-colors mobile-link">Testimonials</a>
+                <a href="#faq" class="hover:text-brand-blue transition-colors mobile-link">FAQ</a>
+            </nav>
+            
+            <div class="mt-auto border-t border-gray-100 pt-6">
+                <a href="student-portal/" class="w-full bg-brand-blue hover:bg-brand-bluedark text-white text-center font-bold py-3.5 px-6 rounded transition-colors shadow-soft flex items-center justify-center gap-1.5 text-base">
+                    <i class="fa-solid fa-user-lock"></i> Student Login
+                </a>
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="bg-brand-light pt-20 pb-24 lg:pt-32 lg:pb-32 relative overflow-hidden">
@@ -472,6 +499,37 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({ duration: 800, easing: 'ease-out-cubic', once: true, offset: 80 });
+
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const menuDrawer = document.getElementById('mobile-menu-drawer');
+        const menuContent = document.getElementById('mobile-menu-content');
+        const menuClose = document.getElementById('mobile-menu-close');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function openMenu() {
+            menuDrawer.classList.remove('hidden');
+            setTimeout(() => {
+                menuContent.classList.remove('translate-x-full');
+            }, 10);
+        }
+
+        function closeMenu() {
+            menuContent.classList.add('translate-x-full');
+            setTimeout(() => {
+                menuDrawer.classList.add('hidden');
+            }, 300);
+        }
+
+        if (menuBtn && menuDrawer && menuContent) {
+            menuBtn.addEventListener('click', openMenu);
+            menuClose.addEventListener('click', closeMenu);
+            menuDrawer.addEventListener('click', (e) => {
+                if (e.target === menuDrawer) closeMenu();
+            });
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+        }
     </script>
 </body>
 </html>
