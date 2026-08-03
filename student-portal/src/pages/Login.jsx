@@ -10,6 +10,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
@@ -219,30 +221,32 @@ const Login = () => {
             </button>
           </form>
 
-          {/* Quick Demo Bypass Options */}
-          <div className="mt-6 border-t border-gray-200 pt-6 space-y-3">
-            <button
-              onClick={() => handleDemoBypass('student')}
-              disabled={loading}
-              className="w-full bg-brand-blue hover:bg-brand-blue-dark text-white font-bold py-3 px-4 rounded-lg transition-colors text-sm shadow-md hover:shadow-lg flex items-center justify-center gap-2"
-            >
-              <GraduationCap size={18} />
-              <span>Bypass & Enter Student Portal</span>
-            </button>
+          {/* Quick Demo Bypass Options (Shown ONLY on Localhost for testing) */}
+          {isLocalhost && (
+            <div className="mt-6 border-t border-gray-200 pt-6 space-y-3">
+              <button
+                onClick={() => handleDemoBypass('student')}
+                disabled={loading}
+                className="w-full bg-brand-blue hover:bg-brand-blue-dark text-white font-bold py-3 px-4 rounded-lg transition-colors text-sm shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+              >
+                <GraduationCap size={18} />
+                <span>Bypass & Enter Student Portal</span>
+              </button>
 
-            <button
-              onClick={() => handleDemoBypass('admin')}
-              disabled={loading}
-              className="w-full bg-brand-slate hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-lg transition-colors text-sm shadow-md hover:shadow-lg flex items-center justify-center gap-2"
-            >
-              <AdminIcon size={16} />
-              <span>Bypass & Enter Admin Portal</span>
-            </button>
-            
-            <p className="text-center text-[10px] text-brand-gray mt-2.5 leading-relaxed">
-              * Click the buttons above to instantly preview either workspace layout with fully pre-loaded mock records.
-            </p>
-          </div>
+              <button
+                onClick={() => handleDemoBypass('admin')}
+                disabled={loading}
+                className="w-full bg-brand-slate hover:bg-slate-800 text-white font-bold py-3 px-4 rounded-lg transition-colors text-sm shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+              >
+                <AdminIcon size={16} />
+                <span>Bypass & Enter Admin Portal</span>
+              </button>
+              
+              <p className="text-center text-[10px] text-brand-gray mt-2.5 leading-relaxed">
+                * Click the buttons above to instantly preview either workspace layout with fully pre-loaded mock records.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
