@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Video, Landmark, CheckSquare, ArrowRight, UserPlus, Megaphone } from 'lucide-react';
-import { getStudents, getTimetable, getAttendance, getFinancials } from '../../lib/database';
+import { getStudents, getTimetable, getAttendance, getFinancials, getAllSessionLogs } from '../../lib/database';
 
 const AdminDashboard = () => {
   const [students, setStudents] = useState([]);
   const [timetable, setTimetable] = useState([]);
+  const [sessionLogs, setSessionLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalInvoiced, setTotalInvoiced] = useState(0);
   const [totalCollected, setTotalCollected] = useState(0);
@@ -14,13 +15,15 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [studentsData, timetableData] = await Promise.all([
+        const [studentsData, timetableData, logsData] = await Promise.all([
           getStudents(),
-          getTimetable()
+          getTimetable(),
+          getAllSessionLogs()
         ]);
         
         setStudents(studentsData || []);
         setTimetable(timetableData || []);
+        setSessionLogs(logsData || []);
 
         let invoiced = 0;
         let collected = 0;
@@ -215,6 +218,70 @@ const AdminDashboard = () => {
               <ArrowRight size={14} />
             </Link>
           </div>
+        </div>
+      </div>
+
+      {/* Global Live Session Reports Table */}
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-soft overflow-hidden">
+        <div className="p-5 border-b border-slate-100 flex items-center justify-between">
+          <h3 className="font-extrabold text-slate-950 text-base md:text-lg flex items-center gap-2">
+            <Video size={18} className="text-emerald-600" />
+            <span>Global Student Class Session Logs (Day-by-Day)</span>
+          </h3>
+          <span className="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Live Attendance Feed
+          </span>
+        </div>
+        
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr className="bg-slate-50 border-b border-slate-200 font-bold text-slate-700 uppercase">
+                <th className="p-4">Student</th>
+                <th className="p-4">Date</th>
+                <th className="p-4">Check-In Time</th>
+                <th className="p-4">Check-Out Time</th>
+                <th className="p-4">Duration</th>
+                <th className="p-4">Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 text-slate-800">
+              {sessionLogs.length === 0 ? (
+                <tr>
+                  <td colSpan="6" className="p-6 text-center text-slate-400">No session logs recorded in the database.</td>
+                </tr>
+              ) : (
+                sessionLogs.slice(0, 10).map(log => {
+                  const studentName = log.profiles?.name || log.profiles?.email?.split('@')[0] || 'Unknown Student';
+                  const dateStr = new Date(log.date).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
+                  const startStr = new Date(log.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                  const endStr = log.end_time ? new Date(log.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '—';
+                  
+                  return (
+                     <tr key={log.id} className="hover:bg-slate-50/50">
+                       <td className="p-4 font-bold text-slate-900">{studentName}</td>
+                       <td className="p-4 font-medium">{dateStr}</td>
+                       <td className="p-4 font-semibold text-slate-700">{startStr}</td>
+                       <td className="p-4 text-slate-500">{endStr}</td>
+                       <td className="p-4 font-extrabold text-emerald-600">
+                         {log.duration_minutes ? `${log.duration_minutes} mins` : '—'}
+                       </td>
+                       <td className="p-4">
+                         <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${
+                           log.status === 'active'
+                             ? 'bg-emerald-50 border-emerald-200 text-emerald-600 animate-pulse'
+                             : 'bg-slate-50 border-slate-200 text-slate-500'
+                         }`}>
+                           {log.status === 'active' ? 'Active now' : 'Completed'}
+                         </span>
+                       </td>
+                     </tr>
+                   );
+                 })
+               )}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

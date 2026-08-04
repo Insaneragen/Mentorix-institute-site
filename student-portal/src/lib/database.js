@@ -313,3 +313,22 @@ export const getSessionLogs = async (studentId) => {
   }
   return data;
 };
+
+export const getAllSessionLogs = async () => {
+  const { data, error } = await supabase
+    .from('session_logs')
+    .select(`
+      *,
+      profiles (
+        name,
+        email
+      )
+    `)
+    .order('start_time', { ascending: false });
+    
+  if (error) {
+    console.error('Error fetching all session logs:', error);
+    return [];
+  }
+  return data;
+};
