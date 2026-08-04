@@ -332,3 +332,36 @@ export const getAllSessionLogs = async () => {
   }
   return data;
 };
+
+export const hasCheckedInToday = async (studentId) => {
+  const today = new Date().toISOString().split('T')[0];
+  const { data, error } = await supabase
+    .from('daily_check_ins')
+    .select('*')
+    .eq('student_id', studentId)
+    .gte('check_in_time', `${today}T00:00:00.000Z`)
+    .lte('check_in_time', `${today}T23:59:59.999Z`)
+    .maybeSingle();
+    
+  if (error) {
+    console.error('Error checking check-in status:', error);
+    return false;
+  }
+  return !!data;
+};
+
+export const markDailyCheckIn = async (studentId) => {
+  const { data, error } = await supabase
+    .from('daily_check_ins')
+    .insert([{
+      student_id: studentId
+    }])
+    .select()
+    .single();
+    
+  if (error) {
+    console.error('Error marking check-in:', error);
+    return null;
+  }
+  return data;
+};

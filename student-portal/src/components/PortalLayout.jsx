@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation, Link } from 'react-router-dom';
-import { Menu, Bell, ChevronRight, User } from 'lucide-react';
+import { Menu, Bell, ChevronRight, User, Check } from 'lucide-react';
 import Sidebar from './Sidebar';
-import { getCurrentStudent } from '../lib/database';
+import { getCurrentStudent, hasCheckedInToday, markDailyCheckIn } from '../lib/database';
 
 const PortalLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -10,7 +10,9 @@ const PortalLayout = () => {
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
-  const [student, setStudent] = useState({ name: 'Loading...', studentId: '', course_enrolled: 'Loading course...' });
+  const [student, setStudent] = useState({ id: null, name: 'Loading...', studentId: '', course_enrolled: 'Loading course...' });
+  const [hasCheckedIn, setHasCheckedIn] = useState(false);
+  const [checkingIn, setCheckingIn] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -18,6 +20,7 @@ const PortalLayout = () => {
         const data = await getCurrentStudent();
         if (data) {
           setStudent({
+            id: data.id,
             name: data.name || 'Student',
             studentId: data.student_id || 'ID Pending',
             course_enrolled: data.course_enrolled || 'No Enrolled Course'
@@ -29,6 +32,33 @@ const PortalLayout = () => {
     };
     fetchProfile();
   }, []);
+
+  // Load check-in status
+  useEffect(() => {
+    if (student?.id) {
+      const checkStatus = async () => {
+        const checked = await hasCheckedInToday(student.id);
+        setHasCheckedIn(checked);
+      };
+      checkStatus();
+    }
+  }, [student]);
+
+  const handleCheckIn = async () => {
+    if (!student?.id) return;
+    setCheckingIn(true);
+    try {
+      const res = await markDailyCheckIn(student.id);
+      if (res) {
+        setHasCheckedIn(true);
+        alert('Daily attendance marked successfully!');
+      }
+    } catch (err) {
+      console.error('Error handling daily check-in:', err);
+    } finally {
+      setCheckingIn(false);
+    }
+  };
 
   const getPageTitle = () => {
     switch (location.pathname) {
@@ -76,6 +106,25 @@ const PortalLayout = () => {
           </div>
 
           <div className="flex items-center gap-4">
+            {/* Mark Attendance check-in button */}
+            {hasCheckedIn ? (
+              <button
+                disabled
+                className="bg-emerald-50 text-emerald-600 font-extrabold text-xs px-3.5 py-2 rounded-xl border border-emerald-200 cursor-not-allowed flex items-center gap-1.5 shadow-sm"
+              >
+                <Check size={14} className="text-emerald-500 stroke-[3]" />
+                <span>Attendance Marked</span>
+              </button>
+            ) : (
+              <button
+                onClick={handleCheckIn}
+                disabled={checkingIn}
+                className="bg-brand-blue hover:bg-brand-blue-dark text-white font-extrabold text-xs px-4 py-2 rounded-xl transition-all shadow-md active:scale-[0.98] flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              >
+                <span>Mark Attendance</span>
+              </button>
+            )}
+
             {/* Notification Alert Feed Link */}
             <div className="relative group cursor-pointer p-2 rounded-full hover:bg-gray-50 border border-gray-100">
               <Bell size={20} className="text-brand-slate hover:text-brand-blue transition-colors" />
