@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, 
@@ -12,7 +12,7 @@ import {
   X
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { getCurrentStudent } from '../lib/mockData';
+import { getCurrentStudent } from '../lib/database';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
@@ -23,7 +23,24 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     window.location.reload();
   };
 
-  const student = getCurrentStudent();
+  const [student, setStudent] = useState({ name: 'Loading...', studentId: '' });
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await getCurrentStudent();
+        if (data) {
+          setStudent({
+            name: data.name || 'Student',
+            studentId: data.student_id || 'ID Pending'
+          });
+        }
+      } catch (err) {
+        console.error("Error fetching student profile:", err);
+      }
+    };
+    fetchProfile();
+  }, []);
 
   const navItems = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },

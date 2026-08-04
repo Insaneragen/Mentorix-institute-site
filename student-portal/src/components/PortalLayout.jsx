@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation, Link } from 'react-router-dom';
 import { Menu, Bell, ChevronRight, User } from 'lucide-react';
 import Sidebar from './Sidebar';
-import { getCurrentStudent } from '../lib/mockData';
+import { getCurrentStudent } from '../lib/database';
 
 const PortalLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -10,7 +10,25 @@ const PortalLayout = () => {
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
-  const student = getCurrentStudent();
+  const [student, setStudent] = useState({ name: 'Loading...', studentId: '', course_enrolled: 'Loading course...' });
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await getCurrentStudent();
+        if (data) {
+          setStudent({
+            name: data.name || 'Student',
+            studentId: data.student_id || 'ID Pending',
+            course_enrolled: data.course_enrolled || 'No Enrolled Course'
+          });
+        }
+      } catch (err) {
+        console.error("Error fetching student layout profile:", err);
+      }
+    };
+    fetchProfile();
+  }, []);
 
   const getPageTitle = () => {
     switch (location.pathname) {

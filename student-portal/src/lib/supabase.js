@@ -5,6 +5,16 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'sb_publishabl
 
 export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey);
 
+export const createSecondaryClient = () => {
+  return createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false
+    }
+  });
+};
+
 const triggerMockAuthChange = (event) => {
   const customEvent = new CustomEvent('mock-auth-change', { detail: { event } });
   window.dispatchEvent(customEvent);

@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { supabase, createSecondaryClient } from './supabase';
 
 export const getStudents = async () => {
   const { data, error } = await supabase
@@ -199,13 +199,9 @@ export const uploadFeeStatement = async (studentId, file) => {
 };
 
 export const addNewStudent = async ({ name, email, phone, program, password, date_of_joining, fee_total }) => {
-  // 1. Create auth user in Supabase (Requires Admin role or Edge Function in production)
-  // For demo purposes, we will sign up and then sign back into the admin.
-  // Note: Supabase auth.admin.createUser is the proper way, but it requires a service role key.
-  // We will assume the user has a service role key, OR we use a workaround.
-  // We'll use signUp (which logs the user in). This is a limitation on client-side.
+  const secondarySupabase = createSecondaryClient();
   
-  const { data: authData, error: authError } = await supabase.auth.signUp({
+  const { data: authData, error: authError } = await secondarySupabase.auth.signUp({
     email,
     password,
     options: {

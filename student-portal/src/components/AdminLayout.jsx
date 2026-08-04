@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { 
   ShieldAlert, 
@@ -17,6 +17,33 @@ const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  
+  const [adminName, setAdminName] = useState('Loading...');
+  const [adminEmail, setAdminEmail] = useState('');
+
+  useEffect(() => {
+    const fetchAdminProfile = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          setAdminEmail(user.email);
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('name')
+            .eq('id', user.id)
+            .single();
+          if (profile && profile.name) {
+            setAdminName(profile.name);
+          } else {
+            setAdminName(user.email.split('@')[0]);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching admin profile:", err);
+      }
+    };
+    fetchAdminProfile();
+  }, []);
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
@@ -85,12 +112,12 @@ const AdminLayout = () => {
 
         {/* Admin Mini Profile */}
         <div className="p-6 border-b border-slate-800 flex items-center gap-4 bg-slate-950/20">
-          <div className="w-12 h-12 rounded-full bg-emerald-600 flex items-center justify-center font-black text-white text-base shadow-sm">
-            ADM
+          <div className="w-12 h-12 rounded-full bg-emerald-600 flex items-center justify-center font-black text-white text-base shadow-sm shrink-0">
+            {adminName.split(' ').map(p => p[0]).join('').toUpperCase().substring(0, 3)}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold text-white truncate">Director Saneesh</p>
-            <p className="text-[10px] font-bold text-emerald-500 uppercase">System Principal</p>
+            <p className="text-sm font-bold text-white truncate">{adminName}</p>
+            <p className="text-[10px] font-bold text-emerald-500 uppercase truncate" title={adminEmail}>{adminEmail || 'System Principal'}</p>
           </div>
         </div>
 
