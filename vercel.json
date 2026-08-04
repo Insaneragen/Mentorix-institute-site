@@ -1,6 +1,13 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/student-portal/:path*", "destination": "/student-portal/index.html" }
+    { "source": "/student-portal/login", "destination": "/student-portal/index.html" },
+    { "source": "/student-portal/test-role", "destination": "/student-portal/index.html" },
+    { "source": "/student-portal/profile", "destination": "/student-portal/index.html" },
+    { "source": "/student-portal/study-hub", "destination": "/student-portal/index.html" },
+    { "source": "/student-portal/academics", "destination": "/student-portal/index.html" },
+    { "source": "/student-portal/financials", "destination": "/student-portal/index.html" },
+    { "source": "/student-portal/admin", "destination": "/student-portal/index.html" },
+    { "source": "/student-portal/admin/:subpath*", "destination": "/student-portal/index.html" }
   ]
 }
