@@ -19,8 +19,10 @@ import ClassScheduleManager from './pages/admin/ClassScheduleManager';
 import AnnouncementsManager from './pages/admin/AnnouncementsManager';
 
 function App() {
+  const basename = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? '' : '/student-portal';
+
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <Routes>
         {/* Auth Route */}
         <Route path="/login" element={<Login />} />
