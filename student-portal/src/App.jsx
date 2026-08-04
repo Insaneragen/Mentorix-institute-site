@@ -10,6 +10,7 @@ import Profile from './pages/Profile';
 import Academics from './pages/Academics';
 import StudyHub from './pages/StudyHub';
 import Financials from './pages/Financials';
+import TestRole from './pages/TestRole';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -23,6 +24,7 @@ function App() {
       <Routes>
         {/* Auth Route */}
         <Route path="/login" element={<Login />} />
+        <Route path="/test-role" element={<TestRole />} />
 
         {/* Protected Student Portal Routes */}
         <Route 
