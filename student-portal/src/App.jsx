@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import RouteGuard from './components/RouteGuard';
 import AdminRouteGuard from './components/AdminRouteGuard';
 import PortalLayout from './components/PortalLayout';
@@ -19,10 +19,8 @@ import ClassScheduleManager from './pages/admin/ClassScheduleManager';
 import AnnouncementsManager from './pages/admin/AnnouncementsManager';
 
 function App() {
-  const basename = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? '' : '/student-portal';
-
   return (
-    <BrowserRouter basename={basename}>
+    <HashRouter>
       <Routes>
         {/* Auth Route */}
         <Route path="/login" element={<Login />} />
