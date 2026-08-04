@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Users, 
   Search, 
@@ -17,16 +17,19 @@ import {
   getAttendance, 
   getFinancials, 
   addStudentAttendanceRecord, 
-  addFinancialPayment,
-  addNewStudent,
-  updateStudentReceipt,
-  updateStudentPassword
-} from '../../lib/mockData';
+  uploadFeeStatement,
+  addNewStudent
+} from '../../lib/database';
 
 const StudentDirectory = () => {
-  const [students, setStudents] = useState(getStudents());
+  const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedStudentId, setSelectedStudentId] = useState(students[0]?.id || null);
+  const [selectedStudentId, setSelectedStudentId] = useState(null);
+
+  // Data fetching states
+  const [loading, setLoading] = useState(true);
+  const [studentAttendance, setStudentAttendance] = useState(null);
+  const [studentFinancials, setStudentFinancials] = useState(null);
 
   // New Student Form States
   const [addingNew, setAddingNew] = useState(false);
@@ -37,6 +40,7 @@ const StudentDirectory = () => {
   const [newStudentPassword, setNewStudentPassword] = useState('demostudentpass');
   const [newStudentDate, setNewStudentDate] = useState(new Date().toISOString().split('T')[0]);
   const [newStudentFee, setNewStudentFee] = useState(10000);
+  const [isCreatingStudent, setIsCreatingStudent] = useState(false);
 
   // Attendance Form States
   const [attDate, setAttDate] = useState(new Date().toISOString().split('T')[0]);
@@ -46,58 +50,87 @@ const StudentDirectory = () => {
   const [attNote, setAttNote] = useState('');
   const [attSuccess, setAttSuccess] = useState('');
 
-  // Billing Form States
-  const [payAmount, setPayAmount] = useState('');
-  const [payMethod, setPayMethod] = useState('Bank Transfer');
-  const [paySuccess, setPaySuccess] = useState('');
+  // Billing Upload States
+  const [uploadingDoc, setUploadingDoc] = useState(false);
+  const [docSuccess, setDocSuccess] = useState('');
 
-  const handleCreateStudent = (e) => {
+  const fetchStudents = async () => {
+    const data = await getStudents();
+    setStudents(data || []);
+    if (data && data.length > 0 && !selectedStudentId && !addingNew) {
+      setSelectedStudentId(data[0].id);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchStudents();
+  }, []);
+
+  const fetchStudentDetails = async (id) => {
+    const att = await getAttendance(id);
+    const fin = await getFinancials(id);
+    setStudentAttendance(att);
+    setStudentFinancials(fin);
+  };
+
+  useEffect(() => {
+    if (selectedStudentId) {
+      fetchStudentDetails(selectedStudentId);
+    }
+  }, [selectedStudentId]);
+
+  const handleCreateStudent = async (e) => {
     e.preventDefault();
     if (!newStudentName || !newStudentEmail) {
       alert("Please fill in Name and Email.");
       return;
     }
 
-    const newStudent = addNewStudent({
-      name: newStudentName,
-      email: newStudentEmail,
-      phone: newStudentPhone || '+971 50 000 0000',
-      program: newStudentProgram,
-      password: newStudentPassword,
-      date_of_joining: newStudentDate,
-      fee_total: Number(newStudentFee)
-    });
+    setIsCreatingStudent(true);
+    try {
+      const newStudent = await addNewStudent({
+        name: newStudentName,
+        email: newStudentEmail,
+        phone: newStudentPhone || '+971 50 000 0000',
+        program: newStudentProgram,
+        password: newStudentPassword,
+        date_of_joining: newStudentDate,
+        fee_total: Number(newStudentFee)
+      });
 
-    const updatedList = getStudents();
-    setStudents(updatedList);
-    setNewStudentName('');
-    setNewStudentEmail('');
-    setNewStudentPhone('');
-    setNewStudentPassword('demostudentpass');
-    setNewStudentDate(new Date().toISOString().split('T')[0]);
-    setNewStudentFee(10000);
-    setAddingNew(false);
-    setSelectedStudentId(newStudent.id);
+      await fetchStudents();
+      setNewStudentName('');
+      setNewStudentEmail('');
+      setNewStudentPhone('');
+      setNewStudentPassword('demostudentpass');
+      setNewStudentDate(new Date().toISOString().split('T')[0]);
+      setNewStudentFee(10000);
+      setAddingNew(false);
+      setSelectedStudentId(newStudent.id);
+    } catch (err) {
+      alert("Error creating student: " + err.message);
+    } finally {
+      setIsCreatingStudent(false);
+    }
   };
 
   // Filter students based on search term
   const filteredStudents = students.filter(student => 
     student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.studentId.toLowerCase().includes(searchTerm.toLowerCase())
+    (student.student_id && student.student_id.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const selectedStudent = students.find(s => s.id === selectedStudentId);
-  const studentAttendance = selectedStudent ? getAttendance(selectedStudent.id) : null;
-  const studentFinancials = selectedStudent ? getFinancials(selectedStudent.id) : null;
 
-  const handleAddAttendance = (e) => {
+  const handleAddAttendance = async (e) => {
     e.preventDefault();
     if (!attTopic) {
       alert("Please specify the class lesson topic.");
       return;
     }
     
-    addStudentAttendanceRecord(
+    await addStudentAttendanceRecord(
       selectedStudent.id,
       attDate,
       attCourse,
@@ -107,32 +140,34 @@ const StudentDirectory = () => {
     );
 
     // Refresh state
-    setStudents(getStudents());
+    await fetchStudentDetails(selectedStudent.id);
     setAttTopic('');
     setAttNote('');
     setAttSuccess('Attendance record added successfully!');
     setTimeout(() => setAttSuccess(''), 3000);
   };
 
-  const handleAddPayment = (e) => {
-    e.preventDefault();
-    if (!payAmount || isNaN(payAmount) || Number(payAmount) <= 0) {
-      alert("Please enter a valid numeric payment amount.");
-      return;
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setUploadingDoc(true);
+    setDocSuccess('');
+    try {
+      const url = await uploadFeeStatement(selectedStudent.id, file);
+      if (url) {
+        setDocSuccess('Statement uploaded successfully!');
+        await fetchStudentDetails(selectedStudent.id);
+        setTimeout(() => setDocSuccess(''), 3000);
+      } else {
+        alert("Upload failed. Ensure the storage bucket exists and policies are set.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Upload failed.");
+    } finally {
+      setUploadingDoc(false);
     }
-
-    if (Number(payAmount) > studentFinancials.balanceAmount) {
-      alert("Payment amount exceeds outstanding fee balance.");
-      return;
-    }
-
-    addFinancialPayment(selectedStudent.id, payAmount, payMethod);
-
-    // Refresh state
-    setStudents(getStudents());
-    setPayAmount('');
-    setPaySuccess('Tuition payment logged successfully!');
-    setTimeout(() => setPaySuccess(''), 3000);
   };
 
   const getStatusLabel = (status) => {
@@ -143,6 +178,8 @@ const StudentDirectory = () => {
       default: return 'bg-slate-50 text-slate-700 border-slate-100';
     }
   };
+
+  if (loading) return <div className="p-8 text-center">Loading directory...</div>;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto items-start">
@@ -181,11 +218,12 @@ const StudentDirectory = () => {
                 key={student.id}
                 onClick={() => {
                   setSelectedStudentId(student.id);
+                  setAddingNew(false);
                   setAttSuccess('');
-                  setPaySuccess('');
+                  setDocSuccess('');
                 }}
                 className={`w-full p-4 text-left transition-colors flex items-center justify-between gap-3 ${
-                  selectedStudentId === student.id
+                  selectedStudentId === student.id && !addingNew
                     ? 'bg-slate-100 border-l-4 border-l-emerald-600 font-bold'
                     : 'hover:bg-slate-50'
                 }`}
@@ -193,7 +231,7 @@ const StudentDirectory = () => {
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-bold text-slate-800 truncate">{student.name}</p>
                   <div className="flex items-center gap-1.5 mt-0.5 text-[10px] text-slate-500 font-mono">
-                    <span>{student.studentId}</span>
+                    <span>{student.student_id}</span>
                     <span>&middot;</span>
                     <span className="truncate max-w-[120px] sm:max-w-none text-slate-400 font-sans">{student.email}</span>
                   </div>
@@ -323,7 +361,7 @@ const StudentDirectory = () => {
                   type="button"
                   onClick={() => {
                     setAddingNew(false);
-                    setSelectedStudentId(students[0]?.id || null);
+                    if(students.length > 0) setSelectedStudentId(students[0].id);
                   }}
                   className="px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 font-bold text-slate-600 transition-colors"
                 >
@@ -331,9 +369,10 @@ const StudentDirectory = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition-all shadow-sm"
+                  disabled={isCreatingStudent}
+                  className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition-all shadow-sm disabled:opacity-50"
                 >
-                  Create Student Profile
+                  {isCreatingStudent ? 'Creating...' : 'Create Student Profile'}
                 </button>
               </div>
             </form>
@@ -343,53 +382,18 @@ const StudentDirectory = () => {
             {/* Student Admin Card Summary Header */}
             <div className="bg-white rounded-2xl border border-slate-100 shadow-soft p-6 flex flex-col sm:flex-row items-center gap-4 relative">
               <div className="w-14 h-14 rounded-full bg-slate-800 text-white flex items-center justify-center text-lg font-black shadow border-2 border-emerald-500/20">
-                {selectedStudent.name.split(' ').map(p => p[0]).join('').toUpperCase()}
+                {selectedStudent.name.split(' ').map(p => p[0]).join('').substring(0, 2).toUpperCase()}
               </div>
               <div className="flex-1 text-center sm:text-left">
                 <h3 className="font-extrabold text-slate-900 text-lg leading-snug">{selectedStudent.name}</h3>
                 <p className="text-xs text-slate-500 mt-0.5">{selectedStudent?.course_enrolled}</p>
                 <p className="text-[10px] text-slate-400 font-mono mt-1 flex flex-wrap justify-center sm:justify-start gap-x-2 gap-y-1">
-                  <span>ID Code: {selectedStudent.studentId}</span>
+                  <span>ID Code: {selectedStudent.student_id}</span>
                   <span>&middot;</span>
                   <span>Contact: {selectedStudent.phone}</span>
                   <span>&middot;</span>
                   <span className="text-emerald-600 font-semibold font-sans">{selectedStudent.email}</span>
                 </p>
-              </div>
-            </div>
-
-            {/* Student Credentials bar (Admin can view and update) */}
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-soft p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="text-xs space-y-1">
-                <p className="font-bold text-slate-700">Account Credentials Settings</p>
-                <p className="text-slate-500">
-                  Current Password: <span className="font-mono bg-slate-100 px-2.5 py-1 rounded border font-bold text-slate-800">{selectedStudent.password || 'demostudentpass'}</span>
-                </p>
-              </div>
-              <div className="flex items-center gap-2 w-full sm:w-auto">
-                <input
-                  type="text"
-                  placeholder="Set new password..."
-                  id={`pwd-input-${selectedStudent.id}`}
-                  className="bg-white border border-slate-200 px-3 py-2 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-emerald-500 w-full sm:w-44"
-                />
-                <button
-                  type="button"
-                  onClick={() => {
-                    const inp = document.getElementById(`pwd-input-${selectedStudent.id}`);
-                    if (inp && inp.value.trim()) {
-                      updateStudentPassword(selectedStudent.id, inp.value.trim());
-                      inp.value = '';
-                      setStudents(getStudents());
-                      alert("Student password has been updated in database!");
-                    } else {
-                      alert("Please enter a password value first.");
-                    }
-                  }}
-                  className="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 px-4 rounded-xl text-xs transition-colors shrink-0 shadow-sm"
-                >
-                  Change Password
-                </button>
               </div>
             </div>
 
@@ -405,7 +409,7 @@ const StudentDirectory = () => {
 
                 <div className="text-xs bg-slate-50 p-2.5 rounded-lg border text-slate-500 flex justify-between items-center font-bold">
                   <span>Current Attendance Rate:</span>
-                  <span className="text-emerald-600 text-sm font-black">{studentAttendance?.overallPercentage}%</span>
+                  <span className="text-emerald-600 text-sm font-black">{studentAttendance?.overallPercentage ?? 100}%</span>
                 </div>
 
                 {attSuccess && (
@@ -467,7 +471,7 @@ const StudentDirectory = () => {
                   </div>
 
                   <div>
-                    <label className="block font-bold text-slate-700 mb-1">Optional Note (Medical, etc.)</label>
+                    <label className="block font-bold text-slate-700 mb-1">Optional Note</label>
                     <input
                       type="text"
                       placeholder="Reason for absence/delay"
@@ -478,7 +482,7 @@ const StudentDirectory = () => {
                   </div>
 
                   <button
-                    type="submit"
+                     type="submit"
                     className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-1.5"
                   >
                     <PlusCircle size={14} />
@@ -491,105 +495,62 @@ const StudentDirectory = () => {
               <div className="bg-white rounded-2xl border border-slate-100 shadow-soft p-5 space-y-4">
                 <h4 className="font-extrabold text-slate-900 text-sm border-b border-slate-100 pb-2.5 flex items-center gap-2">
                   <CreditCard size={15} className="text-emerald-600" />
-                  <span>Tuition Invoice Ledger</span>
+                  <span>Fee Statement Upload</span>
                 </h4>
 
                 <div className="text-xs bg-slate-50 p-2.5 rounded-lg border text-slate-500 space-y-1">
                   <div className="flex justify-between font-bold">
-                    <span>Outstanding Balance:</span>
-                    <span className="text-red-500">{studentFinancials?.balanceAmount.toLocaleString()} AED</span>
-                  </div>
-                  <div className="flex justify-between text-[10px]">
-                    <span>Amount Settled:</span>
-                    <span>{studentFinancials?.paidAmount.toLocaleString()} / {studentFinancials?.totalFee.toLocaleString()} AED</span>
+                    <span>Total Course Fee:</span>
+                    <span className="text-slate-800">{studentFinancials?.totalFee?.toLocaleString()} AED</span>
                   </div>
                 </div>
 
-                {paySuccess && (
+                {docSuccess && (
                   <div className="p-2 text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-md">
-                    {paySuccess}
-                  </div>
-                )}
-
-                {studentFinancials?.balanceAmount > 0 ? (
-                  <form onSubmit={handleAddPayment} className="space-y-3 text-xs">
-                    <div>
-                      <label className="block font-bold text-slate-700 mb-1">Receipt Collected Amount (AED)</label>
-                      <input
-                        type="number"
-                        required
-                        placeholder="e.g. 2500"
-                        value={payAmount}
-                        onChange={(e) => setPayAmount(e.target.value)}
-                        className="w-full bg-white border border-slate-200 px-3 py-2 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block font-bold text-slate-700 mb-1">Payment Channel</label>
-                      <select
-                        value={payMethod}
-                        onChange={(e) => setPayMethod(e.target.value)}
-                        className="w-full bg-white border border-slate-200 px-3 py-2 rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500"
-                      >
-                        <option>Bank Transfer</option>
-                        <option>Credit Card (Online)</option>
-                        <option>Cash at Centre</option>
-                        <option>Cheque Payment</option>
-                      </select>
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-1.5"
-                    >
-                      <PlusCircle size={14} />
-                      <span>Log Payment Receipt</span>
-                    </button>
-                  </form>
-                ) : (
-                  <div className="p-8 text-center bg-emerald-50 border border-emerald-100 rounded-xl">
-                    <Check className="mx-auto text-emerald-600 mb-1" size={24} />
-                    <p className="text-xs font-bold text-emerald-800">Account Fully Settled</p>
-                    <p className="text-[10px] text-emerald-600 mt-0.5">This student has zero outstanding fee balance.</p>
+                    {docSuccess}
                   </div>
                 )}
 
                 {/* File Upload Widget for Receipt */}
                 <div className="border-t border-slate-100 pt-4 mt-2">
-                  <label className="block font-bold text-slate-700 mb-1 text-[11px]">Upload/Update Student Receipt</label>
-                  {selectedStudent?.receipt_file ? (
-                    <div className="flex items-center justify-between p-2.5 bg-emerald-50 border border-emerald-100 rounded-lg text-xs text-emerald-800">
-                      <span className="truncate font-semibold flex items-center gap-1.5">
-                        <i className="fa-solid fa-file-pdf"></i> {selectedStudent.receipt_file}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          updateStudentReceipt(selectedStudent.id, null);
-                          setStudents(getStudents());
-                        }}
-                        className="text-red-500 hover:text-red-700 font-bold ml-2 text-[10px] uppercase"
+                  <label className="block font-bold text-slate-700 mb-1 text-[11px]">Upload Student Fee Statement</label>
+                  <p className="text-[10px] text-slate-500 mb-3">
+                    Upload a PDF or Image statement detailing their monthly payment plan or receipts. This overrides any previously uploaded statement.
+                  </p>
+                  
+                  {studentFinancials?.fee_statement_url ? (
+                    <div className="flex flex-col gap-3">
+                      <a 
+                        href={studentFinancials.fee_statement_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center justify-center gap-2 w-full bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-800 font-bold py-2 rounded-xl transition-all text-xs shadow-sm"
                       >
-                        Remove
-                      </button>
+                        <i className="fa-solid fa-file-invoice"></i> View Current Statement
+                      </a>
+                      
+                      <div className="pt-2 border-t border-slate-100">
+                        <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 block">Upload Replacement</label>
+                        <input
+                          type="file"
+                          onChange={handleFileUpload}
+                          disabled={uploadingDoc}
+                          className="w-full bg-white border border-slate-200 px-3 py-1.5 rounded-lg text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer"
+                        />
+                      </div>
                     </div>
                   ) : (
                     <div className="space-y-1.5">
                       <input
                         type="file"
-                        onChange={(e) => {
-                          const file = e.target.files[0];
-                          if (file) {
-                            updateStudentReceipt(selectedStudent.id, file.name);
-                            setStudents(getStudents());
-                          }
-                        }}
+                        onChange={handleFileUpload}
+                        disabled={uploadingDoc}
                         className="w-full bg-white border border-slate-200 px-3 py-1.5 rounded-lg text-xs text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer"
                       />
-                      <p className="text-[10px] text-slate-400">Supported formats: PDF, PNG, JPG (Max 5MB)</p>
+                      <p className="text-[10px] text-slate-400">Supported formats: PDF, PNG, JPG</p>
                     </div>
                   )}
+                  {uploadingDoc && <p className="text-xs text-emerald-600 mt-2 font-bold animate-pulse">Uploading file securely...</p>}
                 </div>
               </div>
 
@@ -611,12 +572,12 @@ const StudentDirectory = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 text-slate-800">
-                    {studentAttendance?.records.length === 0 ? (
+                    {(!studentAttendance?.records || studentAttendance.records.length === 0) ? (
                       <tr>
                         <td colSpan="4" className="p-4 text-center text-slate-400">No records filed.</td>
                       </tr>
                     ) : (
-                      studentAttendance?.records.map(record => (
+                      studentAttendance.records.map(record => (
                         <tr key={record.id} className="hover:bg-slate-50/50">
                           <td className="p-3 font-semibold whitespace-nowrap">{record.date}</td>
                           <td className="p-3 font-semibold truncate max-w-[120px]">{record.course}</td>

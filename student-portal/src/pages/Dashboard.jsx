@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Calendar, 
@@ -18,17 +18,50 @@ import {
   getCurrentAttendance, 
   getTimetable, 
   getAnnouncements 
-} from '../lib/mockData';
+} from '../lib/database';
 
 const Dashboard = () => {
-  const student = getCurrentStudent();
-  const financials = getCurrentFinancials();
-  const attendance = getCurrentAttendance();
-  const timetable = getTimetable();
-  const announcements = getAnnouncements();
+  const [student, setStudent] = useState(null);
+  const [financials, setFinancials] = useState(null);
+  const [attendance, setAttendance] = useState(null);
+  const [timetable, setTimetable] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [stu, fin, att, time, ann] = await Promise.all([
+          getCurrentStudent(),
+          getCurrentFinancials(),
+          getCurrentAttendance(),
+          getTimetable(),
+          getAnnouncements()
+        ]);
+        setStudent(stu);
+        setFinancials(fin);
+        setAttendance(att);
+        setTimetable(time || []);
+        setAnnouncements(ann || []);
+      } catch (error) {
+        console.error("Dashboard fetch error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <div className="p-8 text-center text-brand-gray font-semibold animate-pulse">Loading Dashboard...</div>;
+  }
+
+  if (!student) {
+    return <div className="p-8 text-center text-brand-gray font-semibold">User not found or logged out.</div>;
+  }
 
   // Get upcoming active class
-  const upcomingClass = timetable.find(item => item.active) || timetable[0];
+  const upcomingClass = timetable.find(item => item.active) || timetable[0] || null;
   
   // Get top 3 recent announcements
   const recentAnnouncements = announcements.slice(0, 3);
@@ -82,7 +115,7 @@ const Dashboard = () => {
           </div>
           <div>
             <h3 className="text-2xl font-extrabold text-brand-slate mt-2">
-              {financials.balanceAmount.toLocaleString()} {financials.currency}
+              {financials?.balanceAmount?.toLocaleString() || 0} {financials?.currency || 'AED'}
             </h3>
             <p className="text-xs text-brand-gray mt-1">
               Next installment due on program milestones.
@@ -106,7 +139,7 @@ const Dashboard = () => {
           </div>
           <div>
             <h3 className="text-2xl font-extrabold text-brand-slate mt-2">
-              {attendance.overallPercentage}%
+              {attendance?.overallPercentage ?? 100}%
             </h3>
             <p className="text-xs text-brand-gray mt-1">
               Requirement: Keep overall attendance above 80%.
@@ -130,7 +163,7 @@ const Dashboard = () => {
           </div>
           <div>
             <h3 className="text-2xl font-extrabold text-brand-slate mt-2">
-              2 Courses
+              Course Enrolled
             </h3>
             <p className="text-xs text-brand-gray mt-1 truncate">
               {student.course_enrolled}
@@ -155,7 +188,7 @@ const Dashboard = () => {
               <Calendar size={18} className="text-brand-blue" />
               <span>Next Scheduled Class Session</span>
             </h3>
-            {upcomingClass.active && (
+            {upcomingClass?.active && (
               <span className="flex h-2.5 w-2.5 relative">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
@@ -163,60 +196,66 @@ const Dashboard = () => {
             )}
           </div>
 
-          <div className="space-y-4 flex-1">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-brand-blue-light text-brand-blue flex items-center justify-center shrink-0">
-                <Video size={24} />
-              </div>
-              <div className="space-y-1 min-w-0">
-                <h4 className="font-bold text-brand-slate text-base md:text-lg leading-snug">
-                  {upcomingClass.courseName}
-                </h4>
-                <p className="text-xs font-semibold text-brand-gray">
-                  Session Code: <span className="text-brand-slate font-mono">{upcomingClass.code}</span>
-                </p>
-              </div>
-            </div>
+          {upcomingClass ? (
+            <>
+              <div className="space-y-4 flex-1">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-brand-blue-light text-brand-blue flex items-center justify-center shrink-0">
+                    <Video size={24} />
+                  </div>
+                  <div className="space-y-1 min-w-0">
+                    <h4 className="font-bold text-brand-slate text-base md:text-lg leading-snug">
+                      {upcomingClass.courseName || upcomingClass.course_name}
+                    </h4>
+                    <p className="text-xs font-semibold text-brand-gray">
+                      Session Code: <span className="text-brand-slate font-mono">{upcomingClass.code}</span>
+                    </p>
+                  </div>
+                </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-brand-light p-4 rounded-xl border border-gray-100 text-sm">
-              <div>
-                <p className="text-xs font-bold text-brand-gray uppercase">Time slot</p>
-                <p className="font-semibold text-brand-slate mt-1">{upcomingClass.time}</p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-brand-light p-4 rounded-xl border border-gray-100 text-sm">
+                  <div>
+                    <p className="text-xs font-bold text-brand-gray uppercase">Time slot</p>
+                    <p className="font-semibold text-brand-slate mt-1">{upcomingClass.time}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-brand-gray uppercase">Classroom</p>
+                    <p className="font-semibold text-brand-slate mt-1 flex items-center gap-1.5">
+                      <MapPin size={14} className="text-brand-blue shrink-0" />
+                      <span className="truncate">{upcomingClass.room}</span>
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-brand-gray uppercase">Lead Mentor</p>
+                    <p className="font-semibold text-brand-slate mt-1">{upcomingClass.instructor}</p>
+                  </div>
+                </div>
               </div>
-              <div>
-                <p className="text-xs font-bold text-brand-gray uppercase">Classroom</p>
-                <p className="font-semibold text-brand-slate mt-1 flex items-center gap-1.5">
-                  <MapPin size={14} className="text-brand-blue shrink-0" />
-                  <span className="truncate">{upcomingClass.room}</span>
-                </p>
-              </div>
-              <div>
-                <p className="text-xs font-bold text-brand-gray uppercase">Lead Mentor</p>
-                <p className="font-semibold text-brand-slate mt-1">{upcomingClass.instructor}</p>
-              </div>
-            </div>
-          </div>
 
-          <div className="border-t border-gray-100 pt-5 mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <p className="text-xs text-brand-gray">
-              * Click the join button to launch your videoconference class session.
-            </p>
-            {upcomingClass.active ? (
-              <a 
-                href={upcomingClass.meetUrl}
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="bg-brand-blue hover:bg-brand-blue-dark text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md shadow-blue-500/20 text-sm flex items-center justify-center gap-2 hover:-translate-y-0.5 animate-pulse"
-              >
-                <Video size={16} />
-                <span>Join Live Class (Online)</span>
-              </a>
-            ) : (
-              <span className="text-xs font-bold text-brand-gray bg-gray-100 border border-gray-200 px-4 py-2 rounded-lg">
-                Classroom Opens 10m Prior
-              </span>
-            )}
-          </div>
+              <div className="border-t border-gray-100 pt-5 mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <p className="text-xs text-brand-gray">
+                  * Click the join button to launch your videoconference class session.
+                </p>
+                {upcomingClass.active ? (
+                  <a 
+                    href={upcomingClass.meetUrl || upcomingClass.meet_url}
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="bg-brand-blue hover:bg-brand-blue-dark text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md shadow-blue-500/20 text-sm flex items-center justify-center gap-2 hover:-translate-y-0.5 animate-pulse"
+                  >
+                    <Video size={16} />
+                    <span>Join Live Class (Online)</span>
+                  </a>
+                ) : (
+                  <span className="text-xs font-bold text-brand-gray bg-gray-100 border border-gray-200 px-4 py-2 rounded-lg">
+                    Classroom Opens 10m Prior
+                  </span>
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="p-8 text-center text-brand-gray">No upcoming classes scheduled.</div>
+          )}
         </div>
 
         {/* Recent Announcements Panel */}
@@ -233,7 +272,7 @@ const Dashboard = () => {
               {recentAnnouncements.map((item) => (
                 <div key={item.id} className="group border-b border-gray-100 last:border-0 pb-3 last:pb-0">
                   <div className="flex items-center gap-2 mb-1.5">
-                    <span className={`px-2 py-0.5 text-[9px] font-bold border rounded-md uppercase tracking-wider ${item.badgeColor}`}>
+                    <span className={`px-2 py-0.5 text-[9px] font-bold border rounded-md uppercase tracking-wider ${item.badgeColor || item.badge_color || 'bg-blue-50 text-blue-700'}`}>
                       {item.category}
                     </span>
                     <span className="text-[10px] font-semibold text-brand-gray">{item.date}</span>
@@ -246,6 +285,9 @@ const Dashboard = () => {
                   </p>
                 </div>
               ))}
+              {recentAnnouncements.length === 0 && (
+                <p className="text-sm text-brand-gray">No new announcements.</p>
+              )}
             </div>
           </div>
 

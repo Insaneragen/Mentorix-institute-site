@@ -1,49 +1,62 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Video, Landmark, CheckSquare, ArrowRight, UserPlus, Megaphone } from 'lucide-react';
-import { getStudents, getTimetable } from '../../lib/mockData';
+import { getStudents, getTimetable, getAttendance, getFinancials } from '../../lib/database';
 
 const AdminDashboard = () => {
-  const students = getStudents();
-  const timetable = getTimetable();
+  const [students, setStudents] = useState([]);
+  const [timetable, setTimetable] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [totalInvoiced, setTotalInvoiced] = useState(0);
+  const [totalCollected, setTotalCollected] = useState(0);
+  const [totalPercentageSum, setTotalPercentageSum] = useState(0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [studentsData, timetableData] = await Promise.all([
+          getStudents(),
+          getTimetable()
+        ]);
+        
+        setStudents(studentsData || []);
+        setTimetable(timetableData || []);
+
+        let invoiced = 0;
+        let collected = 0;
+        let attendanceSum = 0;
+
+        // Fetch financials and attendance for all students to calculate totals
+        if (studentsData && studentsData.length > 0) {
+          for (const student of studentsData) {
+            invoiced += Number(student.fee_total) || 0;
+            collected += Number(student.fee_paid) || 0;
+            
+            const att = await getAttendance(student.id);
+            attendanceSum += att.overallPercentage;
+          }
+        }
+
+        setTotalInvoiced(invoiced);
+        setTotalCollected(collected);
+        setTotalPercentageSum(attendanceSum);
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <div className="p-8 text-center text-slate-500 font-semibold animate-pulse">Loading Admin Dashboard...</div>;
+  }
 
   const totalStudents = students.length;
   const liveClassesCount = timetable.filter(t => t.active).length;
-
-  // Compute total financial metrics
-  
-  let totalInvoiced = 0;
-  let totalCollected = 0;
-  
-  students.forEach(student => {
-    // Attempt to load from storage or fallback
-    const key = `mentorix_db_financials_${student.id}`;
-    const storageItem = localStorage.getItem(key);
-    if (storageItem) {
-      const data = JSON.parse(storageItem);
-      totalInvoiced += data.totalFee;
-      totalCollected += data.paidAmount;
-    } else {
-      totalInvoiced += 10000;
-      totalCollected += 7500;
-    }
-  });
-
   const collectionPercentage = totalInvoiced > 0 ? Math.round((totalCollected / totalInvoiced) * 100) : 0;
-
-  // Compute total average attendance
-  let totalPercentageSum = 0;
-  students.forEach(student => {
-    const key = `mentorix_db_attendance_${student.id}`;
-    const storageItem = localStorage.getItem(key);
-    if (storageItem) {
-      const data = JSON.parse(storageItem);
-      totalPercentageSum += data.overallPercentage;
-    } else {
-      totalPercentageSum += 80;
-    }
-  });
-
   const averageAttendance = totalStudents > 0 ? Math.round(totalPercentageSum / totalStudents) : 0;
 
   return (
@@ -142,7 +155,7 @@ const AdminDashboard = () => {
             <span>Administrative Quick Actions</span>
           </h3>
           <p className="text-sm text-slate-500 leading-relaxed">
-            As an Administrator, you can modify any student's metrics locally. Use the sidebar directory to select a student, toggle attendance checkmarks, or write off outstanding fee balances.
+            As an Administrator, you can modify any student's metrics. Use the sidebar directory to select a student, toggle attendance checkmarks, or upload fee statements.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
@@ -150,7 +163,7 @@ const AdminDashboard = () => {
               to="/admin/students" 
               className="p-4 rounded-xl border border-slate-100 hover:border-slate-200 bg-slate-50 hover:bg-slate-100 transition-all text-xs font-bold text-slate-800 flex items-center justify-between"
             >
-              <span>Manage Students Attendance</span>
+              <span>Manage Students</span>
               <ArrowRight size={14} className="text-slate-400" />
             </Link>
             <Link 
@@ -187,6 +200,9 @@ const AdminDashboard = () => {
                   </span>
                 </div>
               ))}
+              {timetable.length === 0 && (
+                <div className="text-sm text-slate-500 py-2">No active classes found in the database.</div>
+              )}
             </div>
           </div>
 
