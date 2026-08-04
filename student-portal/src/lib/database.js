@@ -339,8 +339,7 @@ export const hasCheckedInToday = async (studentId) => {
     .from('daily_check_ins')
     .select('*')
     .eq('student_id', studentId)
-    .gte('check_in_time', `${today}T00:00:00.000Z`)
-    .lte('check_in_time', `${today}T23:59:59.999Z`)
+    .eq('check_in_date', today)
     .maybeSingle();
     
   if (error) {
