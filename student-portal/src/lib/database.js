@@ -230,3 +230,86 @@ export const addNewStudent = async ({ name, email, phone, program, password, dat
 
   return authData.user;
 };
+
+export const getActiveSession = async (studentId) => {
+  const { data, error } = await supabase
+    .from('session_logs')
+    .select('*')
+    .eq('student_id', studentId)
+    .eq('status', 'active')
+    .maybeSingle();
+    
+  if (error) {
+    console.error('Error fetching active session:', error);
+    return null;
+  }
+  return data;
+};
+
+export const startSession = async (studentId) => {
+  const { data, error } = await supabase
+    .from('session_logs')
+    .insert([{
+      student_id: studentId,
+      status: 'active'
+    }])
+    .select()
+    .single();
+    
+  if (error) {
+    console.error('Error starting session:', error);
+    return null;
+  }
+  return data;
+};
+
+export const endSession = async (sessionId) => {
+  const endTime = new Date();
+  
+  const { data: session, error: fetchError } = await supabase
+    .from('session_logs')
+    .select('start_time')
+    .eq('id', sessionId)
+    .single();
+    
+  if (fetchError || !session) {
+    console.error('Error fetching session for end time:', fetchError);
+    return null;
+  }
+  
+  const startTime = new Date(session.start_time);
+  const durationMs = endTime.getTime() - startTime.getTime();
+  const durationMinutes = Math.round(durationMs / (1000 * 60));
+
+  const { data, error } = await supabase
+    .from('session_logs')
+    .update({
+      end_time: endTime.toISOString(),
+      duration_minutes: durationMinutes,
+      status: 'completed'
+    })
+    .eq('id', sessionId)
+    .select()
+    .single();
+    
+  if (error) {
+    console.error('Error ending session:', error);
+    return null;
+  }
+  return data;
+};
+
+export const getSessionLogs = async (studentId) => {
+  const { data, error } = await supabase
+    .from('session_logs')
+    .select('*')
+    .eq('student_id', studentId)
+    .eq('status', 'completed')
+    .order('start_time', { ascending: false });
+    
+  if (error) {
+    console.error('Error fetching session logs:', error);
+    return [];
+  }
+  return data;
+};

@@ -17,7 +17,10 @@ import {
   getCurrentFinancials, 
   getCurrentAttendance, 
   getTimetable, 
-  getAnnouncements 
+  getAnnouncements,
+  getActiveSession,
+  startSession,
+  endSession
 } from '../lib/database';
 
 const Dashboard = () => {
@@ -27,6 +30,17 @@ const Dashboard = () => {
   const [timetable, setTimetable] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [activeSession, setActiveSession] = useState(null);
+  const [elapsedTime, setElapsedTime] = useState('00:00:00');
+
+  const formatDuration = (ms) => {
+    const totalSecs = Math.floor(ms / 1000);
+    const hrs = Math.floor(totalSecs / 3600).toString().padStart(2, '0');
+    const mins = Math.floor((totalSecs % 3600) / 60).toString().padStart(2, '0');
+    const secs = (totalSecs % 60).toString().padStart(2, '0');
+    return `${hrs}:${mins}:${secs}`;
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,6 +57,11 @@ const Dashboard = () => {
         setAttendance(att);
         setTimetable(time || []);
         setAnnouncements(ann || []);
+        
+        if (stu) {
+          const session = await getActiveSession(stu.id);
+          setActiveSession(session);
+        }
       } catch (error) {
         console.error("Dashboard fetch error:", error);
       } finally {
@@ -51,6 +70,40 @@ const Dashboard = () => {
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    let interval = null;
+    if (activeSession) {
+      interval = setInterval(() => {
+        const start = new Date(activeSession.start_time).getTime();
+        const now = new Date().getTime();
+        const diff = now - start;
+        setElapsedTime(formatDuration(diff));
+      }, 1000);
+    } else {
+      setElapsedTime('00:00:00');
+    }
+    return () => clearInterval(interval);
+  }, [activeSession]);
+
+  const handleStartSession = async () => {
+    if (!student) return;
+    const session = await startSession(student.id);
+    if (session) {
+      setActiveSession(session);
+    }
+  };
+
+  const handleEndSession = async () => {
+    if (!activeSession) return;
+    const completed = await endSession(activeSession.id);
+    if (completed) {
+      setActiveSession(null);
+      alert(`Class session completed! Duration: ${completed.duration_minutes} minutes.`);
+      const att = await getCurrentAttendance();
+      setAttendance(att);
+    }
+  };
 
   if (loading) {
     return <div className="p-8 text-center text-brand-gray font-semibold animate-pulse">Loading Dashboard...</div>;
@@ -76,29 +129,84 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6 md:space-y-8 max-w-7xl mx-auto">
-      {/* Welcome Banner Card */}
-      <div className="relative overflow-hidden bg-brand-navy p-6 md:p-8 rounded-2xl text-white shadow-premium">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue/15 rounded-full blur-3xl -mr-10 -mt-10"></div>
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      {/* Top Banner and Timer Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Welcome Banner Card */}
+        <div className="lg:col-span-2 relative overflow-hidden bg-brand-navy p-6 md:p-8 rounded-2xl text-white shadow-premium">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-blue/15 rounded-full blur-3xl -mr-10 -mt-10"></div>
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="space-y-2">
+              <span className="text-[10px] uppercase font-bold tracking-widest text-brand-blue bg-brand-navy-light px-3 py-1 rounded-full">
+                Mentorix Student Portal
+              </span>
+              <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">
+                {getGreeting()}, {student.name}
+              </h2>
+              <p className="text-gray-300 text-sm max-w-md">
+                Here is your academic overview for today. Stay updated with your timetable and class notifications.
+              </p>
+            </div>
+            <div className="shrink-0 flex gap-2">
+              <Link 
+                to="/profile" 
+                className="bg-white/10 hover:bg-white/20 text-white font-bold text-xs px-4 py-2.5 rounded-lg border border-white/10 transition-all flex items-center gap-2"
+              >
+                <User size={14} />
+                <span>View Profile</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Live Session Timer Card */}
+        <div className="relative overflow-hidden bg-white p-6 md:p-8 rounded-2xl border border-gray-100 shadow-soft flex flex-col justify-between min-h-[200px]">
           <div className="space-y-2">
-            <span className="text-[10px] uppercase font-bold tracking-widest text-brand-blue bg-brand-navy-light px-3 py-1 rounded-full">
-              Mentorix Student Portal
+            <span className="text-[10px] uppercase font-bold tracking-widest text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100 flex items-center gap-1.5 w-fit">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              Live Session Tracker
             </span>
-            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">
-              {getGreeting()}, {student.name}
-            </h2>
-            <p className="text-gray-300 text-sm max-w-md">
-              Here is your academic overview for today. Stay updated with your timetable and class notifications.
+            <h3 className="text-base font-extrabold text-brand-slate">Class Attendance Timer</h3>
+            <p className="text-[11px] text-brand-gray leading-normal">
+              Check in when your class starts and check out when it ends.
             </p>
           </div>
-          <div className="shrink-0 flex gap-2">
-            <Link 
-              to="/profile" 
-              className="bg-white/10 hover:bg-white/20 text-white font-bold text-xs px-4 py-2.5 rounded-lg border border-white/10 transition-all flex items-center gap-2"
-            >
-              <User size={14} />
-              <span>View Profile</span>
-            </Link>
+
+          <div className="my-2 text-center">
+            {activeSession ? (
+              <div className="space-y-1">
+                <span className="text-3xl font-black font-mono text-emerald-600 tracking-wider animate-pulse">
+                  {elapsedTime}
+                </span>
+                <p className="text-[9px] font-bold text-emerald-500 uppercase tracking-widest">Active Check-In</p>
+              </div>
+            ) : (
+              <div className="space-y-1">
+                <span className="text-3xl font-black font-mono text-gray-300 tracking-wider">
+                  00:00:00
+                </span>
+                <p className="text-[9px] font-bold text-brand-gray uppercase tracking-widest">Offline</p>
+              </div>
+            )}
+          </div>
+
+          <div>
+            {activeSession ? (
+              <button
+                onClick={handleEndSession}
+                className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-md text-xs uppercase tracking-wider flex items-center justify-center gap-2"
+              >
+                <span className="w-2.5 h-2.5 rounded bg-white shrink-0"></span>
+                <span>End Class / Check-Out</span>
+              </button>
+            ) : (
+              <button
+                onClick={handleStartSession}
+                className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl transition-all shadow-md text-xs uppercase tracking-wider flex items-center justify-center gap-2"
+              >
+                <span className="w-2 h-2 rounded-full bg-white shrink-0 animate-ping"></span>
+                <span>Start Class / Check-In</span>
+              </button>
+            )}
           </div>
         </div>
       </div>
