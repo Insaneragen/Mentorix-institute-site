@@ -19,7 +19,7 @@ import {
   addStudentAttendanceRecord, 
   uploadFeeStatement,
   addNewStudent,
-  getSessionLogs
+  getDailyCheckIns
 } from '../../lib/database';
 
 const StudentDirectory = () => {
@@ -31,7 +31,7 @@ const StudentDirectory = () => {
   const [loading, setLoading] = useState(true);
   const [studentAttendance, setStudentAttendance] = useState(null);
   const [studentFinancials, setStudentFinancials] = useState(null);
-  const [sessionLogs, setSessionLogs] = useState([]);
+  const [dailyCheckIns, setDailyCheckIns] = useState([]);
 
   // New Student Form States
   const [addingNew, setAddingNew] = useState(false);
@@ -72,10 +72,10 @@ const StudentDirectory = () => {
   const fetchStudentDetails = async (id) => {
     const att = await getAttendance(id);
     const fin = await getFinancials(id);
-    const logs = await getSessionLogs(id);
+    const logs = await getDailyCheckIns(id);
     setStudentAttendance(att);
     setStudentFinancials(fin);
-    setSessionLogs(logs || []);
+    setDailyCheckIns(logs || []);
   };
 
   useEffect(() => {
@@ -599,12 +599,12 @@ const StudentDirectory = () => {
               </div>
             </div>
 
-            {/* Live Check-In Timer Session Logs */}
-            <div className="bg-white rounded-2xl border border-slate-100 shadow-soft overflow-hidden">
+            {/* Daily Check-In Logs */}
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-soft overflow-hidden mt-6">
               <div className="p-4 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
-                <h4 className="font-extrabold text-slate-900 text-sm">Live Check-In Session Logs</h4>
+                <h4 className="font-extrabold text-slate-900 text-sm">Daily Check-In Logs</h4>
                 <span className="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded border border-emerald-100 font-bold">
-                  Timer History
+                  Attendance Marked
                 </span>
               </div>
               <div className="overflow-x-auto">
@@ -612,30 +612,24 @@ const StudentDirectory = () => {
                   <thead>
                     <tr className="bg-slate-100 border-b border-slate-200 font-bold text-slate-700 uppercase">
                       <th className="p-3">Date</th>
-                      <th className="p-3">Start Time</th>
-                      <th className="p-3">End Time</th>
-                      <th className="p-3">Total Duration</th>
+                      <th className="p-3">Check-In Time</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 text-slate-800">
-                    {sessionLogs.length === 0 ? (
+                    {dailyCheckIns.length === 0 ? (
                       <tr>
-                        <td colSpan="4" className="p-4 text-center text-slate-400">No session logs filed.</td>
+                        <td colSpan="2" className="p-4 text-center text-slate-400">No daily check-ins recorded yet.</td>
                       </tr>
                     ) : (
-                      sessionLogs.map(log => {
-                        const start = new Date(log.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                        const end = log.end_time ? new Date(log.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A';
+                      dailyCheckIns.map(log => {
+                        const checkInTime = new Date(log.check_in_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                        const dateStr = new Date(log.check_in_date).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
                         return (
                           <tr key={log.id} className="hover:bg-slate-50/50">
                             <td className="p-3 font-semibold whitespace-nowrap">
-                              {new Date(log.date).toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' })}
+                              {dateStr}
                             </td>
-                            <td className="p-3 font-medium">{start}</td>
-                            <td className="p-3 font-medium text-slate-500">{end}</td>
-                            <td className="p-3 font-bold text-emerald-600">
-                              {log.duration_minutes ? `${log.duration_minutes}m` : 'N/A'}
-                            </td>
+                            <td className="p-3 font-bold text-emerald-600">{checkInTime}</td>
                           </tr>
                         );
                       })

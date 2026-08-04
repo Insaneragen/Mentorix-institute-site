@@ -364,3 +364,17 @@ export const markDailyCheckIn = async (studentId) => {
   }
   return data;
 };
+
+export const getDailyCheckIns = async (studentId) => {
+  const { data, error } = await supabase
+    .from('daily_check_ins')
+    .select('*')
+    .eq('student_id', studentId)
+    .order('check_in_time', { ascending: false });
+    
+  if (error) {
+    console.error('Error fetching student check-ins:', error);
+    return [];
+  }
+  return data;
+};
