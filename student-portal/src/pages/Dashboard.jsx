@@ -219,7 +219,7 @@ const Dashboard = () => {
       </div>
 
       {/* Overview stats cards grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Total Fee Balance Card */}
         <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-soft hover:shadow-md transition-shadow flex flex-col justify-between min-h-[140px]">
           <div className="flex items-center justify-between">
@@ -239,30 +239,6 @@ const Dashboard = () => {
           <div className="border-t border-gray-100 pt-3 mt-3 flex items-center justify-between">
             <Link to="/financials" className="text-xs font-bold text-brand-blue hover:text-brand-blue-dark flex items-center gap-1">
               <span>Financial statement</span>
-              <ArrowRight size={12} />
-            </Link>
-          </div>
-        </div>
-
-        {/* Overall Attendance Card */}
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-soft hover:shadow-md transition-shadow flex flex-col justify-between min-h-[140px]">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-brand-gray uppercase tracking-wider">Overall Attendance</span>
-            <div className="p-2 rounded-lg bg-emerald-50 text-emerald-500">
-              <CheckSquare size={18} />
-            </div>
-          </div>
-          <div>
-            <h3 className="text-2xl font-extrabold text-brand-slate mt-2">
-              {attendance?.overallPercentage ?? 100}%
-            </h3>
-            <p className="text-xs text-brand-gray mt-1">
-              Requirement: Keep overall attendance above 80%.
-            </p>
-          </div>
-          <div className="border-t border-gray-100 pt-3 mt-3 flex items-center justify-between">
-            <Link to="/academics" className="text-xs font-bold text-brand-blue hover:text-brand-blue-dark flex items-center gap-1">
-              <span>Detailed academics calendar</span>
               <ArrowRight size={12} />
             </Link>
           </div>
