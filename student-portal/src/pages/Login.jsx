@@ -46,7 +46,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const { data, error: authError } = await supabase.auth.signInWithPassword({
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -54,9 +54,20 @@ const Login = () => {
       if (authError) {
         setError(authError.message);
       } else {
-        const role = data?.user?.user_metadata?.role || 'student';
-        const isAdmin = role === 'admin' || email.toLowerCase().includes('admin') || email.toLowerCase().includes('saneesh');
-        if (isAdmin) {
+        // Query the database to check their true role
+        const { data: profile, error: profileError } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', authData.user.id)
+          .single();
+
+        if (profileError) {
+          setError('Failed to fetch user profile.');
+          return;
+        }
+
+        const role = profile?.role || 'student';
+        if (role === 'admin') {
           navigate('/admin');
           window.location.reload();
         } else {

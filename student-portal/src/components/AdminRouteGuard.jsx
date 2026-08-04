@@ -13,8 +13,17 @@ const AdminRouteGuard = ({ children }) => {
       try {
         const { data } = await supabase.auth.getSession();
         if (data.session) {
-          const role = data.session.user?.user_metadata?.role || 'student';
-          setIsAdmin(role === 'admin');
+          const { data: profile, error } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', data.session.user.id)
+            .single();
+          
+          if (!error && profile) {
+            setIsAdmin(profile.role === 'admin');
+          } else {
+            setIsAdmin(false);
+          }
         } else {
           setIsAdmin(false);
         }
@@ -28,10 +37,18 @@ const AdminRouteGuard = ({ children }) => {
 
     checkAdminSession();
 
-    const authListener = supabase.auth.onAuthStateChange((_event, currentSession) => {
+    const authListener = supabase.auth.onAuthStateChange(async (_event, currentSession) => {
       if (currentSession) {
-        const role = currentSession.user?.user_metadata?.role || 'student';
-        setIsAdmin(role === 'admin');
+        try {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', currentSession.user.id)
+            .single();
+          setIsAdmin(profile?.role === 'admin');
+        } catch {
+          setIsAdmin(false);
+        }
       } else {
         setIsAdmin(false);
       }
