@@ -96,6 +96,13 @@ const Dashboard = () => {
 
   const handleEndSession = async () => {
     if (!activeSession) return;
+    
+    // Prevent accidental check-outs if the session was started less than 3 seconds ago (ghost click prevention)
+    const elapsedMs = new Date().getTime() - new Date(activeSession.start_time).getTime();
+    if (elapsedMs < 3000) {
+      return;
+    }
+
     const completed = await endSession(activeSession.id);
     if (completed) {
       setActiveSession(null);
