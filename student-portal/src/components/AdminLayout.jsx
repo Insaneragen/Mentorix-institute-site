@@ -95,13 +95,9 @@ const AdminLayout = () => {
       >
         {/* Logo Branding */}
         <div className="flex items-center justify-between h-20 px-6 border-b border-slate-800">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 font-black text-white rounded bg-slate-700 text-xl shadow-md border border-slate-600">
-              M
-            </div>
-            <div className="flex flex-col">
-              <span className="text-lg font-bold tracking-tight text-white leading-none mb-1">MENTORIX</span>
-              <span className="text-[9px] font-semibold text-emerald-500 tracking-wider uppercase leading-none">Administration</span>
+          <div className="flex items-center">
+            <div className="bg-white px-2.5 py-1.5 rounded-xl shadow-sm">
+              <img src="/logo.png" alt="Mentorix Institute Admin" className="h-7 w-auto object-contain" />
             </div>
           </div>
           <button 

@@ -120,13 +120,9 @@ const Login = () => {
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-brand-blue/10 rounded-full blur-3xl -ml-20 -mb-20"></div>
 
         {/* Top Header */}
-        <div className="flex items-center gap-3 relative z-10">
-          <div className="flex items-center justify-center w-10 h-10 font-bold text-white rounded bg-brand-blue text-xl shadow-md">
-            M
-          </div>
-          <div>
-            <p className="font-bold text-xl tracking-tight leading-none mb-1">MENTORIX</p>
-            <p className="text-[9px] font-bold text-brand-blue tracking-widest uppercase">Where Potential Meets Purpose</p>
+        <div className="flex items-center relative z-10">
+          <div className="bg-white px-3 py-2 rounded-2xl shadow-md">
+            <img src="/logo.png" alt="Mentorix Institute" className="h-8 w-auto object-contain" />
           </div>
         </div>
 
@@ -169,14 +165,8 @@ const Login = () => {
       <div className="flex flex-col justify-center w-full lg:w-1/2 p-8 md:p-12 xl:p-16">
         <div className="w-full max-w-md mx-auto">
           {/* Logo (Shown on mobile only) */}
-          <div className="flex items-center gap-3 mb-8 lg:hidden">
-            <div className="flex items-center justify-center w-10 h-10 font-bold text-white rounded bg-brand-blue text-xl shadow-sm">
-              M
-            </div>
-            <div>
-              <p className="font-extrabold text-lg text-brand-navy leading-none mb-1">MENTORIX</p>
-              <p className="text-[8px] font-bold text-brand-blue tracking-wider uppercase">Where Potential Meets Purpose</p>
-            </div>
+          <div className="flex items-center mb-8 lg:hidden">
+            <img src="/logo.png" alt="Mentorix Institute" className="h-9 w-auto object-contain" />
           </div>
 
           {/* Title Headers */}

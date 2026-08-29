@@ -45,14 +45,8 @@
     <!-- Header -->
     <header class="w-full bg-white border-b border-gray-100 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
-            <a href="index.html" class="flex items-center gap-2 cursor-pointer group">
-                <div class="w-10 h-10 bg-brand-blue text-white flex items-center justify-center font-bold text-xl rounded transition-transform group-hover:scale-105">
-                    M
-                </div>
-                <div class="flex flex-col">
-                    <span class="font-bold text-xl tracking-tight text-brand-slate leading-none mb-1">MENTORIX</span>
-                    <span class="text-[9px] font-bold text-brand-blue tracking-[0.2em] uppercase leading-none">Where Potential Meets Purpose</span>
-                </div>
+            <a href="index.html" class="flex items-center cursor-pointer group py-1" aria-label="Mentorix Institute Home">
+                <img src="logo.png" alt="Mentorix Institute Logo" class="h-10 md:h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]" />
             </a>
 
             <nav class="hidden lg:flex items-center gap-8 font-medium text-sm text-brand-slate">
@@ -76,10 +70,9 @@
     <div id="mobile-menu-drawer" class="fixed inset-0 z-50 bg-brand-slate/60 backdrop-blur-sm hidden lg:hidden">
         <div class="absolute right-0 top-0 bottom-0 w-80 bg-white shadow-xl flex flex-col p-6 transition-transform duration-300 translate-x-full" id="mobile-menu-content">
             <div class="flex items-center justify-between pb-6 border-b border-gray-100">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-brand-blue text-white flex items-center justify-center font-bold text-lg rounded">M</div>
-                    <span class="font-bold text-xl tracking-tight text-brand-slate">MENTORIX</span>
-                </div>
+                <a href="index.html" class="flex items-center" aria-label="Mentorix Institute Home">
+                    <img src="logo.png" alt="Mentorix Institute Logo" class="h-9 w-auto object-contain" />
+                </a>
                 <button id="mobile-menu-close" class="text-brand-slate text-2xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
@@ -428,9 +421,10 @@
                 
                 <!-- Brand -->
                 <div class="lg:col-span-1">
-                    <div class="flex items-center gap-2 mb-6">
-                        <div class="w-8 h-8 bg-brand-blue text-white flex items-center justify-center font-bold text-lg rounded">M</div>
-                        <span class="font-bold text-xl tracking-tight">MENTORIX</span>
+                    <div class="mb-6">
+                        <div class="bg-white p-2.5 rounded-xl inline-block shadow-sm">
+                            <img src="logo.png" alt="Mentorix Institute Logo" class="h-8 w-auto object-contain" />
+                        </div>
                     </div>
                     <p class="text-brand-gray text-sm leading-relaxed mb-6">
                         Your global education partner in Dubai — guiding students, professionals, and organisations from where they are today to where they want to be.

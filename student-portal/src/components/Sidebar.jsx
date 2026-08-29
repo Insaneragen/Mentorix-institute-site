@@ -75,13 +75,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       >
         {/* Header/Logo */}
         <div className="flex items-center justify-between h-20 px-6 border-b border-brand-navy-light">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-10 h-10 font-extrabold text-white rounded bg-brand-blue shadow-md text-xl">
-              M
-            </div>
-            <div className="flex flex-col">
-              <span className="text-lg font-bold tracking-tight text-white leading-none mb-1">MENTORIX</span>
-              <span className="text-[9px] font-semibold text-brand-blue tracking-wider uppercase leading-none">Student Portal</span>
+          <div className="flex items-center">
+            <div className="bg-white px-2.5 py-1.5 rounded-xl shadow-sm">
+              <img src="/logo.png" alt="Mentorix Institute" className="h-7 w-auto object-contain" />
             </div>
           </div>
           <button 
