@@ -11,6 +11,8 @@ import Academics from './pages/Academics';
 import StudyHub from './pages/StudyHub';
 import Financials from './pages/Financials';
 import TestRole from './pages/TestRole';
+import WorkInProgress from './pages/WorkInProgress';
+import NotFound from './pages/NotFound';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -40,6 +42,8 @@ function App() {
           <Route path="study-hub" element={<StudyHub />} />
           <Route path="academics" element={<Academics />} />
           <Route path="financials" element={<Financials />} />
+          <Route path="wip" element={<WorkInProgress />} />
+          <Route path="work-in-progress" element={<WorkInProgress />} />
         </Route>
 
         {/* Protected Admin Portal Routes */}
@@ -55,10 +59,11 @@ function App() {
           <Route path="students" element={<StudentDirectory />} />
           <Route path="schedules" element={<ClassScheduleManager />} />
           <Route path="announcements" element={<AnnouncementsManager />} />
+          <Route path="wip" element={<WorkInProgress title="Admin Module In Development" />} />
         </Route>
 
-        {/* Catch-all Redirect */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* Catch-all 404 Route */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </HashRouter>
   );

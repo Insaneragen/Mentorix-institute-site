@@ -72,6 +72,9 @@ const PortalLayout = () => {
         return 'Academic Schedule & Notices';
       case '/financials':
         return 'Financial Statement';
+      case '/wip':
+      case '/work-in-progress':
+        return 'Work In Progress';
       default:
         return 'Mentorix Portal';
     }

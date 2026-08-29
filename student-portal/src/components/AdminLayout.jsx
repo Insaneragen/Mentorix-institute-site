@@ -70,6 +70,8 @@ const AdminLayout = () => {
         return 'Class Scheduling Panel';
       case '/admin/announcements':
         return 'Institute Bulletins Editor';
+      case '/admin/wip':
+        return 'Admin Feature In Progress';
       default:
         return 'Mentorix Admin';
     }
