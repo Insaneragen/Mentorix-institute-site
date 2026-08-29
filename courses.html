@@ -545,5 +545,69 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fadeIn { animation: fadeIn 0.4s ease-out forwards; }
     </style>
+
+    <!-- Floating WhatsApp Button -->
+    <a 
+      href="https://wa.me/971569969951?text=Hi%20Mentorix%20Institute%2C%20I%20would%20like%20to%20inquire%20about%20your%20courses." 
+      class="whatsapp-float" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      aria-label="Chat with Mentorix Institute on WhatsApp"
+    >
+      <svg viewBox="0 0 32 32" class="whatsapp-icon" fill="currentColor">
+        <path d="M16.002 2C8.269 2 2 8.27 2 16.004c0 2.658.742 5.143 2.029 7.27L2 30l6.936-1.986A13.93 13.93 0 0 0 16.002 30C23.733 30 30 23.734 30 16.004 30 8.27 23.733 2 16.002 2zm0 25.642c-2.32 0-4.48-.684-6.304-1.865l-.452-.294-4.664 1.336 1.353-4.526-.296-.474a11.583 11.583 0 0 1-1.785-6.177c0-6.425 5.228-11.653 11.652-11.653 6.426 0 11.654 5.228 11.654 11.653 0 6.424-5.228 11.654-11.653 11.654 11.653zm6.39-8.73c-.35-.175-2.073-1.023-2.395-1.14-.322-.116-.556-.175-.79.175-.233.35-.905 1.14-1.11 1.373-.204.233-.409.262-.76.087a9.58 9.58 0 0 1-2.822-1.74 10.573 10.573 0 0 1-1.954-2.433c-.204-.35-.022-.538.153-.713.158-.157.35-.409.525-.613.175-.204.233-.35.35-.584.117-.233.058-.438-.03-.613-.087-.175-.79-1.902-1.082-2.604-.284-.684-.573-.591-.79-.602l-.673-.012c-.233 0-.613.087-.934.438s-1.226 1.2-1.226 2.925c0 1.726 1.256 3.393 1.431 3.626.175.234 2.472 3.774 5.989 5.291.837.362 1.49.578 2 .74.84.267 1.605.23 2.21.139.675-.101 2.073-.847 2.366-1.664.292-.818.292-1.52.204-1.665-.087-.146-.321-.233-.671-.409z"/>
+      </svg>
+      <span class="whatsapp-label">Chat with Us</span>
+    </a>
+
+    <style>
+      .whatsapp-float {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background-color: #25D366;
+        color: #ffffff;
+        border-radius: 50px;
+        padding: 12px 20px 12px 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+        z-index: 999;
+        text-decoration: none;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .whatsapp-float:hover {
+        background-color: #20BA56;
+        transform: translateY(-4px) scale(1.03);
+        box-shadow: 0 8px 25px rgba(37, 211, 102, 0.55);
+        color: #ffffff;
+      }
+      .whatsapp-icon {
+        width: 28px;
+        height: 28px;
+        fill: currentColor;
+        flex-shrink: 0;
+      }
+      @media (max-width: 640px) {
+        .whatsapp-float {
+          bottom: 20px;
+          right: 20px;
+          padding: 14px;
+          border-radius: 50%;
+        }
+        .whatsapp-label {
+          display: none;
+        }
+        .whatsapp-icon {
+          width: 30px;
+          height: 30px;
+        }
+      }
+    </style>
 </body>
 </html>
