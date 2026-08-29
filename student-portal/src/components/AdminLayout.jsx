@@ -12,6 +12,7 @@ import {
   TrendingUp
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import logoImg from '../assets/logo.png';
 
 const AdminLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -97,7 +98,7 @@ const AdminLayout = () => {
         <div className="flex items-center justify-between h-20 px-6 border-b border-slate-800">
           <div className="flex items-center">
             <div className="bg-white px-2.5 py-1.5 rounded-xl shadow-sm">
-              <img src="/logo.png" alt="Mentorix Institute Admin" className="h-7 w-auto object-contain" />
+              <img src={logoImg} alt="Mentorix Institute Admin" className="h-7 w-auto object-contain" />
             </div>
           </div>
           <button 

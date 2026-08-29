@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { getCurrentStudent } from '../lib/database';
+import logoImg from '../assets/logo.png';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
@@ -77,7 +78,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         <div className="flex items-center justify-between h-20 px-6 border-b border-brand-navy-light">
           <div className="flex items-center">
             <div className="bg-white px-2.5 py-1.5 rounded-xl shadow-sm">
-              <img src="/logo.png" alt="Mentorix Institute" className="h-7 w-auto object-contain" />
+              <img src={logoImg} alt="Mentorix Institute" className="h-7 w-auto object-contain" />
             </div>
           </div>
           <button 
