@@ -16,44 +16,60 @@ const Login = () => {
 
   const handleForgotPassword = (e) => {
     e.preventDefault();
-    if (!email || !email.trim()) {
+    const cleanEmail = email.trim();
+    if (!cleanEmail) {
       setError('Please type your registered email address first.');
+      setSuccessMessage('');
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(cleanEmail)) {
+      setError('Please enter a valid email address.');
       setSuccessMessage('');
       return;
     }
     setError('');
     
-    // Look up password in mock student storage
-    const studentsJson = localStorage.getItem('mentorix_db_students');
-    let passFound = 'demostudentpass';
-    if (studentsJson) {
-      try {
-        const students = JSON.parse(studentsJson);
-        const found = students.find(s => s.email && s.email.trim().toLowerCase() === email.trim().toLowerCase());
-        if (found) {
-          passFound = found.password || 'demostudentpass';
+    if (isLocalhost) {
+      const studentsJson = localStorage.getItem('mentorix_db_students');
+      let passFound = 'demostudentpass';
+      if (studentsJson) {
+        try {
+          const students = JSON.parse(studentsJson);
+          const found = students.find(s => s.email && s.email.trim().toLowerCase() === cleanEmail.toLowerCase());
+          if (found) {
+            passFound = found.password || 'demostudentpass';
+          }
+        } catch {
+          // ignore
         }
-      } catch (err) {
-        console.error(err);
       }
+      setSuccessMessage(`Password recovery simulated for ${cleanEmail}! (Sandbox password: "${passFound}")`);
+    } else {
+      setSuccessMessage(`If an account exists for ${cleanEmail}, instructions have been sent.`);
     }
-    
-    setSuccessMessage(`A password recovery email has been simulated and sent to ${email.trim()}! (Your account login password is: "${passFound}")`);
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
+    
+    const cleanEmail = email.trim();
+    if (!cleanEmail || !password) {
+      setError('Please enter both email and password.');
+      return;
+    }
+
     setLoading(true);
 
     try {
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+        email: cleanEmail,
+        password: password,
       });
 
       if (authError) {
-        setError(authError.message);
+        setError(authError.message || 'Invalid email or password.');
       } else {
         // Query the database to check their true role
         const { data: profile, error: profileError } = await supabase
