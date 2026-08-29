@@ -2,6 +2,6 @@
   "name": "mentorix-root",
   "version": "1.0.0",
   "scripts": {
-    "build": "cd student-portal && npm install && npm run build && cd .. && mkdir -p public/student-portal && cp -r student-portal/dist/* public/student-portal/ && cp index.html public/ && cp courses.html public/ && cp team.jpg public/ && cp logo.png public/"
+    "build": "cd student-portal && npm install && npm run build && cd .. && mkdir -p public/student-portal && cp -r student-portal/dist/* public/student-portal/ && cp -r images public/ && cp index.html public/ && cp courses.html public/ && cp team.jpg public/ && cp logo.png public/"
   }
 }
