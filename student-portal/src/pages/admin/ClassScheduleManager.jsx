@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CalendarClock, Video, MapPin, User, Check, Power, AlertCircle } from 'lucide-react';
+import { Video, Power } from 'lucide-react';
 import { getTimetable, toggleTimetableActive } from '../../lib/mockData';
 
 const ClassScheduleManager = () => {

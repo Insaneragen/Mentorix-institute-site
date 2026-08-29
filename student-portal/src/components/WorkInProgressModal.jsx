@@ -1,5 +1,5 @@
 import React from 'react';
-import { Construction, X, Sparkles, Clock, CheckCircle2 } from 'lucide-react';
+import { Construction, X, Clock } from 'lucide-react';
 
 const WorkInProgressModal = ({ isOpen, onClose, featureName = "This Feature" }) => {
   if (!isOpen) return null;

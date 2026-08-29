@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { 
   Calendar, 
   CreditCard, 
-  CheckSquare, 
   ArrowRight, 
   Video, 
   MapPin, 
@@ -15,40 +14,23 @@ import {
 import { 
   getCurrentStudent, 
   getCurrentFinancials, 
-  getCurrentAttendance, 
   getTimetable, 
-  getAnnouncements,
-  getActiveSession,
-  startSession,
-  endSession
+  getAnnouncements
 } from '../lib/database';
 
 const Dashboard = () => {
   const [student, setStudent] = useState(null);
   const [financials, setFinancials] = useState(null);
-  const [attendance, setAttendance] = useState(null);
   const [timetable, setTimetable] = useState([]);
   const [announcements, setAnnouncements] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [activeSession, setActiveSession] = useState(null);
-  const [elapsedTime, setElapsedTime] = useState('00:00:00');
-
-  const formatDuration = (ms) => {
-    const totalSecs = Math.floor(ms / 1000);
-    const hrs = Math.floor(totalSecs / 3600).toString().padStart(2, '0');
-    const mins = Math.floor((totalSecs % 3600) / 60).toString().padStart(2, '0');
-    const secs = (totalSecs % 60).toString().padStart(2, '0');
-    return `${hrs}:${mins}:${secs}`;
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [stu, fin, att, time, ann] = await Promise.all([
+        const [stu, fin, time, ann] = await Promise.all([
           getCurrentStudent(),
           getCurrentFinancials(),
-          getCurrentAttendance(),
           getTimetable(),
           getAnnouncements()
         ]);
@@ -70,47 +52,6 @@ const Dashboard = () => {
     };
     fetchData();
   }, []);
-
-  useEffect(() => {
-    let interval = null;
-    if (activeSession) {
-      interval = setInterval(() => {
-        const start = new Date(activeSession.start_time).getTime();
-        const now = new Date().getTime();
-        const diff = now - start;
-        setElapsedTime(formatDuration(diff));
-      }, 1000);
-    } else {
-      setElapsedTime('00:00:00');
-    }
-    return () => clearInterval(interval);
-  }, [activeSession]);
-
-  const handleStartSession = async () => {
-    if (!student) return;
-    const session = await startSession(student.id);
-    if (session) {
-      setActiveSession(session);
-    }
-  };
-
-  const handleEndSession = async () => {
-    if (!activeSession) return;
-    
-    // Prevent accidental check-outs if the session was started less than 3 seconds ago (ghost click prevention)
-    const elapsedMs = new Date().getTime() - new Date(activeSession.start_time).getTime();
-    if (elapsedMs < 3000) {
-      return;
-    }
-
-    const completed = await endSession(activeSession.id);
-    if (completed) {
-      setActiveSession(null);
-      alert(`Class session completed! Duration: ${completed.duration_minutes} minutes.`);
-      const att = await getCurrentAttendance();
-      setAttendance(att);
-    }
-  };
 
   if (loading) {
     return <div className="p-8 text-center text-brand-gray font-semibold animate-pulse">Loading Dashboard...</div>;

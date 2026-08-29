@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation, Link } from 'react-router-dom';
-import { Menu, Bell, ChevronRight, User, Check } from 'lucide-react';
+import { Menu, Bell, ChevronRight, Check } from 'lucide-react';
 import Sidebar from './Sidebar';
 import { getCurrentStudent, hasCheckedInToday, markDailyCheckIn } from '../lib/database';
 

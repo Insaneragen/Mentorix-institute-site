@@ -89,7 +89,7 @@ const Login = () => {
       const bypassEmail = roleType === 'admin' ? 'admin@mentorix.ae' : 'demo.student@mentorix.ae';
       const bypassPass = roleType === 'admin' ? 'demoadminpass' : 'demostudentpass';
       
-      const { data, error: bypassError } = await supabase.auth.signInWithPassword({
+      const { error: bypassError } = await supabase.auth.signInWithPassword({
         email: bypassEmail,
         password: bypassPass
       });

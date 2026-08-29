@@ -2,12 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, 
-  User, 
   BookOpen, 
   Calendar, 
-  CheckSquare, 
   CircleDollarSign, 
-  Bell, 
   LogOut,
   X
 } from 'lucide-react';

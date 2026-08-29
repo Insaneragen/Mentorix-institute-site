@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Users, Landmark, CheckSquare, ArrowRight, UserPlus, Megaphone } from 'lucide-react';
-import { getStudents, getTimetable, getAttendance, getFinancials } from '../../lib/database';
+import { Users, Landmark, CheckSquare, ArrowRight, UserPlus, Megaphone, Video } from 'lucide-react';
+import { getStudents, getTimetable, getAttendance } from '../../lib/database';
 
 const AdminDashboard = () => {
   const [students, setStudents] = useState([]);
