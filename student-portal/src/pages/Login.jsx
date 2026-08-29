@@ -122,8 +122,8 @@ const Login = () => {
 
         {/* Top Header */}
         <div className="flex items-center relative z-10">
-          <div className="bg-white px-3 py-2 rounded-2xl shadow-md">
-            <img src={logoImg} alt="Mentorix Institute" className="h-8 w-auto object-contain" />
+          <div className="bg-white px-4 py-2.5 rounded-2xl shadow-md">
+            <img src={logoImg} alt="Mentorix Institute" className="h-10 w-auto object-contain" />
           </div>
         </div>
 
@@ -167,7 +167,7 @@ const Login = () => {
         <div className="w-full max-w-md mx-auto">
           {/* Logo (Shown on mobile only) */}
           <div className="flex items-center mb-8 lg:hidden">
-            <img src={logoImg} alt="Mentorix Institute" className="h-9 w-auto object-contain" />
+            <img src={logoImg} alt="Mentorix Institute" className="h-11 w-auto object-contain" />
           </div>
 
           {/* Title Headers */}

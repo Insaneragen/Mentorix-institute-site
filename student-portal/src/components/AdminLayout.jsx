@@ -94,10 +94,10 @@ const AdminLayout = () => {
         }`}
       >
         {/* Logo Branding */}
-        <div className="flex items-center justify-between h-20 px-6 border-b border-slate-800">
+        <div className="flex items-center justify-between h-20 px-5 border-b border-slate-800">
           <div className="flex items-center">
-            <div className="bg-white px-2.5 py-1.5 rounded-xl shadow-sm">
-              <img src={logoImg} alt="Mentorix Institute Admin" className="h-7 w-auto object-contain" />
+            <div className="bg-white px-3 py-2 rounded-xl shadow-sm">
+              <img src={logoImg} alt="Mentorix Institute Admin" className="h-8 w-auto object-contain max-w-[170px]" />
             </div>
           </div>
           <button 
