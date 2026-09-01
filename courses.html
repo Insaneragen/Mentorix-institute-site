@@ -1,15 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Catalog | Mentorix Academy</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>115+ Accredited Courses Catalog | Mentorix Institute Dubai</title>
+    <meta name="description" content="Explore 115+ KHDA-regulated courses across Business, Artificial Intelligence, IT, Logistics, Languages, School Tuition & University Admissions in Dubai.">
+    <meta name="keywords" content="Course catalog, KHDA courses, Dubai professional certifications, IELTS, CIPS, PMP, Python, AI courses Dubai">
+    <link rel="canonical" href="https://mentorixinstitute.com/courses.html">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mentorixinstitute.com/courses.html">
+    <meta property="og:title" content="115+ Accredited Courses Catalog | Mentorix Institute Dubai">
+    <meta property="og:description" content="Search, filter, and compare durations & indicative fees across 115+ KHDA-regulated programs.">
+    <meta property="og:image" content="https://mentorixinstitute.com/images/hero-bg.jpg">
+    <meta property="og:locale" content="en_AE">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="115+ Accredited Courses Catalog | Mentorix Institute">
+    <meta name="twitter:description" content="Search and compare durations and fees across 115+ KHDA-regulated programs.">
+    <meta name="twitter:image" content="https://mentorixinstitute.com/images/hero-bg.jpg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Schema.org Course Catalog Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "Course",
+            "name": "Artificial Intelligence (AI) & Machine Learning",
+            "description": "Comprehensive applied AI programming and generative models training.",
+            "provider": {
+              "@type": "EducationalOrganization",
+              "name": "Mentorix Institute",
+              "sameAs": "https://mentorixinstitute.com"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "Course",
+            "name": "IELTS Academic & General Intensive Preparation",
+            "description": "Band 7.5+ guaranteed preparation with weekly mock tests and certified trainers.",
+            "provider": {
+              "@type": "EducationalOrganization",
+              "name": "Mentorix Institute",
+              "sameAs": "https://mentorixinstitute.com"
+            }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "Course",
+            "name": "Supply Chain & Logistics Management (CIPS/CILT)",
+            "description": "International procurement, freight forwarding, and customs clearance training in UAE.",
+            "provider": {
+              "@type": "EducationalOrganization",
+              "name": "Mentorix Institute",
+              "sameAs": "https://mentorixinstitute.com"
+            }
+          }
+        }
+      ]
+    }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -107,14 +178,14 @@
                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                     <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
                 </div>
-                <input type="text" id="courseSearch" class="block w-full pl-11 pr-4 py-4 bg-white border border-gray-300 rounded-xl text-brand-slate placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent shadow-sm transition-all" placeholder="Search courses... e.g. VAT, IELTS, AutoCAD, CIPS">
+                <input type="text" id="courseSearch" aria-label="Search across 115+ courses by name or category" class="block w-full pl-11 pr-4 py-4 bg-white border border-gray-300 rounded-xl text-brand-slate placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-brand-blue" placeholder="Search courses... e.g. VAT, IELTS, AutoCAD, CIPS">
             </div>
 
             <!-- Pills -->
             <div class="flex flex-wrap justify-center gap-3 mb-12" id="pills" data-aos="fade-up"></div>
             
             <div class="text-center text-sm font-semibold text-brand-gray mb-10" data-aos="fade-up">
-                Showing <span id="resultCount" class="text-brand-blue">0</span> courses
+                Showing <span id="resultCount" class="text-brand-blue font-bold">0</span> courses
             </div>
 
             <!-- Grid -->
@@ -132,16 +203,39 @@
                 <p class="text-brand-gray">Send us an enquiry and our team will get back to you with schedules, fees, and registration details.</p>
             </div>
             
-            <div class="bg-white p-8 rounded-2xl shadow-soft border border-gray-100" data-aos="fade-up">
-                <form onsubmit="event.preventDefault(); alert('Thank you! Our team will contact you shortly.');" class="space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <input type="text" placeholder="Full Name" required class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:border-brand-blue text-sm">
-                        <input type="email" placeholder="Email Address" required class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:border-brand-blue text-sm">
+            <div class="bg-white p-8 rounded-2xl shadow-soft border border-gray-100 relative" data-aos="fade-up">
+                <!-- Success Notification -->
+                <div id="course-lead-success" class="hidden mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-sm animate-fadeIn">
+                    <div class="flex items-center gap-2 font-bold mb-1">
+                        <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
+                        <span>Enquiry Submitted Successfully!</span>
                     </div>
-                    <input type="tel" placeholder="Phone Number" class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:border-brand-blue text-sm">
-                    <textarea id="msg" rows="4" placeholder="Tell us which course you're interested in and your goals" class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:border-brand-blue text-sm"></textarea>
-                    <button type="submit" class="w-full bg-brand-blue hover:bg-brand-bluedark text-white font-semibold py-3.5 rounded-lg transition-colors">
-                        Send Enquiry
+                    <p class="text-xs text-emerald-700 leading-relaxed">
+                        Thank you. Our admissions counselor will contact you via WhatsApp/Email with batch timings and course fees.
+                    </p>
+                </div>
+
+                <form id="course-enquiry-form" class="space-y-4" novalidate>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="course-lead-name" class="block text-xs font-semibold text-brand-slate mb-1">Full Name <span class="text-red-500">*</span></label>
+                            <input type="text" id="course-lead-name" placeholder="Full Name" required class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue text-sm">
+                        </div>
+                        <div>
+                            <label for="course-lead-email" class="block text-xs font-semibold text-brand-slate mb-1">Email Address <span class="text-red-500">*</span></label>
+                            <input type="email" id="course-lead-email" placeholder="Email Address" required class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue text-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="course-lead-phone" class="block text-xs font-semibold text-brand-slate mb-1">WhatsApp / Phone <span class="text-red-500">*</span></label>
+                        <input type="tel" id="course-lead-phone" placeholder="WhatsApp / Phone Number" required class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue text-sm">
+                    </div>
+                    <div>
+                        <label for="msg" class="block text-xs font-semibold text-brand-slate mb-1">Selected Course or Query</label>
+                        <textarea id="msg" rows="3" placeholder="Tell us which course you're interested in and your goals" class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue text-sm"></textarea>
+                    </div>
+                    <button type="submit" id="course-lead-btn" class="w-full bg-brand-blue hover:bg-brand-bluedark text-white font-bold py-3.5 rounded-lg transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer focus-visible:ring-2 focus-visible:ring-brand-blue">
+                        <span>Send Course Enquiry</span>
                     </button>
                 </form>
             </div>
@@ -472,6 +566,41 @@
                 closeWipModal();
             }
         });
+
+        // Course Enquiry Form Handler
+        const courseForm = document.getElementById('course-enquiry-form');
+        const courseSuccess = document.getElementById('course-lead-success');
+        if (courseForm) {
+            courseForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const name = document.getElementById('course-lead-name').value.trim();
+                const email = document.getElementById('course-lead-email').value.trim();
+                const phone = document.getElementById('course-lead-phone').value.trim();
+                const query = document.getElementById('msg').value.trim();
+
+                if (!name || !email || !phone) return;
+
+                const payload = {
+                    id: 'lead-course-' + Date.now(),
+                    name,
+                    email,
+                    phone,
+                    category: 'Course Catalog Enquiry',
+                    message: query || 'Course interest inquiry',
+                    created_at: new Date().toISOString()
+                };
+
+                const stored = JSON.parse(localStorage.getItem('mentorix_inquiries') || '[]');
+                stored.push(payload);
+                localStorage.setItem('mentorix_inquiries', JSON.stringify(stored));
+
+                courseForm.reset();
+                if (courseSuccess) {
+                    courseSuccess.classList.remove('hidden');
+                    courseSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            });
+        }
     </script>
 
     <!-- Student Portal Work In Progress Modal -->

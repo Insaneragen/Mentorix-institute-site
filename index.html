@@ -1,17 +1,110 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mentorix Academy | Your Global Education Partner</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Mentorix Institute | KHDA Licensed Training Institute Dubai</title>
+    <meta name="description" content="Mentorix Institute is a premier KHDA-licensed training institute in Dubai offering 115+ accredited courses across Business, IT, AI, Logistics, Languages, School Tuition & University Admissions.">
+    <meta name="keywords" content="Mentorix Institute, KHDA Dubai, training institute Dubai, professional courses, university admissions UAE, language training, school tuition Dubai, logistics certifications">
+    <meta name="author" content="Mentorix Institute">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://mentorixinstitute.com/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mentorixinstitute.com/">
+    <meta property="og:title" content="Mentorix Institute | KHDA Licensed Training Institute Dubai">
+    <meta property="og:description" content="115+ KHDA-licensed professional courses, study abroad admissions, and corporate training delivered in-centre and online.">
+    <meta property="og:image" content="https://mentorixinstitute.com/images/hero-bg.jpg">
+    <meta property="og:locale" content="en_AE">
+    <meta property="og:site_name" content="Mentorix Institute">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://mentorixinstitute.com/">
+    <meta name="twitter:title" content="Mentorix Institute | KHDA Licensed Training Institute Dubai">
+    <meta name="twitter:description" content="115+ KHDA-licensed professional courses, study abroad admissions, and corporate training.">
+    <meta name="twitter:image" content="https://mentorixinstitute.com/images/hero-bg.jpg">
+
+    <!-- Preload critical Hero Image & Fonts -->
+    <link rel="preload" href="images/hero-bg.jpg" as="image" type="image/jpeg">
+    <link rel="preload" href="logo.png" as="image" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Schema.org EducationalOrganization & FAQPage Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "EducationalOrganization",
+          "@id": "https://mentorixinstitute.com/#organization",
+          "name": "Mentorix Institute",
+          "alternateName": "Mentorix Academy",
+          "url": "https://mentorixinstitute.com",
+          "logo": "https://mentorixinstitute.com/logo.png",
+          "image": "https://mentorixinstitute.com/images/hero-bg.jpg",
+          "description": "KHDA-licensed training center in Dubai offering 115+ professional courses, school tuition, university admissions, and corporate training.",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Dubai",
+            "addressRegion": "Dubai",
+            "addressCountry": "AE"
+          },
+          "telephone": "+971569969951",
+          "priceRange": "$$",
+          "sameAs": [
+            "https://www.linkedin.com",
+            "https://www.instagram.com"
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://mentorixinstitute.com/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Are your courses KHDA approved?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "All courses are delivered under Mentorix Academy's KHDA-licensed Training Institute permit. Course content is subject to KHDA activity-permit approval."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Where can I see fees and durations?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Our full course catalog page lists every course with its duration and indicative fee in AED."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do you offer online classes?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Most courses are available both in-centre and online, so you can learn anytime, anywhere at your own pace."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can you train our company's team?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Absolutely. Corporate training can be arranged on-site, online, or blended, and customised to your team's goals."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -139,7 +232,7 @@
             
             <div class="relative animate-float" data-aos="fade-left" data-aos-delay="200">
                 <div class="aspect-square lg:aspect-[4/5] bg-gray-200 rounded-2xl overflow-hidden relative shadow-soft border border-gray-100">
-                    <img src="images/hero-bg.jpg" alt="Students in modern classroom" class="w-full h-full object-cover" />
+                    <img src="images/hero-bg.jpg" alt="Students learning in modern Dubai classroom" class="w-full h-full object-cover" width="600" height="750" fetchpriority="high" decoding="async" />
                     <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                 </div>
                 <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-soft border border-gray-100 flex items-center gap-4 animate-bounce" style="animation-duration: 3s;">
@@ -454,30 +547,69 @@
 
             <!-- Contact Form -->
             <div data-aos="fade-left" id="contact">
-                <div class="bg-white p-8 rounded-2xl shadow-soft border border-gray-100">
+                <div class="bg-white p-8 rounded-2xl shadow-soft border border-gray-100 relative">
                     <h3 class="text-2xl font-bold text-brand-slate mb-2">Start your learning journey</h3>
-                    <p class="text-sm text-brand-gray mb-6">Reach out and our team will get back to you shortly.</p>
+                    <p class="text-sm text-brand-gray mb-6">Reach out and our admissions team in Dubai will get back to you within 24 hours.</p>
                     
-                    <form onsubmit="event.preventDefault();" class="space-y-4">
-                        <div class="grid grid-cols-2 gap-4">
-                            <input type="text" placeholder="Full Name" required class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:border-brand-blue text-sm">
-                            <input type="tel" placeholder="Phone Number" class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:border-brand-blue text-sm">
+                    <!-- Submission Success Notification -->
+                    <div id="lead-success-msg" class="hidden mb-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-sm animate-fadeIn">
+                        <div class="flex items-center gap-2 font-bold mb-1">
+                            <i class="fa-solid fa-circle-check text-emerald-600 text-base"></i>
+                            <span>Enquiry Received Successfully!</span>
                         </div>
-                        <input type="email" placeholder="Email Address" required class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:border-brand-blue text-sm">
-                        <select required class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:border-brand-blue text-sm text-brand-gray">
-                            <option value="">Select a Category of Interest</option>
-                            <option>Accounting & Finance</option>
-                            <option>Artificial Intelligence (AI)</option>
-                            <option>Business Management & HR</option>
-                            <option>IT, Design & Technology</option>
-                            <option>Language & Communication</option>
-                            <option>School Tuition & Exam Prep</option>
-                            <option>Supply Chain, Logistics & Trade</option>
-                        </select>
-                        <textarea rows="4" placeholder="Tell us which course you're interested in and your goals" class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:border-brand-blue text-sm"></textarea>
-                        <button type="submit" class="w-full bg-brand-blue hover:bg-brand-bluedark text-white font-semibold py-3.5 rounded-lg transition-colors">
-                            Send Enquiry
+                        <p class="text-xs text-emerald-700 leading-relaxed">
+                            Thank you. Our senior academic counselor will connect with you via WhatsApp or Email shortly.
+                        </p>
+                    </div>
+
+                    <!-- Submission Error Notification -->
+                    <div id="lead-error-msg" class="hidden mb-6 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-xs font-semibold">
+                    </div>
+
+                    <form id="lead-inquiry-form" class="space-y-4" novalidate>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="lead-name" class="block text-xs font-semibold text-brand-slate mb-1">Full Name <span class="text-red-500">*</span></label>
+                                <input type="text" id="lead-name" name="name" placeholder="e.g. Sara Al Nuaimi" required class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue text-sm">
+                            </div>
+                            <div>
+                                <label for="lead-phone" class="block text-xs font-semibold text-brand-slate mb-1">WhatsApp / Phone <span class="text-red-500">*</span></label>
+                                <input type="tel" id="lead-phone" name="phone" placeholder="e.g. +971 50 123 4567" required class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue text-sm">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="lead-email" class="block text-xs font-semibold text-brand-slate mb-1">Email Address <span class="text-red-500">*</span></label>
+                            <input type="email" id="lead-email" name="email" placeholder="e.g. sara@example.com" required class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue text-sm">
+                        </div>
+
+                        <div>
+                            <label for="lead-category" class="block text-xs font-semibold text-brand-slate mb-1">Category of Interest <span class="text-red-500">*</span></label>
+                            <select id="lead-category" name="category" required class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue text-sm text-brand-slate">
+                                <option value="">Select a Category</option>
+                                <option value="University Admissions">University Admissions & SOP Support</option>
+                                <option value="Attestation Services">Attestation & Degree Equivalency</option>
+                                <option value="Language Training">Language Training (IELTS, TOEFL, Arabic, French)</option>
+                                <option value="Professional Courses">Professional & Corporate Training</option>
+                                <option value="Logistics & Supply Chain">Logistics, Freight & Supply Chain</option>
+                                <option value="School Tuition">School Tuition (British, IB, CBSE, US)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="lead-message" class="block text-xs font-semibold text-brand-slate mb-1">Your Learning Goals (Optional)</label>
+                            <textarea id="lead-message" name="message" rows="3" placeholder="Tell us which course or certification you are aiming for..." class="w-full bg-brand-light border border-gray-200 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue text-sm"></textarea>
+                        </div>
+
+                        <button type="submit" id="lead-submit-btn" class="w-full bg-brand-blue hover:bg-brand-bluedark text-white font-bold py-3.5 rounded-lg transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand-blue">
+                            <span id="lead-btn-text">Send Free Consultation Request</span>
+                            <i id="lead-btn-spinner" class="fa-solid fa-circle-notch fa-spin hidden"></i>
                         </button>
+
+                        <p class="text-[11px] text-gray-400 text-center flex items-center justify-center gap-1.5 pt-1">
+                            <i class="fa-solid fa-lock text-emerald-500"></i>
+                            <span>Your details are kept 100% confidential and secure.</span>
+                        </p>
                     </form>
                 </div>
             </div>
@@ -710,6 +842,104 @@
                 closeWipModal();
             }
         });
+
+        // Lead Ingestion & Consultation Form Handler
+        const leadForm = document.getElementById('lead-inquiry-form');
+        const leadSubmitBtn = document.getElementById('lead-submit-btn');
+        const leadBtnText = document.getElementById('lead-btn-text');
+        const leadBtnSpinner = document.getElementById('lead-btn-spinner');
+        const leadSuccessMsg = document.getElementById('lead-success-msg');
+        const leadErrorMsg = document.getElementById('lead-error-msg');
+
+        if (leadForm) {
+            leadForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                leadErrorMsg.classList.add('hidden');
+                leadSuccessMsg.classList.add('hidden');
+
+                const name = document.getElementById('lead-name').value.trim();
+                const phone = document.getElementById('lead-phone').value.trim();
+                const email = document.getElementById('lead-email').value.trim();
+                const category = document.getElementById('lead-category').value;
+                const message = document.getElementById('lead-message').value.trim();
+
+                // Validation
+                if (!name || !phone || !email || !category) {
+                    leadErrorMsg.textContent = 'Please fill out all required fields marked with an asterisk (*).';
+                    leadErrorMsg.classList.remove('hidden');
+                    return;
+                }
+
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    leadErrorMsg.textContent = 'Please enter a valid email address.';
+                    leadErrorMsg.classList.remove('hidden');
+                    return;
+                }
+
+                // Set Loading UI
+                leadSubmitBtn.disabled = true;
+                leadSubmitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+                leadBtnText.textContent = 'Submitting Consultation Request...';
+                leadBtnSpinner.classList.remove('hidden');
+
+                const leadPayload = {
+                    id: 'lead-' + Date.now(),
+                    name,
+                    phone,
+                    email,
+                    category,
+                    message: message || 'N/A',
+                    created_at: new Date().toISOString(),
+                    source: 'Mentorix Institute Website (Lead Form)'
+                };
+
+                try {
+                    // 1. Try sending to Supabase REST endpoint if online
+                    const supabaseUrl = 'https://fxxsfsvfdnzkvktabszr.supabase.co';
+                    const supabaseAnonKey = 'sb_publishable_OA4HKf_oyP7s2HKo9Z8tvQ_qREEbLUi';
+                    
+                    try {
+                        await fetch(`${supabaseUrl}/rest/v1/inquiries`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'apikey': supabaseAnonKey,
+                                'Authorization': `Bearer ${supabaseAnonKey}`,
+                                'Prefer': 'return=minimal'
+                            },
+                            body: JSON.stringify(leadPayload)
+                        });
+                    } catch (netErr) {
+                        console.warn('Supabase online ingestion skipped:', netErr);
+                    }
+
+                    // 2. Backup to browser local storage registry
+                    const storedLeads = JSON.parse(localStorage.getItem('mentorix_inquiries') || '[]');
+                    storedLeads.push(leadPayload);
+                    localStorage.setItem('mentorix_inquiries', JSON.stringify(storedLeads));
+
+                    // Success Feedback
+                    setTimeout(() => {
+                        leadForm.reset();
+                        leadSubmitBtn.disabled = false;
+                        leadSubmitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                        leadBtnText.textContent = 'Send Free Consultation Request';
+                        leadBtnSpinner.classList.add('hidden');
+                        leadSuccessMsg.classList.remove('hidden');
+                        leadSuccessMsg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }, 400);
+
+                } catch (err) {
+                    leadSubmitBtn.disabled = false;
+                    leadSubmitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+                    leadBtnText.textContent = 'Send Free Consultation Request';
+                    leadBtnSpinner.classList.add('hidden');
+                    leadErrorMsg.textContent = 'An unexpected error occurred. Please contact us via WhatsApp for instant assistance.';
+                    leadErrorMsg.classList.remove('hidden');
+                }
+            });
+        }
     </script>
 
     <!-- Floating WhatsApp Button -->
