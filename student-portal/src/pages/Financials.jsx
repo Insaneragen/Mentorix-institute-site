@@ -41,7 +41,7 @@ const Financials = () => {
               {financials.totalFee.toLocaleString()} {financials.currency}
             </h3>
             <p className="text-[10px] text-brand-gray mt-1">
-              Reflects approved KHDA activity pricing.
+              Reflects approved tuition pricing.
             </p>
           </div>
         </div>

@@ -178,7 +178,7 @@ const AdminLayout = () => {
               <p className="text-[10px] md:text-xs text-slate-500 font-medium flex items-center gap-1.5">
                 <span>Management Center</span>
                 <ChevronRight size={10} />
-                <span className="text-emerald-600 font-semibold uppercase">KHDA Dubai Dashboard</span>
+                <span className="text-emerald-600 font-semibold uppercase">Dubai Portal Dashboard</span>
               </p>
             </div>
           </div>

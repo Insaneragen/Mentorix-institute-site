@@ -84,16 +84,16 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* KHDA Trust Badge Card */}
+        {/* Certified Quality Badge Card */}
         <div className="bg-gradient-to-br from-brand-navy to-brand-navy-dark text-white rounded-2xl p-6 flex flex-col justify-between shadow-md">
           <div className="space-y-4">
             <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-brand-blue text-lg">
               <ShieldCheck size={24} />
             </div>
             <div className="space-y-1.5">
-              <h4 className="font-extrabold text-white text-base">Regulatory Status</h4>
+              <h4 className="font-extrabold text-white text-base">Accredited Quality</h4>
               <p className="text-xs text-gray-300 leading-relaxed">
-                Mentorix Academy is a licensed Private Training Institute operating under regulatory permits approved by the **Knowledge and Human Development Authority (KHDA)** in Dubai, UAE.
+                Mentorix Academy is a licensed Private Training Institute operating with verified curriculum standards and industry-certified faculty in Dubai, UAE.
               </p>
             </div>
           </div>
@@ -101,7 +101,7 @@ const Profile = () => {
           <div className="border-t border-white/10 pt-4 mt-6 flex items-center gap-3">
             <Building2 size={16} className="text-brand-blue shrink-0" />
             <span className="text-[10px] font-bold tracking-wider text-gray-400 uppercase">
-              KHDA Dubai Approved
+              Dubai Certified Training
             </span>
           </div>
         </div>

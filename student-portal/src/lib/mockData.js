@@ -90,9 +90,9 @@ const INITIAL_ANNOUNCEMENTS = [
   },
   {
     id: 3,
-    title: "KHDA Compliance Attestation Submissions",
+    title: "Course Compliance & Attestation Submissions",
     date: "2026-07-25",
-    body: "Please ensure your passport copies, residency visas, and attested previous graduation certificates are uploaded to the administrative portal or submitted to the Dubai Centre main office by August 15. This is required for official registration and KHDA certification approval.",
+    body: "Please ensure your passport copies, residency visas, and attested previous graduation certificates are uploaded to the administrative portal or submitted to the Dubai Centre main office by August 15. This is required for official registration and course certification approval.",
     category: "Admin",
     badgeColor: "bg-amber-50 text-amber-700 border-amber-100"
   },

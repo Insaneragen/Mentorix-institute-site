@@ -159,7 +159,7 @@ const Login = () => {
           <div className="space-y-4 text-sm text-gray-200">
             <div className="flex items-center gap-3">
               <CheckCircle size={18} className="text-brand-blue shrink-0" />
-              <span>KHDA-Licensed Training Institute in Dubai</span>
+              <span>Premier Certified Training Institute in Dubai</span>
             </div>
             <div className="flex items-center gap-3">
               <CheckCircle size={18} className="text-brand-blue shrink-0" />
@@ -174,7 +174,7 @@ const Login = () => {
 
         {/* Footer info */}
         <div className="text-xs text-gray-400 relative z-10 border-t border-white/10 pt-6">
-          &copy; {new Date().getFullYear()} Mentorix Institute. Licensed by KHDA (Dubai Private Education Permit).
+          &copy; {new Date().getFullYear()} Mentorix Institute. Dubai Training Center.
         </div>
       </div>
 
